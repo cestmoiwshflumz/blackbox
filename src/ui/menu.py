@@ -1,7 +1,7 @@
 # src/ui/menu.py
 import pygame
 from src.utils.log_instances import game_logger
-from window import Window
+from src.ui.window import Window
 
 
 class Menu:
@@ -35,12 +35,12 @@ class Menu:
         return None
 
     def run(self):
-        self.logger.log("Menu started")
+        self.logger.info("Menu started")
         while True:
             self.draw()
             action = self.handle_input()
             if action:
-                self.logger.log(f"Menu action: {action}")
+                self.logger.info(f"Menu action: {action}")
                 return action
 
 
