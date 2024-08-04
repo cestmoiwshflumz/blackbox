@@ -1,0 +1,9 @@
+logger:
+  level: DEBUG
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  datefmt: '%Y-%m-%d %H:%M:%S'
+  filename: 'logs/blackbox.log'
+  filemode: 'a'
+  encoding: 'utf-8'
+  max_bytes: 10485760  # 10 MB
+  backup_count: 5
