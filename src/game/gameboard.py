@@ -1,8 +1,9 @@
-# gameboard.py
+# src/game/gameboard.py
 
 import random
 from typing import List, Tuple, Optional
 from src.game.atom import Atom
+from src.game.ray import Ray
 from src.utils.constants import DEFAULT_GRID_SIZE, DEFAULT_ATOM_COUNT
 from src.utils.log_instances import game_logger as logging
 
@@ -36,7 +37,7 @@ class GameBoard:
                 break
             pos = random.choice(available_positions)
             available_positions.remove(pos)
-            atom = Atom(pos)
+            atom = Atom(pos[0], pos[1])
             self.atoms.append(atom)
             self.grid[pos[0]][pos[1]] = atom
 
@@ -58,7 +59,7 @@ class GameBoard:
 
     def get_atom_positions(self) -> List[Tuple[int, int]]:
         """Return a list of all atom positions."""
-        return [atom.position for atom in self.atoms]
+        return [atom.position() for atom in self.atoms]
 
     def place_atom(self, x: int, y: int) -> bool:
         """Place an atom at the given coordinates if possible."""
@@ -67,7 +68,7 @@ class GameBoard:
             and not self.is_edge(x, y)
             and not self.is_atom_at(x, y)
         ):
-            atom = Atom((x, y))
+            atom = Atom(x, y)
             self.atoms.append(atom)
             self.grid[x][y] = atom
             return True
@@ -84,22 +85,11 @@ class GameBoard:
 
     def get_adjacent_atoms(self, x: int, y: int) -> List[Tuple[int, int]]:
         """Get positions of atoms adjacent to the given coordinates."""
-        adjacent_positions = [
-            (x - 1, y - 1),
-            (x - 1, y),
-            (x - 1, y + 1),
-            (x, y - 1),
-            (x, y + 1),
-            (x + 1, y - 1),
-            (x + 1, y),
-            (x + 1, y + 1),
-        ]
-        return [
-            pos
-            for pos in adjacent_positions
-            if self.is_valid_position(pos[0], pos[1])
-            and self.is_atom_at(pos[0], pos[1])
-        ]
+        adjacent_atoms = []
+        for atom in self.atoms:
+            if atom.is_adjacent(x, y):
+                adjacent_atoms.append(atom.position())
+        return adjacent_atoms
 
     def reset(self) -> None:
         """Reset the game board to its initial state."""
@@ -111,3 +101,30 @@ class GameBoard:
         for row in self.grid:
             board_str += " ".join("A" if cell else "." for cell in row) + "\n"
         return board_str.strip()
+
+    def can_fire_ray(self, x: int, y: int) -> bool:
+        """Check if a ray can be fired from the given position (edge check)."""
+        return self.is_edge(x, y) and not self.is_corner(x, y)
+
+    def process_ray(self, ray: Ray) -> Ray:
+        """Process a ray's path through the board."""
+        while True:
+            ray.move()
+            x, y = ray.current_position
+
+            if not self.is_valid_position(x, y):
+                ray.set_exit(ray.path[-2])  # Set exit to last valid position
+                break
+
+            if self.is_atom_at(x, y):
+                if ray.interact_with_atom(self.grid[x][y]):
+                    break
+
+            if ray.check_detour(self.atoms):
+                continue
+
+            if self.is_edge(x, y):
+                ray.set_exit(ray.current_position)
+                break
+
+        return ray

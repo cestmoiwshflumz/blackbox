@@ -1,4 +1,28 @@
-# Placeholder for constants
+# src/utils/constants.py
+from enum import Enum, auto
+
+
+class Direction(Enum):
+    UP = auto()
+    RIGHT = auto()
+    DOWN = auto()
+    LEFT = auto()
+
+    @classmethod
+    def opposite(cls, direction):
+        return {
+            cls.UP: cls.DOWN,
+            cls.DOWN: cls.UP,
+            cls.LEFT: cls.RIGHT,
+            cls.RIGHT: cls.LEFT,
+        }[direction]
+
+
+class RayOutcome(Enum):
+    HIT = auto()
+    REFLECTION = auto()
+    MISS = auto()
+
 
 # Game settings
 DEFAULT_GRID_SIZE = 8
