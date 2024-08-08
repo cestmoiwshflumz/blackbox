@@ -3,7 +3,7 @@ from src.game.ray import Ray
 
 
 class Player:
-    def __init__(self, name: str, initial_points: int = 25):
+    def __init__(self, name: str = "player1", initial_points: int = 25):
         self.name = name
         self.score = initial_points
         self.guesses: List[Tuple[int, int]] = []
@@ -73,3 +73,9 @@ class Player:
         Get the list of guesses made by the player.
         """
         return self.guesses
+
+    def all_atoms_guessed(self, atom_positions: List[Tuple[int, int]]) -> bool:
+        """
+        Check if all atoms have been correctly guessed.
+        """
+        return all(atom in self.guesses for atom in atom_positions)

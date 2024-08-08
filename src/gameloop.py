@@ -60,8 +60,8 @@ class GameLoop:
         if self.player.get_score() <= 0:
             self.logger.info("Game over: Player ran out of points")
             return True
-        if self.game_board.all_atoms_guessed(self.player.get_guesses()):
-            self.logger.info("Game over: All atoms guessed correctly")
+        if self.player.all_atoms_guessed(self.game_board.atoms):
+            self.logger.info("Game Wins: All atoms guessed correctly")
             return True
         return False
 
