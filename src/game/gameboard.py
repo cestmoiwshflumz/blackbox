@@ -2,13 +2,11 @@
 
 import random
 from typing import List, Tuple, Optional
+
+
 from src.utils.constants import DEFAULT_GRID_SIZE
 from src.utils.log_instances import gameboard_logger as logging
-
-
-from typing import List, Tuple, Optional
-import random
-import logging
+from src.game.atom import Atom
 
 
 class GameBoard:
@@ -21,8 +19,8 @@ class GameBoard:
     Attributes:
         size (int): The size of the grid (size x size).
         difficulty (str): The difficulty level of the game ('easy', 'medium', or 'hard').
-        grid (List[List[Optional[str]]]): The 2D grid representing the game board.
-        atoms (List[Tuple[int, int]]): List of atom positions on the board.
+        grid (List[List[Optional[Atom]]]): The 2D grid representing the game board.
+        atoms (List[Atom]): List of atom positions on the board.
         edge_markers (List[int]): List of numbers for edge markers.
     """
 
@@ -47,10 +45,10 @@ class GameBoard:
 
         self.size = size
         self.difficulty = difficulty
-        self.grid: List[List[Optional[str]]] = [
+        self.grid: List[List[Optional[Atom]]] = [
             [None for _ in range(size)] for _ in range(size)
         ]
-        self.atoms: List[Tuple[int, int]] = []
+        self.atoms: List[Atom] = []
         self.edge_markers: List[int] = list(range(1, 4 * size + 1))
 
         self._initialize_grid()
@@ -78,9 +76,10 @@ class GameBoard:
         while len(self.atoms) < num_atoms:
             x = random.randint(1, self.size - 2)
             y = random.randint(1, self.size - 2)
-            if (x, y) not in self.atoms:
-                self.atoms.append((x, y))
-                self.grid[y][x] = "A"  # 'A' represents an atom
+            if self.grid[y][x] is None:
+                atom = Atom(x, y)
+                self.atoms.append(atom)
+                self.grid[y][x] = atom
 
     def is_empty(self, x: int, y: int) -> bool:
         """
@@ -114,7 +113,7 @@ class GameBoard:
             ValueError: If the coordinates are out of bounds.
         """
         self._validate_coordinates(x, y)
-        return self.grid[y][x] == "A"
+        return isinstance(self.grid[y][x], Atom)
 
     def is_edge(self, x: int, y: int) -> bool:
         """
@@ -133,7 +132,7 @@ class GameBoard:
         self._validate_coordinates(x, y)
         return x == 0 or x == self.size - 1 or y == 0 or y == self.size - 1
 
-    def get_cell(self, x: int, y: int) -> Optional[str]:
+    def get_cell(self, x: int, y: int) -> Optional[Atom]:
         """
         Get the content of a cell.
 
@@ -142,7 +141,7 @@ class GameBoard:
             y (int): The y-coordinate of the cell.
 
         Returns:
-            Optional[str]: The content of the cell (None if empty, 'A' if atom).
+            Optional[Atom]: The content of the cell (None if empty, 'A' if atom).
 
         Raises:
             ValueError: If the coordinates are out of bounds.
@@ -150,24 +149,24 @@ class GameBoard:
         self._validate_coordinates(x, y)
         return self.grid[y][x]
 
-    def set_cell(self, x: int, y: int, value: Optional[str]) -> None:
+    def set_cell(self, value: Atom) -> None:
         """
         Set the content of a cell.
 
         Args:
-            x (int): The x-coordinate of the cell.
-            y (int): The y-coordinate of the cell.
-            value (Optional[str]): The value to set in the cell (None or 'A').
+            value (Atom): The value to set in the cell (Atom).
 
         Raises:
             ValueError: If the coordinates are out of bounds or the value is invalid.
         """
-        self._validate_coordinates(x, y)
-        if value not in [None, "A"]:
-            raise ValueError("Invalid cell value. Use None for empty or 'A' for atom.")
-        self.grid[y][x] = value
+        self._validate_coordinates(value.x, value.y)
+        if value is not None and not isinstance(value, Atom):
+            raise ValueError(
+                "Invalid cell value. Use None for empty or an Atom instance."
+            )
+        self.grid[value.y][value.x] = value
 
-    def all_atoms_guessed(self, guessed_atoms: List[Tuple[int, int]]) -> bool:
+    def all_atoms_guessed(self, guessed_atoms: List[Atom]) -> bool:
         """
         Check if all atoms have been correctly guessed.
 
@@ -179,12 +178,12 @@ class GameBoard:
         """
         return set(self.atoms) == set(guessed_atoms)
 
-    def get_board_state(self) -> List[List[Optional[str]]]:
+    def get_board_state(self) -> List[List[Optional[Atom]]]:
         """
         Get the current state of the board.
 
         Returns:
-            List[List[Optional[str]]]: A deep copy of the current grid.
+            List[List[Optional[Atom]]]: A deep copy of the current grid.
         """
         return [row[:] for row in self.grid]
 
@@ -215,7 +214,9 @@ class GameBoard:
         for y in range(self.size):
             board_str += (
                 f"{y:2} "
-                + " ".join(cell if cell else "·" for cell in self.grid[y])
+                + " ".join(
+                    "A" if isinstance(cell, Atom) else "·" for cell in self.grid[y]
+                )
                 + "\n"
             )
         return board_str

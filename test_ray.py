@@ -9,7 +9,7 @@ if __name__ == "__main__":
         game_board = GameBoard(size=8, difficulty="medium")
 
         # Create a Ray instance
-        ray = Ray(0, 0, (1, 0))
+        ray = Ray(1, 1, (1, 0))
         logging.info("Ray created successfully")
         logging.info(f"Initial ray state: {ray}")
 
@@ -50,7 +50,8 @@ if __name__ == "__main__":
 
         # Test ray that hits an atom
         atom_hit_ray = Ray(1, 1, (1, 0))
-        game_board.set_cell(3, 1, "A")  # Place an atom in the ray's path
+        atom_hit = Atom(3, 1)
+        game_board.set_cell(atom_hit)  # Place an atom in the ray's path
         atom_hit_ray.trace(game_board)
         logging.info(f"Ray that hits an atom: {atom_hit_ray}")
 
