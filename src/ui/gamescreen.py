@@ -1,22 +1,52 @@
 # src/ui/gamescreen.py
 
 import pygame
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 from src.ui.window import Window
 from src.game.gameboard import GameBoard
 from src.game.player import Player
 from src.game.ray import Ray
+from src.game.atom import Atom
 from src.utils.constants import (
     COLOR_WHITE,
     COLOR_RED,
     COLOR_GREEN,
     COLOR_BLUE,
-    Direction,
 )
+from src.utils.log_instances import game_logger as logging
 
 
 class GameScreen:
+    """
+    Represents the game screen for the Black Box game.
+
+    This class is responsible for rendering the game board, handling user input,
+    and managing the visual representation of the game state.
+
+    Attributes:
+        window (Window): The game window.
+        game_board (GameBoard): The game board.
+        player (Player): The current player.
+        cell_size (int): The size of each cell on the game board.
+        board_offset (Tuple[int, int]): The offset of the board from the window edges.
+        font (pygame.font.Font): The font used for rendering text.
+    """
+
     def __init__(self, window: Window, game_board: GameBoard, player: Player):
+        """
+        Initialize the GameScreen.
+
+        Args:
+            window (Window): The game window.
+            game_board (GameBoard): The game board.
+            player (Player): The current player.
+
+        Raises:
+            ValueError: If the window, game_board, or player is None.
+        """
+        if not all([window, game_board, player]):
+            raise ValueError("Window, game_board, and player must not be None")
+
         self.window = window
         self.game_board = game_board
         self.player = player
@@ -27,68 +57,131 @@ class GameScreen:
         )
         self.font = pygame.font.Font(None, 24)
 
-    def draw(self):
-        self.window.clear()
-        self.draw_grid()
-        self.draw_rays()
-        self.draw_guesses()
-        self.draw_score()
-        self.window.update()
+    def draw(self) -> None:
+        """
+        Draw the entire game screen.
 
-    def draw_grid(self):
-        for i in range(self.game_board.size + 1):
-            # Calculate start and end points for vertical lines
-            start_x = self.board_offset[0] + i * self.cell_size
-            start_y = self.board_offset[1]
-            end_x = start_x
-            end_y = start_y + self.game_board.size * self.cell_size
+        This method clears the screen, draws the grid, rays, guesses, and score,
+        then updates the display.
+        """
+        try:
+            self.window.clear()
+            self.draw_grid()
+            self.draw_rays()
+            self.draw_guesses()
+            self.draw_score()
+            self.window.update()
+        except pygame.error as e:
+            logging.error(f"Error drawing game screen: {e}")
 
-            # Draw vertical line
-            self.window.draw_line(COLOR_WHITE, (start_x, start_y), (end_x, end_y))
+    def draw_grid(self) -> None:
+        """
+        Draw the game grid on the screen.
 
-            # Calculate start and end points for horizontal lines
-            start_x = self.board_offset[0]
-            start_y = self.board_offset[1] + i * self.cell_size
-            end_x = start_x + self.game_board.size * self.cell_size
-            end_y = start_y
+        This method draws both vertical and horizontal lines to create the game grid.
+        """
+        try:
+            for i in range(self.game_board.size + 1):
+                start_x = self.board_offset[0] + i * self.cell_size
+                start_y = self.board_offset[1]
+                end_x = start_x
+                end_y = start_y + self.game_board.size * self.cell_size
+                self.window.draw_line(COLOR_WHITE, (start_x, start_y), (end_x, end_y))
 
-            # Draw horizontal line
-            self.window.draw_line(COLOR_WHITE, (start_x, start_y), (end_x, end_y))
+                start_x = self.board_offset[0]
+                start_y = self.board_offset[1] + i * self.cell_size
+                end_x = start_x + self.game_board.size * self.cell_size
+                end_y = start_y
+                self.window.draw_line(COLOR_WHITE, (start_x, start_y), (end_x, end_y))
+        except pygame.error as e:
+            logging.error(f"Error drawing grid: {e}")
 
-    def draw_rays(self):
+    def draw_rays(self) -> None:
+        """
+        Draw all fired rays on the game screen.
+
+        This method iterates through all fired rays and draws them on the screen.
+        """
         for ray in self.player.get_fired_rays():
             self.draw_ray(ray)
 
-    def draw_ray(self, ray: Ray):
-        color = COLOR_RED if ray.outcome == "HIT" else COLOR_GREEN
-        for i in range(len(ray.path) - 1):
-            start = self.get_screen_position(ray.path[i])
-            end = self.get_screen_position(ray.path[i + 1])
-            self.window.draw_line(color, start, end, 2)
+    def draw_ray(self, ray: Ray) -> None:
+        """
+        Draw a single ray on the game screen.
 
-    def draw_guesses(self):
-        for guess in self.player.get_guesses():
-            pos = self.get_screen_position(guess)
-            self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
+        Args:
+            ray (Ray): The ray to be drawn.
+        """
+        try:
+            color = COLOR_RED if ray.exit_point is None else COLOR_GREEN
+            for i in range(len(ray.path) - 1):
+                start = self.get_screen_position(ray.path[i])
+                end = self.get_screen_position(ray.path[i + 1])
+                self.window.draw_line(color, start, end, 2)
+        except pygame.error as e:
+            logging.error(f"Error drawing ray: {e}")
 
-    def draw_score(self):
-        score_text = f"Score: {self.player.get_score()}"
-        text_surface = self.font.render(score_text, True, COLOR_WHITE)
-        self.window.get_screen().blit(text_surface, (10, 10))
+    def draw_guesses(self) -> None:
+        """
+        Draw all guessed atom positions on the game screen.
+
+        This method iterates through all guessed atoms and draws them on the screen.
+        """
+        try:
+            for guess in self.player.get_guessed_atoms():
+                pos = self.get_screen_position(guess.get_position())
+                self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
+        except pygame.error as e:
+            logging.error(f"Error drawing guesses: {e}")
+
+    def draw_score(self) -> None:
+        """
+        Draw the current player's score on the game screen.
+        """
+        try:
+            score_text = f"Score: {self.player.get_score()}"
+            text_surface = self.font.render(score_text, True, COLOR_WHITE)
+            self.window.get_screen().blit(text_surface, (10, 10))
+        except pygame.error as e:
+            logging.error(f"Error drawing score: {e}")
 
     def get_screen_position(self, board_pos: Tuple[int, int]) -> Tuple[int, int]:
+        """
+        Convert a board position to screen coordinates.
+
+        Args:
+            board_pos (Tuple[int, int]): The position on the game board.
+
+        Returns:
+            Tuple[int, int]: The corresponding position on the screen.
+        """
         return (
             self.board_offset[0] + board_pos[0] * self.cell_size,
             self.board_offset[1] + board_pos[1] * self.cell_size,
         )
 
     def get_board_position(self, screen_pos: Tuple[int, int]) -> Tuple[int, int]:
+        """
+        Convert screen coordinates to a board position.
+
+        Args:
+            screen_pos (Tuple[int, int]): The position on the screen.
+
+        Returns:
+            Tuple[int, int]: The corresponding position on the game board.
+        """
         return (
             (screen_pos[0] - self.board_offset[0]) // self.cell_size,
             (screen_pos[1] - self.board_offset[1]) // self.cell_size,
         )
 
     def handle_input(self) -> str:
+        """
+        Handle user input events.
+
+        Returns:
+            str: A string indicating the action to be taken ('QUIT', 'MAIN_MENU', or 'CONTINUE').
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "QUIT"
@@ -102,36 +195,160 @@ class GameScreen:
                     return "MAIN_MENU"
         return "CONTINUE"
 
-    def handle_left_click(self, pos: Tuple[int, int]):
-        board_pos = self.get_board_position(pos)
-        if self.game_board.is_edge(*board_pos) and self.player.can_fire_ray():
-            direction = self.get_ray_direction(board_pos)
-            if direction:
-                self.player.fire_ray(board_pos, direction)
-                ray = Ray(board_pos, direction)
-                processed_ray = self.game_board.process_ray(ray)
-                self.player.fired_rays.append(processed_ray)
+    def handle_left_click(self, pos: Tuple[int, int]) -> None:
+        """
+        Handle left mouse click events.
 
-    def handle_right_click(self, pos: Tuple[int, int]):
-        board_pos = self.get_board_position(pos)
-        if not self.game_board.is_edge(*board_pos):
-            self.player.make_guess(board_pos)
+        This method is responsible for firing rays when the player clicks on the edge of the board.
 
-    def get_ray_direction(self, pos: Tuple[int, int]) -> Direction:
+        Args:
+            pos (Tuple[int, int]): The position of the mouse click on the screen.
+        """
+        try:
+            board_pos = self.get_board_position(pos)
+            if self.is_valid_ray_start(board_pos):
+                direction = self.get_ray_direction(board_pos)
+                if direction:
+                    ray = self.player.fire_ray(board_pos[0], board_pos[1], direction)
+                    ray.trace(self.game_board)
+                    self.draw()
+        except ValueError as e:
+            logging.error(f"Error handling left click: {e}")
+
+    def handle_right_click(self, pos: Tuple[int, int]) -> None:
+        """
+        Handle right mouse click events.
+
+        This method is responsible for placing or removing atom guesses when the player right-clicks on the board.
+
+        Args:
+            pos (Tuple[int, int]): The position of the mouse click on the screen.
+        """
+        try:
+            board_pos = self.get_board_position(pos)
+            if self.is_valid_guess_position(board_pos):
+                atom = Atom(board_pos[0], board_pos[1])
+                if atom in self.player.get_guessed_atoms():
+                    self.player.remove_guess(atom)
+                else:
+                    self.player.guess_atom(atom)
+                self.draw()
+        except ValueError as e:
+            logging.error(f"Error handling right click: {e}")
+
+    def is_valid_ray_start(self, pos: Tuple[int, int]) -> bool:
+        """
+        Check if the given position is a valid starting point for a ray.
+
+        Args:
+            pos (Tuple[int, int]): The position to check.
+
+        Returns:
+            bool: True if the position is on the edge of the board, False otherwise.
+        """
         x, y = pos
-        if x == 0:
-            return Direction.RIGHT
-        elif x == self.game_board.size - 1:
-            return Direction.LEFT
-        elif y == 0:
-            return Direction.DOWN
-        elif y == self.game_board.size - 1:
-            return Direction.UP
+        return (
+            x == -1 or x == self.game_board.size or y == -1 or y == self.game_board.size
+        ) and not (
+            (x == -1 and y == -1)
+            or (x == -1 and y == self.game_board.size)
+            or (x == self.game_board.size and y == -1)
+            or (x == self.game_board.size and y == self.game_board.size)
+        )
+
+    def get_ray_direction(self, pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+        """
+        Get the direction of a ray based on its starting position.
+
+        Args:
+            pos (Tuple[int, int]): The starting position of the ray.
+
+        Returns:
+            Optional[Tuple[int, int]]: The direction of the ray as (dx, dy), or None if invalid.
+        """
+        x, y = pos
+        if x == -1:
+            return (1, 0)
+        elif x == self.game_board.size:
+            return (-1, 0)
+        elif y == -1:
+            return (0, 1)
+        elif y == self.game_board.size:
+            return (0, -1)
         return None
 
-    def run(self) -> str:
-        while True:
+    def is_valid_guess_position(self, pos: Tuple[int, int]) -> bool:
+        """
+        Check if the given position is a valid position for guessing an atom.
+
+        Args:
+            pos (Tuple[int, int]): The position to check.
+
+        Returns:
+            bool: True if the position is within the board and not on the edge, False otherwise.
+        """
+        x, y = pos
+        return 0 <= x < self.game_board.size and 0 <= y < self.game_board.size
+
+    def highlight_cell(self, pos: Tuple[int, int], color: Tuple[int, int, int]) -> None:
+        """
+        Highlight a cell on the game board.
+
+        Args:
+            pos (Tuple[int, int]): The position of the cell to highlight.
+            color (Tuple[int, int, int]): The color to use for highlighting.
+        """
+        try:
+            screen_pos = self.get_screen_position(pos)
+            rect = pygame.Rect(
+                screen_pos[0], screen_pos[1], self.cell_size, self.cell_size
+            )
+            self.window.draw_rect(color, rect)
+        except pygame.error as e:
+            logging.error(f"Error highlighting cell: {e}")
+
+    def show_game_over(self) -> None:
+        """
+        Display the game over screen.
+
+        This method shows the final score and a message indicating the end of the game.
+        """
+        try:
+            self.window.clear()
+            game_over_text = self.font.render("Game Over", True, COLOR_WHITE)
+            score_text = self.font.render(
+                f"Final Score: {self.player.get_score()}", True, COLOR_WHITE
+            )
+
+            self.window.get_screen().blit(
+                game_over_text,
+                (
+                    self.window.width // 2 - game_over_text.get_width() // 2,
+                    self.window.height // 2 - 50,
+                ),
+            )
+            self.window.get_screen().blit(
+                score_text,
+                (
+                    self.window.width // 2 - score_text.get_width() // 2,
+                    self.window.height // 2 + 50,
+                ),
+            )
+
+            self.window.update()
+            pygame.time.wait(3000)  # Wait for 3 seconds before returning to main menu
+        except pygame.error as e:
+            logging.error(f"Error showing game over screen: {e}")
+
+    def update(self) -> None:
+        """
+        Update the game state and redraw the screen.
+
+        This method should be called once per frame to keep the game display current.
+        """
+        try:
             self.draw()
-            action = self.handle_input()
-            if action != "CONTINUE":
-                return action
+            if self.game_board.all_atoms_guessed(self.player.get_guessed_atoms()):
+                self.show_game_over()
+        except Exception as e:
+            logging.error(f"Error updating game screen: {e}")

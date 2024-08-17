@@ -79,7 +79,7 @@ class Options:
     def __init__(self, window):
         self.window = window
         self.font = pygame.font.Font(None, 36)
-        self.options = ["Difficulty: Normal", "Sound: On", "Back"]
+        self.options = ["medium", "Sound: On", "Back"]
         self.selected_option = 0
 
     def draw(self):
@@ -109,9 +109,7 @@ class Options:
                         return "MAIN_MENU"
                     elif self.selected_option == 0:
                         self.options[0] = (
-                            "Difficulty: Hard"
-                            if self.options[0] == "Difficulty: Normal"
-                            else "Difficulty: Normal"
+                            "hard" if self.options[0] == "medium" else "medium"
                         )
                     elif self.selected_option == 1:
                         self.options[1] = (
