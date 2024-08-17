@@ -2,129 +2,263 @@
 
 import random
 from typing import List, Tuple, Optional
-from src.game.atom import Atom
-from src.game.ray import Ray
-from src.utils.constants import DEFAULT_GRID_SIZE, DEFAULT_ATOM_COUNT
-from src.utils.log_instances import game_logger as logging
+from src.utils.constants import DEFAULT_GRID_SIZE
+from src.utils.log_instances import gameboard_logger as logging
+
+
+from typing import List, Tuple, Optional
+import random
+import logging
 
 
 class GameBoard:
-    def __init__(
-        self, size: int = DEFAULT_GRID_SIZE, atom_count: int = DEFAULT_ATOM_COUNT
-    ):
+    """
+    Represents the game board for the Black Box game.
+
+    This class manages the grid, atom placement, and provides methods to interact
+    with the game board state.
+
+    Attributes:
+        size (int): The size of the grid (size x size).
+        difficulty (str): The difficulty level of the game ('easy', 'medium', or 'hard').
+        grid (List[List[Optional[str]]]): The 2D grid representing the game board.
+        atoms (List[Tuple[int, int]]): List of atom positions on the board.
+        edge_markers (List[int]): List of numbers for edge markers.
+    """
+
+    def __init__(self, size: int = DEFAULT_GRID_SIZE, difficulty: str = "medium"):
+        """
+        Initialize the GameBoard.
+
+        Args:
+            size (int): The size of the grid. Defaults to 8.
+            difficulty (str): The difficulty level. Defaults to 'medium'.
+
+        Raises:
+            ValueError: If the size is less than 4 or the difficulty is invalid.
+        """
+        if size < 4:
+            raise ValueError("Grid size must be at least 4x4")
+
+        if difficulty not in ["easy", "medium", "hard"]:
+            raise ValueError(
+                "Invalid difficulty level. Choose 'easy', 'medium', or 'hard'"
+            )
+
         self.size = size
-        self.atom_count = atom_count
-        self.grid: List[List[Optional[Atom]]] = [
+        self.difficulty = difficulty
+        self.grid: List[List[Optional[str]]] = [
             [None for _ in range(size)] for _ in range(size)
         ]
-        self.atoms: List[Atom] = []
-        self.initialize_board()
-        logging.info(f"Game board initialized with size {size} and {atom_count} atoms.")
+        self.atoms: List[Tuple[int, int]] = []
+        self.edge_markers: List[int] = list(range(1, 4 * size + 1))
 
-    def initialize_board(self) -> None:
-        """Initialize the game board by placing atoms randomly."""
-        self.atoms.clear()
-        self.grid = [[None for _ in range(self.size)] for _ in range(self.size)]
+        self._initialize_grid()
         self._place_atoms()
 
-    def _place_atoms(self) -> None:
-        """Place atoms randomly on the board."""
-        available_positions = [
-            (x, y) for x in range(1, self.size - 1) for y in range(1, self.size - 1)
-        ]
-        for _ in range(self.atom_count):
-            if not available_positions:
-                break
-            pos = random.choice(available_positions)
-            available_positions.remove(pos)
-            atom = Atom(pos[0], pos[1])
-            self.atoms.append(atom)
-            self.grid[pos[0]][pos[1]] = atom
+    def _initialize_grid(self) -> None:
+        """Initialize the empty grid."""
+        self.grid = [[None for _ in range(self.size)] for _ in range(self.size)]
 
-    def is_atom_at(self, x: int, y: int) -> bool:
-        """Check if there's an atom at the given coordinates."""
-        return isinstance(self.grid[x][y], Atom)
+    def _place_atoms(self) -> None:
+        """
+        Place atoms on the grid based on the difficulty level.
+
+        The number of atoms placed depends on the difficulty:
+        - Easy: 3-4 atoms
+        - Medium: 4-5 atoms
+        - Hard: 5-6 atoms
+        """
+        num_atoms = {
+            "easy": random.randint(3, 4),
+            "medium": random.randint(4, 5),
+            "hard": random.randint(5, 6),
+        }[self.difficulty]
+
+        while len(self.atoms) < num_atoms:
+            x = random.randint(1, self.size - 2)
+            y = random.randint(1, self.size - 2)
+            if (x, y) not in self.atoms:
+                self.atoms.append((x, y))
+                self.grid[y][x] = "A"  # 'A' represents an atom
+
+    def is_empty(self, x: int, y: int) -> bool:
+        """
+        Check if a cell is empty.
+
+        Args:
+            x (int): The x-coordinate of the cell.
+            y (int): The y-coordinate of the cell.
+
+        Returns:
+            bool: True if the cell is empty, False otherwise.
+
+        Raises:
+            ValueError: If the coordinates are out of bounds.
+        """
+        self._validate_coordinates(x, y)
+        return self.grid[y][x] is None
+
+    def has_atom(self, x: int, y: int) -> bool:
+        """
+        Check if a cell contains an atom.
+
+        Args:
+            x (int): The x-coordinate of the cell.
+            y (int): The y-coordinate of the cell.
+
+        Returns:
+            bool: True if the cell contains an atom, False otherwise.
+
+        Raises:
+            ValueError: If the coordinates are out of bounds.
+        """
+        self._validate_coordinates(x, y)
+        return self.grid[y][x] == "A"
 
     def is_edge(self, x: int, y: int) -> bool:
-        """Check if the given coordinates are on the edge of the board."""
+        """
+        Check if a cell is on the edge of the grid.
+
+        Args:
+            x (int): The x-coordinate of the cell.
+            y (int): The y-coordinate of the cell.
+
+        Returns:
+            bool: True if the cell is on the edge, False otherwise.
+
+        Raises:
+            ValueError: If the coordinates are out of bounds.
+        """
+        self._validate_coordinates(x, y)
         return x == 0 or x == self.size - 1 or y == 0 or y == self.size - 1
 
-    def is_corner(self, x: int, y: int) -> bool:
-        """Check if the given coordinates are on a corner of the board."""
-        return (x == 0 or x == self.size - 1) and (y == 0 or y == self.size - 1)
+    def get_cell(self, x: int, y: int) -> Optional[str]:
+        """
+        Get the content of a cell.
 
-    def is_valid_position(self, x: int, y: int) -> bool:
-        """Check if the given coordinates are within the board."""
-        return 0 <= x < self.size and 0 <= y < self.size
+        Args:
+            x (int): The x-coordinate of the cell.
+            y (int): The y-coordinate of the cell.
 
-    def get_atom_positions(self) -> List[Tuple[int, int]]:
-        """Return a list of all atom positions."""
-        return [atom.position() for atom in self.atoms]
+        Returns:
+            Optional[str]: The content of the cell (None if empty, 'A' if atom).
 
-    def place_atom(self, x: int, y: int) -> bool:
-        """Place an atom at the given coordinates if possible."""
-        if (
-            self.is_valid_position(x, y)
-            and not self.is_edge(x, y)
-            and not self.is_atom_at(x, y)
-        ):
-            atom = Atom(x, y)
-            self.atoms.append(atom)
-            self.grid[x][y] = atom
-            return True
-        return False
+        Raises:
+            ValueError: If the coordinates are out of bounds.
+        """
+        self._validate_coordinates(x, y)
+        return self.grid[y][x]
 
-    def remove_atom(self, x: int, y: int) -> bool:
-        """Remove an atom from the given coordinates if present."""
-        if self.is_atom_at(x, y):
-            atom = self.grid[x][y]
-            self.atoms.remove(atom)
-            self.grid[x][y] = None
-            return True
-        return False
+    def set_cell(self, x: int, y: int, value: Optional[str]) -> None:
+        """
+        Set the content of a cell.
 
-    def get_adjacent_atoms(self, x: int, y: int) -> List[Tuple[int, int]]:
-        """Get positions of atoms adjacent to the given coordinates."""
-        adjacent_atoms = []
-        for atom in self.atoms:
-            if atom.is_adjacent(x, y):
-                adjacent_atoms.append(atom.position())
-        return adjacent_atoms
+        Args:
+            x (int): The x-coordinate of the cell.
+            y (int): The y-coordinate of the cell.
+            value (Optional[str]): The value to set in the cell (None or 'A').
 
-    def reset(self) -> None:
-        """Reset the game board to its initial state."""
-        self.initialize_board()
+        Raises:
+            ValueError: If the coordinates are out of bounds or the value is invalid.
+        """
+        self._validate_coordinates(x, y)
+        if value not in [None, "A"]:
+            raise ValueError("Invalid cell value. Use None for empty or 'A' for atom.")
+        self.grid[y][x] = value
+
+    def all_atoms_guessed(self, guessed_atoms: List[Tuple[int, int]]) -> bool:
+        """
+        Check if all atoms have been correctly guessed.
+
+        Args:
+            guessed_atoms (List[Tuple[int, int]]): List of guessed atom positions.
+
+        Returns:
+            bool: True if all atoms have been guessed correctly, False otherwise.
+        """
+        return set(self.atoms) == set(guessed_atoms)
+
+    def get_board_state(self) -> List[List[Optional[str]]]:
+        """
+        Get the current state of the board.
+
+        Returns:
+            List[List[Optional[str]]]: A deep copy of the current grid.
+        """
+        return [row[:] for row in self.grid]
+
+    def _validate_coordinates(self, x: int, y: int) -> None:
+        """
+        Validate that the given coordinates are within the grid bounds.
+
+        Args:
+            x (int): The x-coordinate to validate.
+            y (int): The y-coordinate to validate.
+
+        Raises:
+            ValueError: If the coordinates are out of bounds.
+        """
+        if not (0 <= x < self.size and 0 <= y < self.size):
+            raise ValueError(
+                f"Coordinates ({x}, {y}) are out of bounds for a {self.size}x{self.size} grid."
+            )
 
     def __str__(self) -> str:
-        """Return a string representation of the game board."""
-        board_str = ""
-        for row in self.grid:
-            board_str += " ".join("A" if cell else "." for cell in row) + "\n"
-        return board_str.strip()
+        """
+        Return a string representation of the game board.
 
-    def can_fire_ray(self, x: int, y: int) -> bool:
-        """Check if a ray can be fired from the given position (edge check)."""
-        return self.is_edge(x, y) and not self.is_corner(x, y)
+        Returns:
+            str: A formatted string representing the current state of the game board.
+        """
+        board_str = "  " + " ".join(f"{i:2}" for i in range(self.size)) + "\n"
+        for y in range(self.size):
+            board_str += (
+                f"{y:2} "
+                + " ".join(cell if cell else "·" for cell in self.grid[y])
+                + "\n"
+            )
+        return board_str
 
-    def process_ray(self, ray: Ray) -> Ray:
-        """Process a ray's path through the board."""
-        while True:
-            ray.move()
-            x, y = ray.current_position
 
-            if not self.is_valid_position(x, y):
-                ray.set_exit(ray.path[-2])  # Set exit to last valid position
-                break
+# Example usage and testing
+if __name__ == "__main__":
+    try:
+        board = GameBoard(size=8, difficulty="medium")
+        logging.info("Game board created successfully")
+        logging.info(f"Board state:\n{board}")
 
-            if self.is_atom_at(x, y):
-                if ray.interact_with_atom(self.grid[x][y]):
-                    break
+        # Test some methods
+        logging.info(f"Is (0, 0) empty? {board.is_empty(0, 0)}")
+        logging.info(f"Is (0, 0) on edge? {board.is_edge(0, 0)}")
 
-            if ray.check_detour(self.atoms):
-                continue
+        # Place an atom for testing
+        test_atom_x, test_atom_y = 3, 3
+        board.set_cell(test_atom_x, test_atom_y, "A")
+        logging.info(f"Placed test atom at ({test_atom_x}, {test_atom_y})")
 
-            if self.is_edge(x, y):
-                ray.set_exit(ray.current_position)
-                break
+        logging.info(
+            f"Is ({test_atom_x}, {test_atom_y}) empty? {board.is_empty(test_atom_x, test_atom_y)}"
+        )
+        logging.info(
+            f"Has atom at ({test_atom_x}, {test_atom_y})? {board.has_atom(test_atom_x, test_atom_y)}"
+        )
 
-        return ray
+        # Test error handling
+        try:
+            board.get_cell(10, 10)
+        except ValueError as e:
+            logging.error(f"Error: {e}")
+
+        # Test all_atoms_guessed method
+        all_atoms = board.atoms + [(test_atom_x, test_atom_y)]
+        logging.info(
+            f"All atoms guessed correctly? {board.all_atoms_guessed(all_atoms)}"
+        )
+
+        # Display final board state
+        logging.info("Final board state:")
+        logging.info(f"\n{board}")
+
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
