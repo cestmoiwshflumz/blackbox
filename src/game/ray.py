@@ -34,7 +34,7 @@ class Ray:
         Raises:
             ValueError: If the coordinates are negative or the direction is invalid.
         """
-        if start_x < 0 or start_y < 0:
+        if start_x < -1 or start_y < -1:
             raise ValueError("Ray coordinates must be non-negative.")
         if direction not in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
             raise ValueError(

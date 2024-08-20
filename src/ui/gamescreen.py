@@ -67,6 +67,7 @@ class GameScreen:
         try:
             self.window.clear()
             self.draw_grid()
+            self.draw_atoms(self.game_board.atoms)
             self.draw_rays()
             self.draw_guesses()
             self.draw_score()
@@ -95,6 +96,20 @@ class GameScreen:
                 self.window.draw_line(COLOR_WHITE, (start_x, start_y), (end_x, end_y))
         except pygame.error as e:
             logging.error(f"Error drawing grid: {e}")
+
+    def draw_atoms(self, atoms: List[Atom]) -> None:
+        """
+        Draw atoms on the game screen.
+
+        Args:
+            atoms (List[Atom]): The list of atoms to draw.
+        """
+        try:
+            for atom in atoms:
+                pos = self.get_screen_position(atom.get_position())
+                self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
+        except pygame.error as e:
+            logging.error(f"Error drawing atoms: {e}")
 
     def draw_rays(self) -> None:
         """
@@ -156,8 +171,8 @@ class GameScreen:
             Tuple[int, int]: The corresponding position on the screen.
         """
         return (
-            self.board_offset[0] + board_pos[0] * self.cell_size,
-            self.board_offset[1] + board_pos[1] * self.cell_size,
+            self.board_offset[0] + board_pos[0] * self.cell_size + self.cell_size // 2,
+            self.board_offset[1] + board_pos[1] * self.cell_size + self.cell_size // 2,
         )
 
     def get_board_position(self, screen_pos: Tuple[int, int]) -> Tuple[int, int]:

@@ -76,7 +76,7 @@ class GameLoop:
         try:
             self.logger.info("Starting new game")
             self.game_board = GameBoard(DEFAULT_GRID_SIZE, DEFAULT_DIFFICULTY)
-            self.player = Player("Player 1")
+            self.player = Player("Player 1", self.game_board)
             self.game_screen = GameScreen(self.window, self.game_board, self.player)
             self.game_state = "PLAYING"
         except Exception as e:

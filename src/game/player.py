@@ -3,6 +3,7 @@
 from typing import List, Tuple, Optional
 from src.game.ray import Ray
 from src.game.atom import Atom
+from src.game.gameboard import GameBoard
 from src.utils.log_instances import player_logger as logging
 
 
@@ -21,12 +22,13 @@ class Player:
         is_turn (bool): Indicates whether it's currently this player's turn.
     """
 
-    def __init__(self, name: str, initial_score: int = 25):
+    def __init__(self, name: str, gameboard: GameBoard, initial_score: int = 25):
         """
         Initialize a Player instance.
 
         Args:
             name (str): The name of the player.
+            gameboard (GameBoard): The game board instance.
             initial_score (int): The initial score for the player. Defaults to 25.
 
         Raises:
@@ -37,6 +39,7 @@ class Player:
         if initial_score < 0:
             raise ValueError("Initial score cannot be negative.")
 
+        self.gameboard = gameboard
         self.name: str = name
         self.score: int = initial_score
         self.fired_rays: List[Ray] = []
@@ -85,12 +88,13 @@ class Player:
         Raises:
             ValueError: If the coordinates are negative or the direction is invalid.
         """
-        if x < 0 or y < 0:
+        if x < -1 or y < -1:
             raise ValueError("Ray coordinates must be non-negative.")
         if direction not in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
             raise ValueError("Invalid ray direction.")
 
         ray = Ray(x, y, direction)
+        ray.trace(self.gameboard)
         self.fired_rays.append(ray)
         self.update_score(-1)  # Deduct 1 point for firing a ray
         logging.info(
