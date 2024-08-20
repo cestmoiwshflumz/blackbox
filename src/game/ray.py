@@ -162,9 +162,9 @@ class Ray:
         """
         dx, dy = self.direction
         if atom.x > self.path[-1][0]:
-            self.change_direction((-dy, -dx))
-        else:
             self.change_direction((dy, dx))
+        else:
+            self.change_direction((-dy, -dx))
         logging.info(f"Ray reflected by atom at ({atom.x}, {atom.y})")
 
     def _handle_detour(self) -> None:
