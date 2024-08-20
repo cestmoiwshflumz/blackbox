@@ -28,7 +28,7 @@ if __name__ == "__main__":
         try:
             board.get_cell(10, 10)
         except ValueError as e:
-            logging.error(f"Error: {e}")
+            logging.error(f"Error: {e}", exc_info=True)
 
         # Test all_atoms_guessed method
         all_atoms = board.atoms + [(test_atom.x, test_atom.y)]

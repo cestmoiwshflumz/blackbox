@@ -13,3 +13,7 @@ window:
   height: 600
   title: 'Blackbox'
   icon: 'assets/icon.png'
+
+options:
+  difficulty: 1
+  sound: True

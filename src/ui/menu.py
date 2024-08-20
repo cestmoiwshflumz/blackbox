@@ -45,7 +45,7 @@ class Menu:
 
 
 class Instructions:
-    def __init__(self, window):
+    def __init__(self, window: Window):
         self.window = window
         self.font = pygame.font.Font(None, 24)
         self.instructions = [
@@ -76,7 +76,7 @@ class Instructions:
 
 
 class Options:
-    def __init__(self, window):
+    def __init__(self, window: Window):
         self.window = window
         self.font = pygame.font.Font(None, 36)
         self.options = ["medium", "Sound: On", "Back"]
@@ -111,6 +111,7 @@ class Options:
                         self.options[0] = (
                             "hard" if self.options[0] == "medium" else "medium"
                         )
+
                     elif self.selected_option == 1:
                         self.options[1] = (
                             "Sound: Off"
