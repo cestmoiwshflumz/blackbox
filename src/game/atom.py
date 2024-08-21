@@ -73,16 +73,19 @@ class Atom:
         self.y = y
         logging.info(f"Atom position updated to ({x}, {y})")
 
-    def is_adjacent(self, x: int, y: int) -> bool:
+    def is_adjacent(self, x: int, y: int) -> Tuple[bool, int]:
         """
-        Check if a given point is diagonally adjacent to the atom.
+        Check if a given point is diagonally adjacent to the atom and return the corner number.
 
         Args:
             x (int): The x-coordinate of the point to check.
             y (int): The y-coordinate of the point to check.
 
         Returns:
-            bool: True if the point is diagonally adjacent, False otherwise.
+            Tuple[bool, int]: A tuple containing:
+                - bool: True if the point is diagonally adjacent, False otherwise.
+                - int: The corner number (1-4) if adjacent, 0 otherwise.
+                    1: top-left, 2: top-right, 3: bottom-left, 4: bottom-right
 
         Raises:
             ValueError: If x or y is negative.
@@ -90,7 +93,20 @@ class Atom:
         if x < 0 or y < 0:
             raise ValueError("Coordinates must be non-negative.")
 
-        return abs(self.x - x) == 1 and abs(self.y - y) == 1
+        dx = x - self.x
+        dy = y - self.y
+
+        if abs(dx) == 1 and abs(dy) == 1:
+            if dx == -1 and dy == -1:
+                return True, 1  # top-left
+            elif dx == 1 and dy == -1:
+                return True, 2  # top-right
+            elif dx == -1 and dy == 1:
+                return True, 3  # bottom-left
+            else:  # dx == 1 and dy == 1
+                return True, 4  # bottom-right
+        else:
+            return False, 0
 
     def is_hit(self, x: int, y: int) -> bool:
         """

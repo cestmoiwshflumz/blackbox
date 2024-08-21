@@ -91,7 +91,7 @@ class Ray:
         """
         return atom.is_hit(self.path[-1][0], self.path[-1][1])
 
-    def check_reflection(self, atom: Atom) -> bool:
+    def check_reflection(self, atom: Atom) -> Tuple[bool, int]:
         """
         Check if the ray is reflected by the given atom.
 
@@ -99,7 +99,10 @@ class Ray:
             atom (Atom): The atom to check for reflection.
 
         Returns:
-            bool: True if the ray is reflected by the atom, False otherwise.
+            Tuple[bool, int]: A tuple containing:
+                - bool: True if the point is diagonally adjacent, False otherwise.
+                - int: The corner number (1-4) if adjacent, 0 otherwise.
+                    1: top-left, 2: top-right, 3: bottom-left, 4: bottom-right
         """
         return atom.is_adjacent(self.path[-1][0], self.path[-1][1])
 
@@ -140,12 +143,14 @@ class Ray:
                 break
 
             for atom in gameboard.atoms:
-                if self.check_reflection(atom):
-                    self._handle_reflection(atom)
-                    break
-                elif self.check_hit(atom):
+                is_adjacent, corner = self.check_reflection(atom)
+
+                if self.check_hit(atom):
                     logging.info(f"Ray hit atom at ({atom.x}, {atom.y})")
                     return
+                elif is_adjacent:
+                    self._handle_reflection(atom, corner)
+                    break
 
             # Check for detour
             for i, atom1 in enumerate(gameboard.atoms):
@@ -154,27 +159,37 @@ class Ray:
                         self._handle_detour()
                         return
 
-    def _handle_reflection(self, atom: Atom) -> None:
+    def _handle_reflection(self, atom: Atom, corner: int) -> None:
         """
         Handle the reflection of the ray by an atom.
 
         Args:
             atom (Atom): The atom causing the reflection.
+            corner (int): The corner number of the atom causing the reflection.
         """
         x, y = self.path[-1]
         dx, dy = self.direction
 
-        # Determine which quadrant relative to the atom the ray is in
-        quad_x = 1 if x < atom.x else -1
-        quad_y = 1 if y < atom.y else -1
+        # Define reflection rules based on incoming direction and corner
+        reflection_rules = {
+            (1, (1, 0)): (0, -1),  # Top-left, from left
+            (1, (0, 1)): (-1, 0),  # Top-left, from top
+            (2, (-1, 0)): (0, -1),  # Top-right, from right
+            (2, (0, 1)): (1, 0),  # Top-right, from top
+            (3, (1, 0)): (0, 1),  # Bottom-left, from left
+            (3, (0, -1)): (-1, 0),  # Bottom-left, from bottom
+            (4, (-1, 0)): (0, 1),  # Bottom-right, from right
+            (4, (0, -1)): (1, 0),  # Bottom-right, from bottom
+        }
 
-        # Reflect based on which diagonal quadrant the ray is in
-        if quad_x * dx + quad_y * dy == 0:  # Ray is moving towards the atom
-            self.change_direction((quad_y * dy, quad_x * dx))
-        else:  # Ray is moving away from the atom
+        new_direction = reflection_rules.get((corner, self.direction))
+        if new_direction:
+            self.change_direction(new_direction)
+        else:
+            # If not in reflection rules, reverse direction
             self.change_direction((-dx, -dy))
 
-        logging.info(f"Ray reflected by atom at ({atom.x}, {atom.y})")
+        logging.info(f"Ray reflected by atom at ({atom.x}, {atom.y}), corner {corner}")
 
     def _handle_detour(self) -> None:
         """

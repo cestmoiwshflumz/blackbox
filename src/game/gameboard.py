@@ -130,7 +130,7 @@ class GameBoard:
             ValueError: If the coordinates are out of bounds.
         """
         self._validate_coordinates(x, y)
-        return x == 0 or x == self.size - 1 or y == 0 or y == self.size - 1
+        return x == -1 or x == self.size or y == -1 or y == self.size
 
     def get_cell(self, x: int, y: int) -> Optional[Atom]:
         """
