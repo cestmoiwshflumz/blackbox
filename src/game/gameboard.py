@@ -198,7 +198,7 @@ class GameBoard:
         Raises:
             ValueError: If the coordinates are out of bounds.
         """
-        if not (0 <= x < self.size and 0 <= y < self.size):
+        if not (-1 <= x <= self.size and -1 <= y <= self.size):
             raise ValueError(
                 f"Coordinates ({x}, {y}) are out of bounds for a {self.size}x{self.size} grid."
             )

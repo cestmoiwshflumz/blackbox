@@ -134,17 +134,18 @@ class Ray:
             x, y = self.path[-1]
 
             if gameboard.is_edge(x, y):
+                self.move()
                 self.exit_point = (x, y)
                 logging.info(f"Ray exited at ({x}, {y})")
                 break
 
             for atom in gameboard.atoms:
-                if self.check_hit(atom):
-                    logging.info(f"Ray hit atom at ({atom.x}, {atom.y})")
-                    return
-                elif self.check_reflection(atom):
+                if self.check_reflection(atom):
                     self._handle_reflection(atom)
                     break
+                elif self.check_hit(atom):
+                    logging.info(f"Ray hit atom at ({atom.x}, {atom.y})")
+                    return
 
             # Check for detour
             for i, atom1 in enumerate(gameboard.atoms):
@@ -160,11 +161,19 @@ class Ray:
         Args:
             atom (Atom): The atom causing the reflection.
         """
+        x, y = self.path[-1]
         dx, dy = self.direction
-        if atom.x > self.path[-1][0]:
-            self.change_direction((dy, dx))
-        else:
-            self.change_direction((-dy, -dx))
+
+        # Determine which quadrant relative to the atom the ray is in
+        quad_x = 1 if x < atom.x else -1
+        quad_y = 1 if y < atom.y else -1
+
+        # Reflect based on which diagonal quadrant the ray is in
+        if quad_x * dx + quad_y * dy == 0:  # Ray is moving towards the atom
+            self.change_direction((quad_y * dy, quad_x * dx))
+        else:  # Ray is moving away from the atom
+            self.change_direction((-dx, -dy))
+
         logging.info(f"Ray reflected by atom at ({atom.x}, {atom.y})")
 
     def _handle_detour(self) -> None:
