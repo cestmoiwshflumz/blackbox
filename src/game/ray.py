@@ -118,9 +118,11 @@ class Ray:
             bool: True if the ray is detoured by the two atoms, False otherwise.
         """
         x, y = self.path[-1]
+        is_adjacent1, _ = atom1.is_adjacent(x, y)
+        is_adjacent2, _ = atom2.is_adjacent(x, y)
         return (
-            atom1.is_adjacent(x, y)
-            and atom2.is_adjacent(x, y)
+            is_adjacent1
+            and is_adjacent2
             and abs(atom1.x - atom2.x) == 2
             and abs(atom1.y - atom2.y) == 2
         )
@@ -137,7 +139,6 @@ class Ray:
             x, y = self.path[-1]
 
             if gameboard.is_edge(x, y):
-                self.move()
                 self.exit_point = (x, y)
                 logging.info(f"Ray exited at ({x}, {y})")
                 break
