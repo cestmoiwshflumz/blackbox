@@ -67,7 +67,9 @@ class GameLoop:
 
                 self.clock.tick(60)  # Limit the frame rate to 60 FPS
             except Exception as e:
-                self.logger.error(f"An error occurred in the game loop: {e}")
+                self.logger.error(
+                    f"An error occurred in the game loop: {e}", exc_info=True
+                )
                 self.game_state = "MAIN_MENU"
 
     def start_new_game(self) -> None:
@@ -102,7 +104,7 @@ class GameLoop:
             elif self.check_game_over():
                 self.game_state = "GAME_OVER"
         except Exception as e:
-            self.logger.error(f"Error during gameplay: {e}")
+            self.logger.error(f"Error during gameplay: {e}", exc_info=True)
             self.game_state = "MAIN_MENU"
 
     def check_game_over(self) -> bool:

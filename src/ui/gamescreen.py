@@ -127,6 +127,9 @@ class GameScreen:
         Args:
             ray (Ray): The ray to be drawn.
         """
+        if self.check_ray_detoured(ray):
+            self.handle_draw_detour(ray)
+            return
         try:
             color = COLOR_RED if ray.exit_point is None else COLOR_GREEN
             for i in range(len(ray.path) - 1):
@@ -134,7 +137,7 @@ class GameScreen:
                 end = self.get_screen_position(ray.path[i + 1])
                 self.window.draw_line(color, start, end, 2)
         except pygame.error as e:
-            logging.error(f"Error drawing ray: {e}")
+            logging.error(f"Error drawing ray: {e}", exc_info=True)
 
     def draw_guesses(self) -> None:
         """
@@ -147,7 +150,7 @@ class GameScreen:
                 pos = self.get_screen_position(guess.get_position())
                 self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
         except pygame.error as e:
-            logging.error(f"Error drawing guesses: {e}")
+            logging.error(f"Error drawing guesses: {e}", exc_info=True)
 
     def draw_score(self) -> None:
         """
@@ -158,7 +161,7 @@ class GameScreen:
             text_surface = self.font.render(score_text, True, COLOR_WHITE)
             self.window.get_screen().blit(text_surface, (10, 10))
         except pygame.error as e:
-            logging.error(f"Error drawing score: {e}")
+            logging.error(f"Error drawing score: {e}", exc_info=True)
 
     def get_screen_position(self, board_pos: Tuple[int, int]) -> Tuple[int, int]:
         """
@@ -189,6 +192,51 @@ class GameScreen:
             (screen_pos[0] - self.board_offset[0]) // self.cell_size,
             (screen_pos[1] - self.board_offset[1]) // self.cell_size,
         )
+
+    def get_detour_positions(self, screen_pos: Tuple[int, int]) -> Tuple[int, int]:
+        """
+        Convert screen coordinates to a board position.
+
+        Args:
+            screen_pos (Tuple[int, int]): The position on the screen.
+
+        Returns:
+            Tuple[int, int]: The corresponding position on the game board.
+        """
+        return (
+            (screen_pos[0] - self.board_offset[0]) // (self.cell_size // 2),
+            (screen_pos[1] - self.board_offset[1]) // (self.cell_size // 2),
+        )
+
+    def check_ray_detoured(self, ray: Ray) -> bool:
+        """
+        Check if a ray has been detoured by atoms.
+
+        Args:
+            ray (Ray): The ray to check.
+
+        Returns:
+            bool: True if the ray has been detoured, False otherwise.
+        """
+        return ray.is_detoured
+
+    def handle_draw_detour(self, ray: Ray) -> None:
+        """
+        Handle the drawing of a detoured ray.
+
+        Args:
+            ray (Ray): The detoured ray to draw.
+        """
+        color = COLOR_GREEN
+        try:
+            for i in range(len(ray.path) - 1):
+                start = self.get_detour_positions(ray.path[i])
+                end = self.get_detour_positions(ray.path[i + 1])
+                self.window.draw_line(color, start, end, 2)
+        except pygame.error as e:
+            logging.error(f"Error drawing detoured ray: {e}", exc_info=True)
+        except Exception as e:
+            logging.error(f"Error handling detoured ray: {e}", exc_info=True)
 
     def handle_input(self) -> str:
         """
@@ -225,10 +273,9 @@ class GameScreen:
                 direction = self.get_ray_direction(board_pos)
                 if direction:
                     ray = self.player.fire_ray(board_pos[0], board_pos[1], direction)
-                    ray.trace(self.game_board)
                     self.draw()
         except ValueError as e:
-            logging.error(f"Error handling left click: {e}")
+            logging.error(f"Error handling left click: {e}", exc_info=True)
 
     def handle_right_click(self, pos: Tuple[int, int]) -> None:
         """

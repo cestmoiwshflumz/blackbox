@@ -47,6 +47,7 @@ class Ray:
         self.path: List[Tuple[int, int]] = [(start_x, start_y)]
         self.entry_point: Tuple[int, int] = (start_x, start_y)
         self.exit_point: Optional[Tuple[int, int]] = None
+        self.is_detoured: bool = False
 
         logging.info(
             f"Ray created at ({start_x}, {start_y}) with direction {direction}"
@@ -120,12 +121,7 @@ class Ray:
         x, y = self.path[-1]
         is_adjacent1, _ = atom1.is_adjacent(x, y)
         is_adjacent2, _ = atom2.is_adjacent(x, y)
-        return (
-            is_adjacent1
-            and is_adjacent2
-            and abs(atom1.x - atom2.x) == 2
-            and abs(atom1.y - atom2.y) == 2
-        )
+        return is_adjacent1 and is_adjacent2
 
     def trace(self, gameboard: GameBoard) -> None:
         """
@@ -142,23 +138,30 @@ class Ray:
                 self.exit_point = (x, y)
                 logging.info(f"Ray exited at ({x}, {y})")
                 break
+            try:
+                # Check for detour
+                for i, atom1 in enumerate(gameboard.atoms):
+                    for atom2 in gameboard.atoms[i + 1 :]:
+                        if self.check_detour(atom1, atom2):
+                            logging.info(
+                                f"Ray detoured by atoms at ({atom1.x}, {atom1.y}) and ({atom2.x}, {atom2.y})"
+                            )
+                            self._handle_detour()
+                            break
 
-            for atom in gameboard.atoms:
-                is_adjacent, corner = self.check_reflection(atom)
+                # Check for hit or reflection
+                for atom in gameboard.atoms:
+                    is_adjacent, corner = self.check_reflection(atom)
 
-                if self.check_hit(atom):
-                    logging.info(f"Ray hit atom at ({atom.x}, {atom.y})")
-                    return
-                elif is_adjacent:
-                    self._handle_reflection(atom, corner)
-                    break
-
-            # Check for detour
-            for i, atom1 in enumerate(gameboard.atoms):
-                for atom2 in gameboard.atoms[i + 1 :]:
-                    if self.check_detour(atom1, atom2):
-                        self._handle_detour()
+                    if self.check_hit(atom):
+                        logging.info(f"Ray hit atom at ({atom.x}, {atom.y})")
                         return
+                    elif is_adjacent:
+                        self._handle_reflection(atom, corner)
+                        break
+            except Exception as e:
+                logging.error(f"Error tracing ray: {e}", exc_info=True)
+                return
 
     def _handle_reflection(self, atom: Atom, corner: int) -> None:
         """
@@ -197,7 +200,7 @@ class Ray:
         Handle the detour of the ray by two atoms.
         """
         self.direction = (-self.direction[0], -self.direction[1])
-        self.exit_point = self.entry_point
+        self.is_detoured = True
         logging.info("Ray detoured back to entry point")
 
     def get_entry_point(self) -> Tuple[int, int]:
