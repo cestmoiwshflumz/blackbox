@@ -140,14 +140,16 @@ class Ray:
                 break
             try:
                 # Check for detour
-                for i, atom1 in enumerate(gameboard.atoms):
-                    for atom2 in gameboard.atoms[i + 1 :]:
-                        if self.check_detour(atom1, atom2):
-                            logging.info(
-                                f"Ray detoured by atoms at ({atom1.x}, {atom1.y}) and ({atom2.x}, {atom2.y})"
-                            )
-                            self._handle_detour()
-                            break
+                if not self.is_detoured:
+                    for i, atom1 in enumerate(gameboard.atoms):
+                        for atom2 in gameboard.atoms[i + 1 :]:
+                            if self.check_detour(atom1, atom2):
+                                logging.info(
+                                    f"Ray detoured by atoms at ({atom1.x}, {atom1.y}) and ({atom2.x}, {atom2.y})"
+                                )
+                                self._handle_detour()
+                                continue
+                        break
 
                 # Check for hit or reflection
                 for atom in gameboard.atoms:
