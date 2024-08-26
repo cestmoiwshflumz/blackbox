@@ -71,6 +71,7 @@ class GameScreen:
             self.draw_rays()
             self.draw_guesses()
             self.draw_score()
+            self.draw_buttons()
             self.window.update()
         except pygame.error as e:
             logging.error(f"Error drawing game screen: {e}")
@@ -162,6 +163,38 @@ class GameScreen:
             self.window.get_screen().blit(text_surface, (10, 10))
         except pygame.error as e:
             logging.error(f"Error drawing score: {e}", exc_info=True)
+
+    def draw_button(
+        self,
+        text: str,
+        pos: Tuple[int, int],
+        size: Tuple[int, int],
+        color: Tuple[int, int, int],
+    ) -> None:
+        """
+        Draw a button on the game screen.
+
+        Args:
+            text (str): The text to display on the button.
+            pos (Tuple[int, int]): The position of the button on the screen.
+            size (Tuple[int, int]): The size of the button.
+            color (Tuple[int, int, int]): The color of the button.
+        """
+        try:
+            rect = pygame.Rect(pos[0], pos[1], size[0], size[1])
+            pygame.draw.rect(self.window.get_screen(), color, rect)
+            text_surface = self.font.render(text, True, COLOR_WHITE)
+            text_rect = text_surface.get_rect(center=rect.center)
+            self.window.get_screen().blit(text_surface, text_rect)
+        except pygame.error as e:
+            logging.error(f"Error drawing button: {e}", exc_info=True)
+
+    def draw_buttons(self) -> None:
+        """
+        Draw all buttons on the game screen.
+        """
+        self.draw_button("Next turn", (10, 100), (100, 40), COLOR_BLUE)
+        self.draw_button("Quit", (10, 150), (100, 40), COLOR_RED)
 
     def get_screen_position(self, board_pos: Tuple[int, int]) -> Tuple[int, int]:
         """

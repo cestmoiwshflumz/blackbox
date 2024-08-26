@@ -1,5 +1,6 @@
 # src/ui/menu.py
 import pygame
+import yaml
 from src.utils.log_instances import game_logger
 from src.ui.window import Window
 
@@ -11,6 +12,37 @@ class Menu:
         self.font = pygame.font.Font(None, 36)
         self.menu_items = ["Start Game", "Instructions", "Options", "Quit"]
         self.selected_item = 0
+        self.config = self._load_config("config/config.yaml")
+
+    def _load_config(self, config_path: str) -> dict:
+        try:
+            with open(config_path, "r") as f:
+                config = yaml.safe_load(f)
+            # Validate required config keys
+            required_keys = [
+                "options.difficulty",
+                "options.sound",
+                "options.debug",
+            ]
+            for key in required_keys:
+                if not self._nested_get(config, key.split(".")):
+                    raise ValueError(f"Missing required config key: {key}")
+            self.logger.info("Menu configuration loaded and validated")
+            return config
+        except Exception as e:
+            self.logger.error(
+                f"Failed to load or validate menu configuration: {e}", exc_info=True
+            )
+
+    def _nested_get(self, d: dict, keys: list) -> dict:
+        for key in keys:
+            d = d.get(key)
+            if d is None:
+                return None
+        return d
+
+    def _update_config(self, key: str, value: str) -> None:
+        self.config[key] = value
 
     def draw(self):
         self.window.screen.fill((0, 0, 0))
@@ -54,7 +86,8 @@ class Instructions:
             "2. Send rays into the box and observe their behavior.",
             "3. Rays can be reflected, absorbed, or pass through.",
             "4. Use deduction to determine atom positions.",
-            "5. Press SPACE to return to the main menu.",
+            "5. Left click to fire a ray, right click to guess an atom.",
+            "6. Press SPACE to return to the main menu.",
         ]
 
     def draw(self):
@@ -79,7 +112,7 @@ class Options:
     def __init__(self, window: Window):
         self.window = window
         self.font = pygame.font.Font(None, 36)
-        self.options = ["medium", "Sound: On", "Back"]
+        self.options = ["medium", "Sound: On", "DEBUG: True", "Back"]
         self.selected_option = 0
 
     def draw(self):
@@ -117,6 +150,13 @@ class Options:
                             "Sound: Off"
                             if self.options[1] == "Sound: On"
                             else "Sound: On"
+                        )
+
+                    elif self.selected_option == 2:
+                        self.options[2] = (
+                            "DEBUG: False"
+                            if self.options[2] == "DEBUG: True"
+                            else "DEBUG: True"
                         )
         return None
 
