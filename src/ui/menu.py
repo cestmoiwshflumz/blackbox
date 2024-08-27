@@ -162,7 +162,7 @@ class Options:
             self.config["options"] = {"difficulty": 0, "sound": True, "debug": False}
 
         self.options = [
-            f"Difficulty: {'Hard' if self.config['options']['difficulty'] == 1 else 'Medium'}",
+            f"Difficulty: {'Hard' if self.config['options']['difficulty'] == 1 else 'Medium' if self.config['options']['difficulty'] == 0 else 'Easy'}",
             f"Sound: {'On' if self.config['options']['sound'] else 'Off'}",
             f"DEBUG: {'True' if self.config['options']['debug'] else 'False'}",
             "Save & Back To Main Menu",

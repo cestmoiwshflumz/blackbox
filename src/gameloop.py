@@ -93,6 +93,17 @@ class GameLoop:
                 return None
         return d
 
+    def _refresh_config(self) -> None:
+        """
+        Refresh the game configuration based on the current settings.
+        """
+        self.config = self._load_config("config/config.yaml")
+        self.difficulty = (
+            "hard"
+            if self.config["options"]["difficulty"] == 1
+            else "medium" if self.config["options"]["difficulty"] == 0 else "easy"
+        )
+
     def run(self) -> None:
         """
         Run the main game loop.
@@ -131,6 +142,7 @@ class GameLoop:
         """
         try:
             self.logger.info("Starting new game")
+            self._refresh_config()
             self.game_board = GameBoard(self.difficulty)
             self.player = Player("Player 1", self.game_board)
             self.game_screen = GameScreen(self.window, self.game_board, self.player)
