@@ -43,6 +43,7 @@ class Player:
         self.name: str = name
         self.score: int = initial_score
         self.fired_rays: List[Ray] = []
+        self.active_turn_rays: List[Ray] = []
         self.guessed_atoms: List[Atom] = []
         self.is_turn: bool = False
 
@@ -96,6 +97,7 @@ class Player:
         ray = Ray(x, y, direction)
         ray.trace(self.gameboard)
         self.fired_rays.append(ray)
+        self.active_turn_rays.append(ray)
         self.update_score(-1)  # Deduct 1 point for firing a ray
         logging.info(
             f"Player '{self.name}' fired a ray from ({x}, {y}) in direction {direction}"
@@ -145,6 +147,15 @@ class Player:
         """
         return self.fired_rays
 
+    def get_active_turn_rays(self) -> List[Ray]:
+        """
+        Get the list of rays fired during the current turn.
+
+        Returns:
+            List[Ray]: The list of active turn rays.
+        """
+        return self.active_turn_rays
+
     def get_guessed_atoms(self) -> List[Atom]:
         """
         Get the list of atoms guessed by the player.
@@ -167,6 +178,13 @@ class Player:
         """
         self.is_turn = False
         logging.info(f"Player '{self.name}' turn ended")
+
+    def refresh_turn(self) -> None:
+        """
+        Refresh the player's turn.
+        """
+        self.active_turn_rays = []
+        logging.info(f"Player '{self.name}' turn refreshed")
 
     def __str__(self) -> str:
         """
