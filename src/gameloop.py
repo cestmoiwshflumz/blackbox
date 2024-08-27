@@ -2,6 +2,9 @@
 
 import pygame
 from typing import Optional
+import yaml
+from typing import Union
+
 from src.ui.window import Window
 from src.ui.menu import run_menu
 from src.ui.gamescreen import GameScreen
@@ -31,6 +34,7 @@ class GameLoop:
     def __init__(self):
         """Initialize the GameLoop instance."""
         self.logger = game_logger
+        self.config = self._load_config("config/menu_config.yaml")
         self.window: Window = Window()
         self.game_state: str = "MAIN_MENU"
         self.clock: pygame.time.Clock = pygame.time.Clock()
@@ -38,7 +42,53 @@ class GameLoop:
         self.player: Optional[Player] = None
         self.game_screen: Optional[GameScreen] = None
         self.logger.info("GameLoop initialized")
-        self.difficulty = DEFAULT_DIFFICULTY
+        self.difficulty = (
+            "medium" if self.config["options"]["difficulty"] == 0 else "hard"
+        )
+
+    def _load_config(self, config_path: str) -> dict:
+        """
+        Load and validate the configuration from a YAML file.
+
+        Args:
+            config_path (str): The path to the configuration file.
+
+        Returns:
+            dict: The loaded configuration dictionary.
+        """
+        try:
+            with open(config_path, "r") as f:
+                config = yaml.safe_load(f)
+            # Validate required config keys
+            required_keys = ["options.difficulty", "options.sound", "options.debug"]
+            for key in required_keys:
+                if self._nested_get(config, key.split(".")) is None:
+                    raise ValueError(f"Missing required config key: {key}")
+            self.logger.info("Menu configuration loaded and validated")
+            return config
+        except Exception as e:
+            self.logger.error(
+                f"Failed to load or validate menu configuration: {e}", exc_info=True
+            )
+            # Return a default configuration
+            return {"options": {"difficulty": 0, "sound": True, "debug": False}}
+
+    def _nested_get(self, d: dict, keys: list) -> Union[dict, None]:
+        """
+        Get a nested value from a dictionary using a list of keys.
+
+        Args:
+            d (dict): The dictionary to search.
+            keys (list): The list of keys representing the path to the desired value.
+
+        Returns:
+            Any: The value at the specified nested location, or None if not found.
+        """
+        for key in keys:
+            d = d.get(key)
+            if d is None:
+                return None
+        return d
 
     def run(self) -> None:
         """
@@ -78,7 +128,7 @@ class GameLoop:
         """
         try:
             self.logger.info("Starting new game")
-            self.game_board = GameBoard(DEFAULT_GRID_SIZE, self.difficulty)
+            self.game_board = GameBoard(self.difficulty)
             self.player = Player("Player 1", self.game_board)
             self.game_screen = GameScreen(self.window, self.game_board, self.player)
             self.game_state = "PLAYING"

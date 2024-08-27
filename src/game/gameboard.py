@@ -24,7 +24,7 @@ class GameBoard:
         edge_markers (List[int]): List of numbers for edge markers.
     """
 
-    def __init__(self, size: int = DEFAULT_GRID_SIZE, difficulty: str = "medium"):
+    def __init__(self, difficulty: str):
         """
         Initialize the GameBoard.
 
@@ -35,21 +35,19 @@ class GameBoard:
         Raises:
             ValueError: If the size is less than 4 or the difficulty is invalid.
         """
-        if size < 4:
-            raise ValueError("Grid size must be at least 4x4")
 
         if difficulty not in ["easy", "medium", "hard"]:
             raise ValueError(
                 "Invalid difficulty level. Choose 'easy', 'medium', or 'hard'"
             )
 
-        self.size = size
+        self.size = 8 if difficulty == "medium" else 10
         self.difficulty = difficulty
         self.grid: List[List[Optional[Atom]]] = [
-            [None for _ in range(size)] for _ in range(size)
+            [None for _ in range(self.size)] for _ in range(self.size)
         ]
         self.atoms: List[Atom] = []
-        self.edge_markers: List[int] = list(range(1, 4 * size + 1))
+        self.edge_markers: List[int] = list(range(1, 4 * self.size + 1))
 
         self._initialize_grid()
         self._place_atoms()
