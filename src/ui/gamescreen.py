@@ -1,7 +1,7 @@
 # src/ui/gamescreen.py
 
 import pygame
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Union
 from src.ui.window import Window
 from src.game.gameboard import GameBoard
 from src.game.player import Player
@@ -56,6 +56,25 @@ class GameScreen:
             (window.height - self.cell_size * game_board.size) // 2,
         )
         self.font = pygame.font.Font(None, 24)
+
+    def draw_debug(self) -> None:
+        """
+        Draw the entire game screen with debug option enabled which allow user to see all the rays and atoms.
+
+        This method clears the screen, draws the grid, rays, guesses, and score,
+        then updates the display.
+        """
+        try:
+            self.window.clear()
+            self.draw_grid()
+            self.draw_atoms(self.game_board.atoms)
+            self.draw_rays()
+            self.draw_guesses()
+            self.draw_score()
+            self.draw_buttons()
+            self.window.update()
+        except pygame.error as e:
+            logging.error(f"Error drawing game screen: {e}")
 
     def draw(self) -> None:
         """
@@ -118,7 +137,7 @@ class GameScreen:
 
         This method iterates through all fired rays and draws them on the screen.
         """
-        for ray in self.player.get_fired_rays():
+        for ray in self.player.get_active_turn_rays():
             self.draw_ray(ray)
 
     def draw_ray(self, ray: Ray) -> None:
@@ -129,8 +148,7 @@ class GameScreen:
             ray (Ray): The ray to be drawn.
         """
         if self.check_ray_detoured(ray):
-            self.handle_draw_detour(ray)
-            return
+            pass
         try:
             color = COLOR_RED if ray.exit_point is None else COLOR_GREEN
             for i in range(len(ray.path) - 1):
@@ -283,7 +301,9 @@ class GameScreen:
                 return "QUIT"
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:  # Left click
-                    self.handle_left_click(event.pos)
+                    r = self.handle_left_click(event.pos)
+                    if r:
+                        return r
                 elif event.button == 3:  # Right click
                     self.handle_right_click(event.pos)
             elif event.type == pygame.KEYDOWN:
@@ -291,7 +311,7 @@ class GameScreen:
                     return "MAIN_MENU"
         return "CONTINUE"
 
-    def handle_left_click(self, pos: Tuple[int, int]) -> None:
+    def handle_left_click(self, pos: Tuple[int, int]) -> Union[str, None]:
         """
         Handle left mouse click events.
 
@@ -300,6 +320,7 @@ class GameScreen:
         Args:
             pos (Tuple[int, int]): The position of the mouse click on the screen.
         """
+        # Handle clicks on the edge of the board
         try:
             board_pos = self.get_board_position(pos)
             if self.is_valid_ray_start(board_pos):
@@ -308,6 +329,17 @@ class GameScreen:
                     ray = self.player.fire_ray(board_pos[0], board_pos[1], direction)
                     self.draw()
         except ValueError as e:
+            logging.error(f"Error handling left click: {e}", exc_info=True)
+
+        # Handle clicks on the buttons
+        try:
+            if 10 <= pos[0] <= 110 and 100 <= pos[1] <= 140:
+                self.player.refresh_turn()
+            elif 10 <= pos[0] <= 110 and 150 <= pos[1] <= 190:
+                return "MAIN_MENU"
+        except ValueError as e:
+            logging.error(f"Error handling left click: {e}", exc_info=True)
+        except Exception as e:
             logging.error(f"Error handling left click: {e}", exc_info=True)
 
     def handle_right_click(self, pos: Tuple[int, int]) -> None:
