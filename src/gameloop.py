@@ -43,7 +43,9 @@ class GameLoop:
         self.game_screen: Optional[GameScreen] = None
         self.logger.info("GameLoop initialized")
         self.difficulty = (
-            "hard" if self.config["options"]["difficulty"] == 1 else "medium"
+            "hard"
+            if self.config["options"]["difficulty"] == 1
+            else "medium" if self.config["options"]["difficulty"] == 0 else "easy"
         )
         self.logger.info(f"Game difficulty set to: {self.difficulty}")
 

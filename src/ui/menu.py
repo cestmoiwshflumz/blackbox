@@ -150,7 +150,7 @@ class Options:
         self.font = pygame.font.Font(None, 36)
         self.config = self._load_config("config/config.yaml")
         self.options = [
-            f"Difficulty: {'Hard' if self.config['options']['difficulty'] == 1 else 'Medium'}",
+            f"Difficulty: {'Hard' if self.config['options']['difficulty'] == 1 else 'Medium' if self.config['options']['difficulty'] == 0 else 'Easy'}",
             f"Sound: {'On' if self.config['options']['sound'] else 'Off'}",
             f"DEBUG: {'True' if self.config['options']['debug'] else 'False'}",
             "Save & Back To Main Menu",
@@ -278,11 +278,13 @@ class Options:
                         return "MAIN_MENU"
                     elif self.selected_option == 0:
                         new_difficulty = (
-                            1 if self.config["options"]["difficulty"] == 0 else 0
+                            1
+                            if self.config["options"]["difficulty"] == 0
+                            else 2 if self.config["options"]["difficulty"] == 1 else 0
                         )
                         self._update_config("options.difficulty", new_difficulty)
                         self.options[0] = (
-                            f"Difficulty: {'Hard' if new_difficulty == 1 else 'Medium'}"
+                            f"Difficulty: {'Hard' if new_difficulty == 1 else 'Medium' if new_difficulty == 0 else 'Easy'}"
                         )
                     elif self.selected_option == 1:
                         new_sound = not self.config["options"]["sound"]
