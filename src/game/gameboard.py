@@ -41,8 +41,13 @@ class GameBoard:
                 "Invalid difficulty level. Choose 'easy', 'medium', or 'hard'"
             )
 
-        self.size = 8 if difficulty == "medium" else 10
         self.difficulty = difficulty
+        self.size = 8 if difficulty == "medium" else 10 if difficulty == "hard" else 6
+
+        logging.debug(
+            f"Initializing game board with size {self.size} and difficulty {self.difficulty}"
+        )
+
         self.grid: List[List[Optional[Atom]]] = [
             [None for _ in range(self.size)] for _ in range(self.size)
         ]

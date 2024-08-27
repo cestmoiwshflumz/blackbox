@@ -34,7 +34,7 @@ class GameLoop:
     def __init__(self):
         """Initialize the GameLoop instance."""
         self.logger = game_logger
-        self.config = self._load_config("config/menu_config.yaml")
+        self.config = self._load_config("config/config.yaml")
         self.window: Window = Window()
         self.game_state: str = "MAIN_MENU"
         self.clock: pygame.time.Clock = pygame.time.Clock()
@@ -43,8 +43,9 @@ class GameLoop:
         self.game_screen: Optional[GameScreen] = None
         self.logger.info("GameLoop initialized")
         self.difficulty = (
-            "medium" if self.config["options"]["difficulty"] == 0 else "hard"
+            "hard" if self.config["options"]["difficulty"] == 1 else "medium"
         )
+        self.logger.info(f"Game difficulty set to: {self.difficulty}")
 
     def _load_config(self, config_path: str) -> dict:
         """
