@@ -1,20 +1,18 @@
 logger:
-  level: DEBUG
-  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-  datefmt: '%Y-%m-%d %H:%M:%S'
-  filename: 'logs/blackbox.log'
-  filemode: 'a'
-  encoding: 'utf-8'
-  max_bytes: 10485760  # 10 MB
   backup_count: 5
-
-window:
-  width: 800
-  height: 600
-  title: 'Blackbox'
-  icon: 'assets/icon.png'
-
+  datefmt: '%Y-%m-%d %H:%M:%S'
+  encoding: utf-8
+  filemode: a
+  filename: logs/blackbox.log
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  level: DEBUG
+  max_bytes: 10485760
 options:
-  difficulty: 1
-  sound: True
-  debug: True
+  debug: true
+  difficulty: 0
+  sound: true
+window:
+  height: 600
+  icon: assets/icon.png
+  title: Blackbox
+  width: 800
