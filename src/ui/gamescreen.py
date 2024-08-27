@@ -56,6 +56,7 @@ class GameScreen:
             (window.height - self.cell_size * game_board.size) // 2,
         )
         self.font = pygame.font.Font(None, 24)
+        self.history = False
 
     def draw_debug(self) -> None:
         """
@@ -68,7 +69,7 @@ class GameScreen:
             self.window.clear()
             self.draw_grid()
             self.draw_atoms(self.game_board.atoms)
-            self.draw_rays()
+            self.draw_Active_rays()
             self.draw_guesses()
             self.draw_score()
             self.draw_buttons()
@@ -87,7 +88,10 @@ class GameScreen:
             self.window.clear()
             self.draw_grid()
             self.draw_atoms(self.game_board.atoms)
-            self.draw_rays()
+            if not self.history:
+                self.draw_Active_rays()
+            else:
+                self.draw_all_rays()
             self.draw_guesses()
             self.draw_score()
             self.draw_buttons()
@@ -131,13 +135,22 @@ class GameScreen:
         except pygame.error as e:
             logging.error(f"Error drawing atoms: {e}")
 
-    def draw_rays(self) -> None:
+    def draw_Active_rays(self) -> None:
         """
-        Draw all fired rays on the game screen.
+        Draw fired rays of the current turn on the game screen.
+
+        This method iterates through all fired rays of the current turn and draws them on the screen.
+        """
+        for ray in self.player.get_active_turn_rays():
+            self.draw_ray(ray)
+
+    def draw_all_rays(self) -> None:
+        """
+        Draw all rays fired on the game screen.
 
         This method iterates through all fired rays and draws them on the screen.
         """
-        for ray in self.player.get_active_turn_rays():
+        for ray in self.player.get_fired_rays():
             self.draw_ray(ray)
 
     def draw_ray(self, ray: Ray) -> None:
@@ -212,7 +225,8 @@ class GameScreen:
         Draw all buttons on the game screen.
         """
         self.draw_button("Next turn", (10, 100), (100, 40), COLOR_BLUE)
-        self.draw_button("Quit", (10, 150), (100, 40), COLOR_RED)
+        self.draw_button("Show History", (10, 150), (100, 40), COLOR_BLUE)
+        self.draw_button("Quit", (10, 200), (100, 40), COLOR_RED)
 
     def get_screen_position(self, board_pos: Tuple[int, int]) -> Tuple[int, int]:
         """
@@ -336,6 +350,8 @@ class GameScreen:
             if 10 <= pos[0] <= 110 and 100 <= pos[1] <= 140:
                 self.player.refresh_turn()
             elif 10 <= pos[0] <= 110 and 150 <= pos[1] <= 190:
+                self.history = not self.history
+            elif 10 <= pos[0] <= 110 and 200 <= pos[1] <= 240:
                 return "MAIN_MENU"
         except ValueError as e:
             logging.error(f"Error handling left click: {e}", exc_info=True)
