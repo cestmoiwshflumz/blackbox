@@ -7,7 +7,7 @@ from typing import Union
 
 from src.ui.window import Window
 from src.ui.menu import run_menu
-from src.ui.gamescreen import GameScreen
+from src.ui.gamescreen_solo import GameScreen
 from src.game.gameboard import GameBoard
 from src.game.player import Player
 from src.utils.log_instances import game_logger
