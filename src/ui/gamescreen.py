@@ -396,7 +396,7 @@ class GameScreen:
         try:
             board_pos = self.get_board_position(pos)
             if self.is_valid_guess_position(board_pos):
-                self.player.guess_atom_position(board_pos, self.game_board)
+                self.player.guess_atom_position(board_pos)
                 self.draw()
         except ValueError as e:
             logging.error(f"Error handling right click: {e}")

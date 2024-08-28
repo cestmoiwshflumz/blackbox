@@ -158,7 +158,6 @@ class Player:
             y (int): The y-coordinate of the guessed atom.
         """
         self.active_turn_guesses.append((x, y))
-        self.guesses.append((x, y))
 
     def remove_guess(self, atom: Atom) -> None:
         """
@@ -240,6 +239,13 @@ class Player:
         """
         Refresh the player's turn.
         """
+        for pos in self.active_turn_guesses:
+            if self.check_guess(pos[0], pos[1], self.gameboard):
+                self.update_score(5)
+                self.guessed_atoms.append(self.gameboard.get_atom(pos[0], pos[1]))
+            else:
+                self.update_score(-5)
+                self.guesses.append(pos)
         self.active_turn_rays = []
         self.active_turn_guesses = []
         logging.info(f"Player '{self.name}' turn refreshed")
