@@ -90,8 +90,10 @@ class GameScreen:
             self.draw_atoms(self.game_board.atoms)
             if not self.history:
                 self.draw_Active_rays()
+                self.draw_current_guess()
             else:
                 self.draw_all_rays()
+                self.draw_all_guesses()
             self.draw_guesses()
             self.draw_score()
             self.draw_buttons()
@@ -144,9 +146,6 @@ class GameScreen:
         for ray in self.player.get_active_turn_rays():
             self.draw_ray(ray)
 
-        for guess in self.player.get_active_turn_guesses():
-            self.draw_guess(guess)
-
     def draw_all_rays(self) -> None:
         """
         Draw all rays fired on the game screen.
@@ -181,8 +180,8 @@ class GameScreen:
         This method iterates through all guessed atoms and draws them on the screen.
         """
         try:
-            for guess in self.player.get_guesses():
-                pos = self.get_screen_position(guess)
+            for guess in self.player.get_guessed_atoms():
+                pos = self.get_screen_position(guess.get_position())
                 self.window.draw_circle(COLOR_GREEN, pos, self.cell_size // 4)
         except pygame.error as e:
             logging.error(f"Error drawing guesses: {e}", exc_info=True)
@@ -192,8 +191,9 @@ class GameScreen:
         Draw the current guessed atom position on the game screen.
         """
         try:
-            pos = self.get_screen_position(self.player.get_active_turn_guesses())
-            self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
+            for guess in self.player.get_active_turn_guesses():
+                pos = self.get_screen_position(guess)
+                self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
         except pygame.error as e:
             logging.error(f"Error drawing current guess: {e}", exc_info=True)
 
@@ -396,7 +396,7 @@ class GameScreen:
         try:
             board_pos = self.get_board_position(pos)
             if self.is_valid_guess_position(board_pos):
-                self.player.guess_atom_position(board_pos)
+                self.player.guess_atom_position(board_pos[0], board_pos[1])
                 self.draw()
         except ValueError as e:
             logging.error(f"Error handling right click: {e}")
