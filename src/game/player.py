@@ -18,7 +18,9 @@ class Player:
         name (str): The name of the player.
         score (int): The current score of the player.
         fired_rays (List[Ray]): A list of rays fired by the player.
+        active_turn_rays (List[Ray]): A list of rays fired during the current turn.
         guessed_atoms (List[Atom]): A list of atoms guessed by the player.
+        guesses (List[Tuple[int, int]]): A list of guesses made by the player.
         is_turn (bool): Indicates whether it's currently this player's turn.
     """
 
@@ -46,6 +48,7 @@ class Player:
         self.active_turn_rays: List[Ray] = []
         self.guessed_atoms: List[Atom] = []
         self.guesses: List[Tuple[int, int]] = []
+        self.active_turn_guesses: List[Tuple[int, int]] = []
         self.is_turn: bool = False
 
         logging.info(f"Player '{name}' created with initial score {initial_score}")
@@ -122,13 +125,14 @@ class Player:
             f"Player '{self.name}' guessed an atom at position {atom.get_position()}"
         )
 
-    def guess_atom_position(self, x: int, y: int, gameboard: GameBoard) -> bool:
+    def check_guess(self, x: int, y: int, gameboard: GameBoard) -> bool:
         """
-        Make a guess for an atom's position based on coordinates.
+        Check if a guess is correct based on the game board.
 
         Args:
             x (int): The x-coordinate of the guessed atom.
             y (int): The y-coordinate of the guessed atom.
+            gameboard (GameBoard): The game board instance.
 
         Returns:
             bool: True if the guess was correct, False otherwise.
@@ -136,17 +140,25 @@ class Player:
         Raises:
             ValueError: If the coordinates are out of bounds.
         """
-
         try:
             if gameboard.has_atom(x, y):
-                self.update_score(5)
                 return True
-            else:
-                return False
+            return False
         except ValueError as e:
-            logging.error(f"Error guessing atom position: {e}")
+            logging.error(f"Error checking guess: {e}", exc_info=True)
         except Exception as e:
-            logging.error(f"An unexpected error occurred: {e}")
+            logging.error(f"An unexpected error occurred: {e}", exc_info=True)
+
+    def guess_atom_position(self, x: int, y: int) -> None:
+        """
+        Make a guess for an atom's position based on coordinates.
+
+        Args:
+            x (int): The x-coordinate of the guessed atom.
+            y (int): The y-coordinate of the guessed atom.
+        """
+        self.active_turn_guesses.append((x, y))
+        self.guesses.append((x, y))
 
     def remove_guess(self, atom: Atom) -> None:
         """
@@ -183,6 +195,15 @@ class Player:
         """
         return self.active_turn_rays
 
+    def get_active_turn_guesses(self) -> List[Tuple[int, int]]:
+        """
+        Get the list of guesses made during the current turn.
+
+        Returns:
+            List[Tuple[int, int]]: The list of active turn guesses.
+        """
+        return self.active_turn_guesses
+
     def get_guessed_atoms(self) -> List[Atom]:
         """
         Get the list of atoms guessed by the player.
@@ -191,6 +212,15 @@ class Player:
             List[Atom]: The list of guessed atoms.
         """
         return self.guessed_atoms
+
+    def get_guesses(self) -> List[Tuple[int, int]]:
+        """
+        Get the list of guesses made by the player.
+
+        Returns:
+            List[Tuple[int, int]]: The list of guesses as (x, y) coordinates.
+        """
+        return self.guesses
 
     def start_turn(self) -> None:
         """
@@ -211,6 +241,7 @@ class Player:
         Refresh the player's turn.
         """
         self.active_turn_rays = []
+        self.active_turn_guesses = []
         logging.info(f"Player '{self.name}' turn refreshed")
 
     def __str__(self) -> str:

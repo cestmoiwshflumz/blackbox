@@ -152,6 +152,19 @@ class GameBoard:
         self._validate_coordinates(x, y)
         return self.grid[y][x]
 
+    def get_atom(self, x: int, y: int) -> Optional[Atom]:
+        """
+        Get the atom at the specified coordinates.
+
+        Args:
+            x (int): The x-coordinate of the atom.
+            y (int): The y-coordinate of the atom.
+
+        Returns:
+            Optional[Atom]: The Atom object at the specified coordinates.
+        """
+        return next((atom for atom in self.atoms if atom.x == x and atom.y == y), None)
+
     def set_cell(self, value: Atom) -> None:
         """
         Set the content of a cell.
