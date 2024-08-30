@@ -11,7 +11,7 @@ from src.ui.gamescreen_solo import GameScreen
 from src.game.gameboard import GameBoard
 from src.game.player import Player
 from src.utils.log_instances import game_logger
-from src.utils.constants import DEFAULT_GRID_SIZE, DEFAULT_DIFFICULTY
+from src.utils.constants import COLOR_WHITE
 
 
 class GameLoop:
@@ -199,15 +199,57 @@ class GameLoop:
         Display the game over screen and handle input for returning to the main menu.
         """
         try:
-            self.logger.info("Showing game over screen")
+            self.window.clear()
+
+            if self.player.get_score() <= 0:
+                self.game_screen.show_game_over()
+            else:
+                self.game_screen.show_game_finished()
+
+            waiting = True
+            while waiting:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.game_state = "QUIT"
+                        waiting = False
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                        self.game_state = "MAIN_MENU"
+                        waiting = False
+        except Exception as e:
+            self.logger.error(f"Error displaying game over screen: {e}")
+            self.game_state = "MAIN_MENU"
+
+    def show_game_finished(self) -> None:
+        """
+        Display the game finished screen.
+
+        This method shows the final score and a message indicating the end of the game.
+        """
+        try:
+            self.window.clear()
             font = pygame.font.Font(None, 36)
-            text = font.render(
-                "Game Over! Press SPACE to return to menu", True, (255, 255, 255)
+            game_finished_text = font.render(
+                "Game Finished, Press Space to go to main menu.", True, COLOR_WHITE
             )
-            text_rect = text.get_rect(
-                center=(self.window.width // 2, self.window.height // 2)
+            score_text = font.render(
+                f"Final Score: {self.player.get_score()}", True, COLOR_WHITE
             )
-            self.window.get_screen().blit(text, text_rect)
+
+            self.window.get_screen().blit(
+                game_finished_text,
+                (
+                    self.window.width // 2 - game_finished_text.get_width() // 2,
+                    self.window.height // 2 - 50,
+                ),
+            )
+            self.window.get_screen().blit(
+                score_text,
+                (
+                    self.window.width // 2 - score_text.get_width() // 2,
+                    self.window.height // 2 + 50,
+                ),
+            )
+
             self.window.update()
 
             waiting = True

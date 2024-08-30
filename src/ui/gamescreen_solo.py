@@ -57,6 +57,7 @@ class GameScreen:
         )
         self.font = pygame.font.Font(None, 24)
         self.history = False
+        self.debug = False
 
     def draw_debug(self) -> None:
         """
@@ -69,7 +70,12 @@ class GameScreen:
             self.window.clear()
             self.draw_grid()
             self.draw_atoms(self.game_board.atoms)
-            self.draw_Active_rays()
+            if not self.history:
+                self.draw_Active_rays()
+                self.draw_current_guess()
+            else:
+                self.draw_all_rays()
+                self.draw_all_guesses()
             self.draw_guesses()
             self.draw_score()
             self.draw_buttons()
@@ -482,7 +488,9 @@ class GameScreen:
             self.window.clear()
             game_over_text = self.font.render("Game Over", True, COLOR_WHITE)
             score_text = self.font.render(
-                f"Final Score: {self.player.get_score()}", True, COLOR_WHITE
+                f"Final Score: {self.player.get_score()}. Press Space to main menu",
+                True,
+                COLOR_WHITE,
             )
 
             self.window.get_screen().blit(
@@ -501,9 +509,42 @@ class GameScreen:
             )
 
             self.window.update()
-            pygame.time.wait(3000)  # Wait for 3 seconds before returning to main menu
         except pygame.error as e:
             logging.error(f"Error showing game over screen: {e}")
+
+    def show_game_finished(self) -> None:
+        """
+        Display the game finished screen.
+
+        This method shows the final score and a message indicating the end of the game.
+        """
+        try:
+            self.window.clear()
+            game_finished_text = self.font.render("Game Finished", True, COLOR_WHITE)
+            score_text = self.font.render(
+                f"Final Score: {self.player.get_score()}. Press Space to main menu",
+                True,
+                COLOR_WHITE,
+            )
+
+            self.window.get_screen().blit(
+                game_finished_text,
+                (
+                    self.window.width // 2 - game_finished_text.get_width() // 2,
+                    self.window.height // 2 - 50,
+                ),
+            )
+            self.window.get_screen().blit(
+                score_text,
+                (
+                    self.window.width // 2 - score_text.get_width() // 2,
+                    self.window.height // 2 + 50,
+                ),
+            )
+
+            self.window.update()
+        except pygame.error as e:
+            logging.error(f"Error showing game finished screen: {e}")
 
     def update(self) -> None:
         """
@@ -512,8 +553,11 @@ class GameScreen:
         This method should be called once per frame to keep the game display current.
         """
         try:
-            self.draw()
             if self.game_board.all_atoms_guessed(self.player.get_guessed_atoms()):
-                self.show_game_over()
+                self.show_game_finished()
+            elif self.player.get_score() <= 0:
+                self.show_game_over
+            else:
+                self.draw()
         except Exception as e:
             logging.error(f"Error updating game screen: {e}")

@@ -24,7 +24,7 @@ class Player:
         is_turn (bool): Indicates whether it's currently this player's turn.
     """
 
-    def __init__(self, name: str, gameboard: GameBoard, initial_score: int = 25):
+    def __init__(self, name: str, gameboard: GameBoard, initial_score: int = 35):
         """
         Initialize a Player instance.
 
@@ -64,8 +64,6 @@ class Player:
             ValueError: If the resulting score would be negative.
         """
         new_score = self.score + points
-        if new_score < 0:
-            raise ValueError("Score cannot be negative.")
         self.score = new_score
         logging.info(f"Player '{self.name}' score updated to {self.score}")
 
