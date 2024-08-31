@@ -24,7 +24,7 @@ class GameBoard:
         edge_markers (List[int]): List of numbers for edge markers.
     """
 
-    def __init__(self, difficulty: str):
+    def __init__(self, difficulty: str, mp: bool = False):
         """
         Initialize the GameBoard.
 
@@ -55,7 +55,8 @@ class GameBoard:
         self.edge_markers: List[int] = list(range(1, 4 * self.size + 1))
 
         self._initialize_grid()
-        self._place_atoms()
+        if not mp:
+            self._place_atoms()
 
     def _initialize_grid(self) -> None:
         """Initialize the empty grid."""
