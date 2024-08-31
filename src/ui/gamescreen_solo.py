@@ -2,6 +2,8 @@
 
 import pygame
 from typing import List, Tuple, Optional, Union
+import yaml
+
 from src.ui.window import Window
 from src.game.gameboard import GameBoard
 from src.game.player import Player
@@ -57,7 +59,53 @@ class GameScreen:
         )
         self.font = pygame.font.Font(None, 24)
         self.history = False
-        self.debug = False
+
+        # Load and validate the game configuration
+        self.config = self._load_config("config/config.yaml")
+
+    def _load_config(self, config_path: str) -> dict:
+        """
+        Load and validate the configuration from a YAML file.
+
+        Args:
+            config_path (str): The path to the configuration file.
+
+        Returns:
+            dict: The loaded configuration dictionary.
+        """
+        try:
+            with open(config_path, "r") as f:
+                config = yaml.safe_load(f)
+            # Validate required config keys
+            required_keys = ["options.difficulty", "options.sound", "options.debug"]
+            for key in required_keys:
+                if self._nested_get(config, key.split(".")) is None:
+                    raise ValueError(f"Missing required config key: {key}")
+            logging.info("Menu configuration loaded and validated")
+            return config
+        except Exception as e:
+            logging.error(
+                f"Failed to load or validate menu configuration: {e}", exc_info=True
+            )
+            # Return a default configuration
+            return {"options": {"difficulty": 0, "sound": True, "debug": False}}
+
+    def _nested_get(self, d: dict, keys: list) -> Union[dict, None]:
+        """
+        Get a nested value from a dictionary using a list of keys.
+
+        Args:
+            d (dict): The dictionary to search.
+            keys (list): The list of keys representing the path to the desired value.
+
+        Returns:
+            Any: The value at the specified nested location, or None if not found.
+        """
+        for key in keys:
+            d = d.get(key)
+            if d is None:
+                return None
+        return d
 
     def draw_debug(self) -> None:
         """
@@ -71,10 +119,33 @@ class GameScreen:
             self.draw_grid()
             self.draw_atoms(self.game_board.atoms)
             if not self.history:
-                self.draw_Active_rays()
+                self.draw_Active_rays_debug()
                 self.draw_current_guess()
             else:
-                self.draw_all_rays()
+                self.draw_all_rays_debug()
+                self.draw_all_guesses()
+            self.draw_guesses()
+            self.draw_score()
+            self.draw_buttons()
+            self.window.update()
+        except pygame.error as e:
+            logging.error(f"Error drawing game screen: {e}")
+
+    def draw_normal(self) -> None:
+        """
+        Draw the entire game screen.
+
+        This method clears the screen, draws the grid, rays, guesses, and score,
+        then updates the display.
+        """
+        try:
+            self.window.clear()
+            self.draw_grid()
+            if not self.history:
+                self.draw_active_rays_normal()
+                self.draw_current_guess()
+            else:
+                self.draw_all_rays_normal()
                 self.draw_all_guesses()
             self.draw_guesses()
             self.draw_score()
@@ -90,22 +161,10 @@ class GameScreen:
         This method clears the screen, draws the grid, rays, guesses, and score,
         then updates the display.
         """
-        try:
-            self.window.clear()
-            self.draw_grid()
-            self.draw_atoms(self.game_board.atoms)
-            if not self.history:
-                self.draw_Active_rays()
-                self.draw_current_guess()
-            else:
-                self.draw_all_rays()
-                self.draw_all_guesses()
-            self.draw_guesses()
-            self.draw_score()
-            self.draw_buttons()
-            self.window.update()
-        except pygame.error as e:
-            logging.error(f"Error drawing game screen: {e}")
+        if self.config["options"]["debug"]:
+            self.draw_debug()
+        else:
+            self.draw_normal()
 
     def draw_grid(self) -> None:
         """
@@ -143,25 +202,25 @@ class GameScreen:
         except pygame.error as e:
             logging.error(f"Error drawing atoms: {e}")
 
-    def draw_Active_rays(self) -> None:
+    def draw_Active_rays_debug(self) -> None:
         """
         Draw fired rays of the current turn on the game screen.
 
         This method iterates through all fired rays of the current turn and draws them on the screen.
         """
         for ray in self.player.get_active_turn_rays():
-            self.draw_ray(ray)
+            self.draw_ray_debug(ray)
 
-    def draw_all_rays(self) -> None:
+    def draw_all_rays_debug(self) -> None:
         """
         Draw all rays fired on the game screen.
 
         This method iterates through all fired rays and draws them on the screen.
         """
         for ray in self.player.get_fired_rays():
-            self.draw_ray(ray)
+            self.draw_ray_debug(ray)
 
-    def draw_ray(self, ray: Ray) -> None:
+    def draw_ray_debug(self, ray: Ray) -> None:
         """
         Draw a single ray on the game screen.
 
@@ -176,6 +235,44 @@ class GameScreen:
                 start = self.get_screen_position(ray.path[i])
                 end = self.get_screen_position(ray.path[i + 1])
                 self.window.draw_line(color, start, end, 2)
+        except pygame.error as e:
+            logging.error(f"Error drawing ray: {e}", exc_info=True)
+
+    def draw_active_rays_normal(self) -> None:
+        """
+        Draw fired rays of the current turn on the game screen.
+
+        This method iterates through all fired rays of the current turn and draws them on the screen.
+        """
+        for ray in self.player.get_active_turn_rays():
+            self.draw_ray_normal(ray)
+
+    def draw_all_rays_normal(self) -> None:
+        """
+        Draw all rays fired on the game screen.
+
+        This method iterates through all fired rays and draws them on the screen.
+        """
+        for ray in self.player.get_fired_rays():
+            self.draw_ray_normal(ray)
+
+    def draw_ray_normal(self, ray: Ray) -> None:
+        """
+        Only draw the entry and the exit points of the ray.
+
+        Args:
+            ray (Ray): The ray to be drawn.
+        """
+        if self.check_ray_detoured(ray):
+            pass
+        try:
+            color = COLOR_RED if ray.exit_point is None else COLOR_GREEN
+            if ray.entry_point is not None:
+                start = self.get_screen_position(ray.entry_point)
+                self.window.draw_circle(color, start, self.cell_size // 4)
+            if ray.exit_point is not None:
+                end = self.get_screen_position(ray.exit_point)
+                self.window.draw_circle(color, end, self.cell_size // 4)
         except pygame.error as e:
             logging.error(f"Error drawing ray: {e}", exc_info=True)
 
