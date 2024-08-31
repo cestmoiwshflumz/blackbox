@@ -1,6 +1,7 @@
 # src/game/ray.py
 
 from typing import List, Tuple, Optional
+
 from src.game.gameboard import GameBoard
 from src.game.atom import Atom
 from src.utils.log_instances import ray_logger as logging

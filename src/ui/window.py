@@ -6,6 +6,10 @@ from src.utils.constants import COLOR_BLACK
 
 
 class Window:
+    """
+    Represents the game window for the Black Box game.
+    """
+
     def __init__(self):
         self.logger = game_logger
         self.logger.info("Initializing Window")
