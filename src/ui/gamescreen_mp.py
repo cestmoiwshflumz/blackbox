@@ -57,7 +57,7 @@ class GameScreenMP:
             ValueError: If the window, game_board, or player is None.
         """
         if not all([window, game_board1, game_board2, player1, player2]):
-            raise ValueError("Window, game_board, and player must not be None")
+            raise ValueError("Window, game_boards, and players must not be None")
 
         self.window = window
         self.game_board1 = game_board1
