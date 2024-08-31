@@ -20,11 +20,12 @@ class Player:
         fired_rays (List[Ray]): A list of rays fired by the player.
         active_turn_rays (List[Ray]): A list of rays fired during the current turn.
         guessed_atoms (List[Atom]): A list of atoms guessed by the player.
+        placed_atoms (List[Atom]): A list of atoms placed by the player.
         guesses (List[Tuple[int, int]]): A list of guesses made by the player.
         is_turn (bool): Indicates whether it's currently this player's turn.
     """
 
-    def __init__(self, name: str, gameboard: GameBoard, initial_score: int = 35):
+    def __init__(self, name: str, gameboard: GameBoard, initial_score: int = 25):
         """
         Initialize a Player instance.
 
@@ -47,6 +48,7 @@ class Player:
         self.fired_rays: List[Ray] = []
         self.active_turn_rays: List[Ray] = []
         self.guessed_atoms: List[Atom] = []
+        self.placed_atoms: List[Atom] = []
         self.guesses: List[Tuple[int, int]] = []
         self.active_turn_guesses: List[Tuple[int, int]] = []
         self.is_turn: bool = False
