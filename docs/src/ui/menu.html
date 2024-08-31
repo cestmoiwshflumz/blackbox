@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>src.ui.menu API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.ui.menu</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="src.ui.menu.run_menu"><code class="name flex">
+<span>def <span class="ident">run_menu</span></span>(<span>window)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the main menu system, including submenus.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>window</code></strong> :&ensp;<code>Window</code></dt>
+<dd>The game window object.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The final action selected by the user.</dd>
+</dl></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.ui.menu.Instructions"><code class="flex name class">
+<span>class <span class="ident">Instructions</span></span>
+<span>(</span><span>window: <a title="src.ui.window.Window" href="window.html#src.ui.window.Window">Window</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents the instructions screen of the game.</p>
+<p>This class manages the display of game instructions, providing players
+with information on how to play the game and understand its mechanics.</p>
+<p>Initialize the Instructions class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>window</code></strong> :&ensp;<code>Window</code></dt>
+<dd>The game window object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Instructions:
+    &#34;&#34;&#34;
+    Represents the instructions screen of the game.
+
+    This class manages the display of game instructions, providing players
+    with information on how to play the game and understand its mechanics.
+    &#34;&#34;&#34;
+
+    def __init__(self, window: Window):
+        &#34;&#34;&#34;
+        Initialize the Instructions class.
+
+        Args:
+            window (Window): The game window object.
+        &#34;&#34;&#34;
+        self.window = window
+        self.font = pygame.font.Font(None, 24)
+        self.instructions = [
+            &#34;Black Box Game Instructions:&#34;,
+            &#34;1. The goal is to find hidden atoms in the black box.&#34;,
+            &#34;2. Send rays into the box and observe their behavior.&#34;,
+            &#34;3. Rays can be reflected, absorbed, or pass through.&#34;,
+            &#34;4. Use deduction to determine atom positions.&#34;,
+            &#34;5. Left click to fire a ray, right click to guess an atom.&#34;,
+            &#34;6. Press SPACE to return to the main menu.&#34;,
+        ]
+
+    def draw(self):
+        &#34;&#34;&#34;
+        Draw the instruction text on the screen.
+        &#34;&#34;&#34;
+        self.window.screen.fill((0, 0, 0))
+        for i, line in enumerate(self.instructions):
+            text = self.font.render(line, True, (255, 255, 255))
+            rect = text.get_rect(left=50, top=50 + i * 30)
+            self.window.screen.blit(text, rect)
+        pygame.display.flip()
+
+    def run(self) -&gt; str:
+        &#34;&#34;&#34;
+        Run the instructions screen loop.
+
+        Returns:
+            str: The action to be performed after exiting the instructions screen.
+        &#34;&#34;&#34;
+        while True:
+            self.draw()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return &#34;QUIT&#34;
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    return &#34;MAIN_MENU&#34;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="src.ui.menu.Instructions.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw the instruction text on the screen.</p></div>
+</dd>
+<dt id="src.ui.menu.Instructions.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the instructions screen loop.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The action to be performed after exiting the instructions screen.</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="src.ui.menu.Menu"><code class="flex name class">
+<span>class <span class="ident">Menu</span></span>
+<span>(</span><span>window: <a title="src.ui.window.Window" href="window.html#src.ui.window.Window">Window</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents the main menu of the game.</p>
+<p>This class handles the display and interaction of the main menu,
+allowing players to navigate between different game options and screens.</p>
+<p>Initialize the Menu class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>window</code></strong> :&ensp;<code>Window</code></dt>
+<dd>The game window object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Menu:
+    &#34;&#34;&#34;
+    Represents the main menu of the game.
+
+    This class handles the display and interaction of the main menu,
+    allowing players to navigate between different game options and screens.
+    &#34;&#34;&#34;
+
+    def __init__(self, window: Window):
+        &#34;&#34;&#34;
+        Initialize the Menu class.
+
+        Args:
+            window (Window): The game window object.
+        &#34;&#34;&#34;
+        self.window = window
+        self.logger = game_logger
+        self.font = pygame.font.Font(None, 36)
+        self.menu_items = [&#34;Start Game&#34;, &#34;Instructions&#34;, &#34;Options&#34;, &#34;Quit&#34;]
+        self.selected_item = 0
+
+    def draw(self):
+        &#34;&#34;&#34;
+        Draw the menu items on the screen.
+        &#34;&#34;&#34;
+        self.window.screen.fill((0, 0, 0))
+        for i, item in enumerate(self.menu_items):
+            color = (255, 255, 255) if i == self.selected_item else (150, 150, 150)
+            text = self.font.render(item, True, color)
+            rect = text.get_rect(center=(self.window.width // 2, 200 + i * 50))
+            self.window.screen.blit(text, rect)
+        pygame.display.flip()
+
+    def handle_input(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+        Handle user input for menu navigation and selection.
+
+        Returns:
+            Optional[str]: The selected action or None if no action was taken.
+        &#34;&#34;&#34;
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return &#34;QUIT&#34;
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    self.selected_item = (self.selected_item - 1) % len(self.menu_items)
+                elif event.key == pygame.K_DOWN:
+                    self.selected_item = (self.selected_item + 1) % len(self.menu_items)
+                elif event.key == pygame.K_RETURN:
+                    return self.menu_items[self.selected_item].upper().replace(&#34; &#34;, &#34;_&#34;)
+        return None
+
+    def run(self) -&gt; str:
+        &#34;&#34;&#34;
+        Run the main menu loop.
+
+        Returns:
+            str: The selected action to be performed.
+        &#34;&#34;&#34;
+        self.logger.info(&#34;Menu started&#34;)
+        while True:
+            self.draw()
+            action = self.handle_input()
+            if action:
+                self.logger.info(f&#34;Menu action: {action}&#34;)
+                return action</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="src.ui.menu.Menu.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw the menu items on the screen.</p></div>
+</dd>
+<dt id="src.ui.menu.Menu.handle_input"><code class="name flex">
+<span>def <span class="ident">handle_input</span></span>(<span>self) ‑> Optional[str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handle user input for menu navigation and selection.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Optional[str]</code></dt>
+<dd>The selected action or None if no action was taken.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.menu.Menu.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the main menu loop.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The selected action to be performed.</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="src.ui.menu.Options"><code class="flex name class">
+<span>class <span class="ident">Options</span></span>
+<span>(</span><span>window: <a title="src.ui.window.Window" href="window.html#src.ui.window.Window">Window</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents the options menu of the game, allowing players to adjust settings.</p>
+<p>This class handles loading, saving, and updating game configuration options.
+It provides methods to modify settings such as volume, difficulty, and other
+game parameters, ensuring that changes are properly saved to the config file.</p>
+<p>Initialize the Options class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>window</code></strong> :&ensp;<code>Window</code></dt>
+<dd>The game window object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Options:
+    &#34;&#34;&#34;
+    Represents the options menu of the game, allowing players to adjust settings.
+
+    This class handles loading, saving, and updating game configuration options.
+    It provides methods to modify settings such as volume, difficulty, and other
+    game parameters, ensuring that changes are properly saved to the config file.
+    &#34;&#34;&#34;
+
+    def __init__(self, window: Window):
+        &#34;&#34;&#34;
+        Initialize the Options class.
+
+        Args:
+            window (Window): The game window object.
+        &#34;&#34;&#34;
+        self.window = window
+        self.logger = game_logger
+        self.font = pygame.font.Font(None, 36)
+        self.config = self._load_config(&#34;config/config.yaml&#34;)
+        self.options = [
+            f&#34;Difficulty: {&#39;Hard&#39; if self.config[&#39;options&#39;][&#39;difficulty&#39;] == 1 else &#39;Medium&#39; if self.config[&#39;options&#39;][&#39;difficulty&#39;] == 0 else &#39;Easy&#39;}&#34;,
+            f&#34;Sound: {&#39;On&#39; if self.config[&#39;options&#39;][&#39;sound&#39;] else &#39;Off&#39;}&#34;,
+            f&#34;DEBUG: {&#39;True&#39; if self.config[&#39;options&#39;][&#39;debug&#39;] else &#39;False&#39;}&#34;,
+            &#34;Save &amp; Back To Main Menu&#34;,
+        ]
+        self.selected_option = 0
+
+        if &#34;options&#34; not in self.config:
+            self.logger.error(&#34;Missing &#39;options&#39; key in configuration&#34;, exc_info=True)
+            self.config[&#34;options&#34;] = {&#34;difficulty&#34;: 0, &#34;sound&#34;: True, &#34;debug&#34;: False}
+
+        self.options = [
+            f&#34;Difficulty: {&#39;Hard&#39; if self.config[&#39;options&#39;][&#39;difficulty&#39;] == 1 else &#39;Medium&#39; if self.config[&#39;options&#39;][&#39;difficulty&#39;] == 0 else &#39;Easy&#39;}&#34;,
+            f&#34;Sound: {&#39;On&#39; if self.config[&#39;options&#39;][&#39;sound&#39;] else &#39;Off&#39;}&#34;,
+            f&#34;DEBUG: {&#39;True&#39; if self.config[&#39;options&#39;][&#39;debug&#39;] else &#39;False&#39;}&#34;,
+            &#34;Save &amp; Back To Main Menu&#34;,
+        ]
+        self.selected_option = 0
+
+    def _load_config(self, config_path: str) -&gt; dict:
+        &#34;&#34;&#34;
+        Load and validate the configuration from a YAML file.
+
+        Args:
+            config_path (str): The path to the configuration file.
+
+        Returns:
+            dict: The loaded configuration dictionary.
+        &#34;&#34;&#34;
+        try:
+            with open(config_path, &#34;r&#34;) as f:
+                config = yaml.safe_load(f)
+            # Validate required config keys
+            required_keys = [&#34;options.difficulty&#34;, &#34;options.sound&#34;, &#34;options.debug&#34;]
+            for key in required_keys:
+                if self._nested_get(config, key.split(&#34;.&#34;)) is None:
+                    raise ValueError(f&#34;Missing required config key: {key}&#34;)
+            self.logger.info(&#34;Menu configuration loaded and validated&#34;)
+            return config
+        except Exception as e:
+            self.logger.error(
+                f&#34;Failed to load or validate menu configuration: {e}&#34;, exc_info=True
+            )
+            # Return a default configuration
+            return {&#34;options&#34;: {&#34;difficulty&#34;: 0, &#34;sound&#34;: True, &#34;debug&#34;: False}}
+
+    def _nested_get(self, d: dict, keys: list) -&gt; Union[dict, None]:
+        &#34;&#34;&#34;
+        Get a nested value from a dictionary using a list of keys.
+
+        Args:
+            d (dict): The dictionary to search.
+            keys (list): The list of keys representing the path to the desired value.
+
+        Returns:
+            Any: The value at the specified nested location, or None if not found.
+        &#34;&#34;&#34;
+        for key in keys:
+            d = d.get(key)
+            if d is None:
+                return None
+        return d
+
+    def _update_config(self, key: str, value: any) -&gt; None:
+        &#34;&#34;&#34;
+        Update a value in the nested configuration dictionary.
+
+        Args:
+            key (str): The dot-separated key path to the value.
+            value (Any): The new value to set.
+        &#34;&#34;&#34;
+        keys = key.split(&#34;.&#34;)
+        d = self.config
+        for k in keys[:-1]:
+            d = d.setdefault(k, {})
+        d[keys[-1]] = value
+
+    def _save_config(self, config_path: str) -&gt; None:
+        &#34;&#34;&#34;
+        Save the current configuration to a YAML file.
+
+        Args:
+            config_path (str): The path to save the configuration file.
+        &#34;&#34;&#34;
+        try:
+            with open(config_path, &#34;w&#34;) as f:
+                yaml.dump(self.config, f)
+            self.logger.info(&#34;Menu configuration saved&#34;)
+        except Exception as e:
+            self.logger.error(f&#34;Failed to save menu configuration: {e}&#34;, exc_info=True)
+
+    def draw(self):
+        &#34;&#34;&#34;
+        Draw the options menu on the screen.
+        &#34;&#34;&#34;
+        self.window.screen.fill((0, 0, 0))
+        for i, option in enumerate(self.options):
+            color = (255, 255, 255) if i == self.selected_option else (150, 150, 150)
+            text = self.font.render(option, True, color)
+            rect = text.get_rect(center=(self.window.width // 2, 200 + i * 50))
+            self.window.screen.blit(text, rect)
+        pygame.display.flip()
+
+    def handle_input(self) -&gt; Optional[str]:
+        &#34;&#34;&#34;
+        Handle user input for the options menu.
+
+        Returns:
+            Optional[str]: The selected action or None if no action was taken.
+        &#34;&#34;&#34;
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return &#34;QUIT&#34;
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    self.selected_option = (self.selected_option - 1) % len(
+                        self.options
+                    )
+                elif event.key == pygame.K_DOWN:
+                    self.selected_option = (self.selected_option + 1) % len(
+                        self.options
+                    )
+                elif event.key == pygame.K_RETURN:
+                    if self.selected_option == len(self.options) - 1:
+                        self._save_config(&#34;config/config.yaml&#34;)
+                        return &#34;MAIN_MENU&#34;
+                    elif self.selected_option == 0:
+                        new_difficulty = (
+                            1
+                            if self.config[&#34;options&#34;][&#34;difficulty&#34;] == 0
+                            else 2 if self.config[&#34;options&#34;][&#34;difficulty&#34;] == 1 else 0
+                        )
+                        self._update_config(&#34;options.difficulty&#34;, new_difficulty)
+                        self.options[0] = (
+                            f&#34;Difficulty: {&#39;Hard&#39; if new_difficulty == 1 else &#39;Medium&#39; if new_difficulty == 0 else &#39;Easy&#39;}&#34;
+                        )
+                    elif self.selected_option == 1:
+                        new_sound = not self.config[&#34;options&#34;][&#34;sound&#34;]
+                        self._update_config(&#34;options.sound&#34;, new_sound)
+                        self.options[1] = f&#34;Sound: {&#39;On&#39; if new_sound else &#39;Off&#39;}&#34;
+                    elif self.selected_option == 2:
+                        new_debug = not self.config[&#34;options&#34;][&#34;debug&#34;]
+                        self._update_config(&#34;options.debug&#34;, new_debug)
+                        self.options[2] = f&#34;DEBUG: {&#39;True&#39; if new_debug else &#39;False&#39;}&#34;
+        return None
+
+    def run(self) -&gt; str:
+        &#34;&#34;&#34;
+        Run the options menu loop.
+
+        Returns:
+            str: The action to be performed after exiting the options menu.
+        &#34;&#34;&#34;
+        while True:
+            self.draw()
+            action = self.handle_input()
+            if action:
+                return action</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="src.ui.menu.Options.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw the options menu on the screen.</p></div>
+</dd>
+<dt id="src.ui.menu.Options.handle_input"><code class="name flex">
+<span>def <span class="ident">handle_input</span></span>(<span>self) ‑> Optional[str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handle user input for the options menu.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Optional[str]</code></dt>
+<dd>The selected action or None if no action was taken.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.menu.Options.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the options menu loop.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The action to be performed after exiting the options menu.</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.ui" href="index.html">src.ui</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="src.ui.menu.run_menu" href="#src.ui.menu.run_menu">run_menu</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.ui.menu.Instructions" href="#src.ui.menu.Instructions">Instructions</a></code></h4>
+<ul class="">
+<li><code><a title="src.ui.menu.Instructions.draw" href="#src.ui.menu.Instructions.draw">draw</a></code></li>
+<li><code><a title="src.ui.menu.Instructions.run" href="#src.ui.menu.Instructions.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="src.ui.menu.Menu" href="#src.ui.menu.Menu">Menu</a></code></h4>
+<ul class="">
+<li><code><a title="src.ui.menu.Menu.draw" href="#src.ui.menu.Menu.draw">draw</a></code></li>
+<li><code><a title="src.ui.menu.Menu.handle_input" href="#src.ui.menu.Menu.handle_input">handle_input</a></code></li>
+<li><code><a title="src.ui.menu.Menu.run" href="#src.ui.menu.Menu.run">run</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="src.ui.menu.Options" href="#src.ui.menu.Options">Options</a></code></h4>
+<ul class="">
+<li><code><a title="src.ui.menu.Options.draw" href="#src.ui.menu.Options.draw">draw</a></code></li>
+<li><code><a title="src.ui.menu.Options.handle_input" href="#src.ui.menu.Options.handle_input">handle_input</a></code></li>
+<li><code><a title="src.ui.menu.Options.run" href="#src.ui.menu.Options.run">run</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

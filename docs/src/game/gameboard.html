@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>src.game.gameboard API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.game.gameboard</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.game.gameboard.GameBoard"><code class="flex name class">
+<span>class <span class="ident">GameBoard</span></span>
+<span>(</span><span>difficulty: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents the game board for the Black Box game.</p>
+<p>This class manages the grid, atom placement, and provides methods to interact
+with the game board state.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>size</code></strong> :&ensp;<code>int</code></dt>
+<dd>The size of the grid (size x size).</dd>
+<dt><strong><code>difficulty</code></strong> :&ensp;<code>str</code></dt>
+<dd>The difficulty level of the game ('easy', 'medium', or 'hard').</dd>
+<dt><strong><code>grid</code></strong> :&ensp;<code>List[List[Optional[Atom]]]</code></dt>
+<dd>The 2D grid representing the game board.</dd>
+<dt><strong><code>atoms</code></strong> :&ensp;<code>List[Atom]</code></dt>
+<dd>List of atom positions on the board.</dd>
+<dt><strong><code>edge_markers</code></strong> :&ensp;<code>List[int]</code></dt>
+<dd>List of numbers for edge markers.</dd>
+</dl>
+<p>Initialize the GameBoard.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>size</code></strong> :&ensp;<code>int</code></dt>
+<dd>The size of the grid. Defaults to 8.</dd>
+<dt><strong><code>difficulty</code></strong> :&ensp;<code>str</code></dt>
+<dd>The difficulty level. Defaults to 'medium'.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the size is less than 4 or the difficulty is invalid.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GameBoard:
+    &#34;&#34;&#34;
+    Represents the game board for the Black Box game.
+
+    This class manages the grid, atom placement, and provides methods to interact
+    with the game board state.
+
+    Attributes:
+        size (int): The size of the grid (size x size).
+        difficulty (str): The difficulty level of the game (&#39;easy&#39;, &#39;medium&#39;, or &#39;hard&#39;).
+        grid (List[List[Optional[Atom]]]): The 2D grid representing the game board.
+        atoms (List[Atom]): List of atom positions on the board.
+        edge_markers (List[int]): List of numbers for edge markers.
+    &#34;&#34;&#34;
+
+    def __init__(self, difficulty: str):
+        &#34;&#34;&#34;
+        Initialize the GameBoard.
+
+        Args:
+            size (int): The size of the grid. Defaults to 8.
+            difficulty (str): The difficulty level. Defaults to &#39;medium&#39;.
+
+        Raises:
+            ValueError: If the size is less than 4 or the difficulty is invalid.
+        &#34;&#34;&#34;
+
+        if difficulty not in [&#34;easy&#34;, &#34;medium&#34;, &#34;hard&#34;]:
+            raise ValueError(
+                &#34;Invalid difficulty level. Choose &#39;easy&#39;, &#39;medium&#39;, or &#39;hard&#39;&#34;
+            )
+
+        self.difficulty = difficulty
+        self.size = 8 if difficulty == &#34;medium&#34; else 10 if difficulty == &#34;hard&#34; else 6
+
+        logging.debug(
+            f&#34;Initializing game board with size {self.size} and difficulty {self.difficulty}&#34;
+        )
+
+        self.grid: List[List[Optional[Atom]]] = [
+            [None for _ in range(self.size)] for _ in range(self.size)
+        ]
+        self.atoms: List[Atom] = []
+        self.edge_markers: List[int] = list(range(1, 4 * self.size + 1))
+
+        self._initialize_grid()
+        self._place_atoms()
+
+    def _initialize_grid(self) -&gt; None:
+        &#34;&#34;&#34;Initialize the empty grid.&#34;&#34;&#34;
+        self.grid = [[None for _ in range(self.size)] for _ in range(self.size)]
+
+    def _place_atoms(self) -&gt; None:
+        &#34;&#34;&#34;
+        Place atoms on the grid based on the difficulty level.
+
+        The number of atoms placed depends on the difficulty:
+        - Easy: 3-4 atoms
+        - Medium: 4-5 atoms
+        - Hard: 5-6 atoms
+        &#34;&#34;&#34;
+        num_atoms = {
+            &#34;easy&#34;: random.randint(3, 4),
+            &#34;medium&#34;: random.randint(4, 5),
+            &#34;hard&#34;: random.randint(5, 6),
+        }[self.difficulty]
+
+        while len(self.atoms) &lt; num_atoms:
+            x = random.randint(1, self.size - 2)
+            y = random.randint(1, self.size - 2)
+            if self.grid[y][x] is None:
+                atom = Atom(x, y)
+                self.atoms.append(atom)
+                self.grid[y][x] = atom
+
+    def is_empty(self, x: int, y: int) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if a cell is empty.
+
+        Args:
+            x (int): The x-coordinate of the cell.
+            y (int): The y-coordinate of the cell.
+
+        Returns:
+            bool: True if the cell is empty, False otherwise.
+
+        Raises:
+            ValueError: If the coordinates are out of bounds.
+        &#34;&#34;&#34;
+        self._validate_coordinates(x, y)
+        return self.grid[y][x] is None
+
+    def has_atom(self, x: int, y: int) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if a cell contains an atom.
+
+        Args:
+            x (int): The x-coordinate of the cell.
+            y (int): The y-coordinate of the cell.
+
+        Returns:
+            bool: True if the cell contains an atom, False otherwise.
+
+        Raises:
+            ValueError: If the coordinates are out of bounds.
+        &#34;&#34;&#34;
+        self._validate_coordinates(x, y)
+        return isinstance(self.grid[y][x], Atom)
+
+    def is_edge(self, x: int, y: int) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if a cell is on the edge of the grid.
+
+        Args:
+            x (int): The x-coordinate of the cell.
+            y (int): The y-coordinate of the cell.
+
+        Returns:
+            bool: True if the cell is on the edge, False otherwise.
+
+        Raises:
+            ValueError: If the coordinates are out of bounds.
+        &#34;&#34;&#34;
+        self._validate_coordinates(x, y)
+        return x == -1 or x == self.size or y == -1 or y == self.size
+
+    def get_cell(self, x: int, y: int) -&gt; Optional[Atom]:
+        &#34;&#34;&#34;
+        Get the content of a cell.
+
+        Args:
+            x (int): The x-coordinate of the cell.
+            y (int): The y-coordinate of the cell.
+
+        Returns:
+            Optional[Atom]: The content of the cell (None if empty, &#39;A&#39; if atom).
+
+        Raises:
+            ValueError: If the coordinates are out of bounds.
+        &#34;&#34;&#34;
+        self._validate_coordinates(x, y)
+        return self.grid[y][x]
+
+    def get_atom(self, x: int, y: int) -&gt; Optional[Atom]:
+        &#34;&#34;&#34;
+        Get the atom at the specified coordinates.
+
+        Args:
+            x (int): The x-coordinate of the atom.
+            y (int): The y-coordinate of the atom.
+
+        Returns:
+            Optional[Atom]: The Atom object at the specified coordinates.
+        &#34;&#34;&#34;
+        return next((atom for atom in self.atoms if atom.x == x and atom.y == y), None)
+
+    def set_cell(self, value: Atom) -&gt; None:
+        &#34;&#34;&#34;
+        Set the content of a cell.
+
+        Args:
+            value (Atom): The value to set in the cell (Atom).
+
+        Raises:
+            ValueError: If the coordinates are out of bounds or the value is invalid.
+        &#34;&#34;&#34;
+        self._validate_coordinates(value.x, value.y)
+        if value is not None and not isinstance(value, Atom):
+            raise ValueError(
+                &#34;Invalid cell value. Use None for empty or an Atom instance.&#34;
+            )
+        self.grid[value.y][value.x] = value
+
+    def all_atoms_guessed(self, guessed_atoms: List[Atom]) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if all atoms have been correctly guessed.
+
+        Args:
+            guessed_atoms (List[Tuple[int, int]]): List of guessed atom positions.
+
+        Returns:
+            bool: True if all atoms have been guessed correctly, False otherwise.
+        &#34;&#34;&#34;
+        return set(self.atoms) == set(guessed_atoms)
+
+    def get_board_state(self) -&gt; List[List[Optional[Atom]]]:
+        &#34;&#34;&#34;
+        Get the current state of the board.
+
+        Returns:
+            List[List[Optional[Atom]]]: A deep copy of the current grid.
+        &#34;&#34;&#34;
+        return [row[:] for row in self.grid]
+
+    def _validate_coordinates(self, x: int, y: int) -&gt; None:
+        &#34;&#34;&#34;
+        Validate that the given coordinates are within the grid bounds.
+
+        Args:
+            x (int): The x-coordinate to validate.
+            y (int): The y-coordinate to validate.
+
+        Raises:
+            ValueError: If the coordinates are out of bounds.
+        &#34;&#34;&#34;
+        if not (-1 &lt;= x &lt;= self.size and -1 &lt;= y &lt;= self.size):
+            raise ValueError(
+                f&#34;Coordinates ({x}, {y}) are out of bounds for a {self.size}x{self.size} grid.&#34;
+            )
+
+    def __str__(self) -&gt; str:
+        &#34;&#34;&#34;
+        Return a string representation of the game board.
+
+        Returns:
+            str: A formatted string representing the current state of the game board.
+        &#34;&#34;&#34;
+        board_str = &#34;  &#34; + &#34; &#34;.join(f&#34;{i:2}&#34; for i in range(self.size)) + &#34;\n&#34;
+        for y in range(self.size):
+            board_str += (
+                f&#34;{y:2} &#34;
+                + &#34; &#34;.join(
+                    &#34;A&#34; if isinstance(cell, Atom) else &#34;·&#34; for cell in self.grid[y]
+                )
+                + &#34;\n&#34;
+            )
+        return board_str</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="src.game.gameboard.GameBoard.all_atoms_guessed"><code class="name flex">
+<span>def <span class="ident">all_atoms_guessed</span></span>(<span>self, guessed_atoms: List[<a title="src.game.atom.Atom" href="atom.html#src.game.atom.Atom">Atom</a>]) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if all atoms have been correctly guessed.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>guessed_atoms</code></strong> :&ensp;<code>List[Tuple[int, int]]</code></dt>
+<dd>List of guessed atom positions.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if all atoms have been guessed correctly, False otherwise.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.gameboard.GameBoard.get_atom"><code class="name flex">
+<span>def <span class="ident">get_atom</span></span>(<span>self, x: int, y: int) ‑> Optional[<a title="src.game.atom.Atom" href="atom.html#src.game.atom.Atom">Atom</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the atom at the specified coordinates.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>The x-coordinate of the atom.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>The y-coordinate of the atom.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Optional[Atom]</code></dt>
+<dd>The Atom object at the specified coordinates.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.gameboard.GameBoard.get_board_state"><code class="name flex">
+<span>def <span class="ident">get_board_state</span></span>(<span>self) ‑> List[List[Optional[<a title="src.game.atom.Atom" href="atom.html#src.game.atom.Atom">Atom</a>]]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the current state of the board.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List[List[Optional[Atom]]]</code></dt>
+<dd>A deep copy of the current grid.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.gameboard.GameBoard.get_cell"><code class="name flex">
+<span>def <span class="ident">get_cell</span></span>(<span>self, x: int, y: int) ‑> Optional[<a title="src.game.atom.Atom" href="atom.html#src.game.atom.Atom">Atom</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the content of a cell.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>The x-coordinate of the cell.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>The y-coordinate of the cell.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Optional[Atom]</code></dt>
+<dd>The content of the cell (None if empty, 'A' if atom).</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the coordinates are out of bounds.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.gameboard.GameBoard.has_atom"><code class="name flex">
+<span>def <span class="ident">has_atom</span></span>(<span>self, x: int, y: int) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if a cell contains an atom.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>The x-coordinate of the cell.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>The y-coordinate of the cell.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the cell contains an atom, False otherwise.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the coordinates are out of bounds.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.gameboard.GameBoard.is_edge"><code class="name flex">
+<span>def <span class="ident">is_edge</span></span>(<span>self, x: int, y: int) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if a cell is on the edge of the grid.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>The x-coordinate of the cell.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>The y-coordinate of the cell.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the cell is on the edge, False otherwise.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the coordinates are out of bounds.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.gameboard.GameBoard.is_empty"><code class="name flex">
+<span>def <span class="ident">is_empty</span></span>(<span>self, x: int, y: int) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if a cell is empty.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>The x-coordinate of the cell.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>The y-coordinate of the cell.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the cell is empty, False otherwise.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the coordinates are out of bounds.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.gameboard.GameBoard.set_cell"><code class="name flex">
+<span>def <span class="ident">set_cell</span></span>(<span>self, value: <a title="src.game.atom.Atom" href="atom.html#src.game.atom.Atom">Atom</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the content of a cell.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong> :&ensp;<code>Atom</code></dt>
+<dd>The value to set in the cell (Atom).</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the coordinates are out of bounds or the value is invalid.</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.game" href="index.html">src.game</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.game.gameboard.GameBoard" href="#src.game.gameboard.GameBoard">GameBoard</a></code></h4>
+<ul class="two-column">
+<li><code><a title="src.game.gameboard.GameBoard.all_atoms_guessed" href="#src.game.gameboard.GameBoard.all_atoms_guessed">all_atoms_guessed</a></code></li>
+<li><code><a title="src.game.gameboard.GameBoard.get_atom" href="#src.game.gameboard.GameBoard.get_atom">get_atom</a></code></li>
+<li><code><a title="src.game.gameboard.GameBoard.get_board_state" href="#src.game.gameboard.GameBoard.get_board_state">get_board_state</a></code></li>
+<li><code><a title="src.game.gameboard.GameBoard.get_cell" href="#src.game.gameboard.GameBoard.get_cell">get_cell</a></code></li>
+<li><code><a title="src.game.gameboard.GameBoard.has_atom" href="#src.game.gameboard.GameBoard.has_atom">has_atom</a></code></li>
+<li><code><a title="src.game.gameboard.GameBoard.is_edge" href="#src.game.gameboard.GameBoard.is_edge">is_edge</a></code></li>
+<li><code><a title="src.game.gameboard.GameBoard.is_empty" href="#src.game.gameboard.GameBoard.is_empty">is_empty</a></code></li>
+<li><code><a title="src.game.gameboard.GameBoard.set_cell" href="#src.game.gameboard.GameBoard.set_cell">set_cell</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

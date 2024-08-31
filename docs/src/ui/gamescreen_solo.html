@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>src.ui.gamescreen_solo API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.ui.gamescreen_solo</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.ui.gamescreen_solo.GameScreen"><code class="flex name class">
+<span>class <span class="ident">GameScreen</span></span>
+<span>(</span><span>window: <a title="src.ui.window.Window" href="window.html#src.ui.window.Window">Window</a>, game_board: <a title="src.game.gameboard.GameBoard" href="../game/gameboard.html#src.game.gameboard.GameBoard">GameBoard</a>, player: <a title="src.game.player.Player" href="../game/player.html#src.game.player.Player">Player</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents the game screen for the Black Box game.</p>
+<p>This class is responsible for rendering the game board, handling user input,
+and managing the visual representation of the game state.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>window</code></strong> :&ensp;<code>Window</code></dt>
+<dd>The game window.</dd>
+<dt><strong><code>game_board</code></strong> :&ensp;<code>GameBoard</code></dt>
+<dd>The game board.</dd>
+<dt><strong><code>player</code></strong> :&ensp;<code>Player</code></dt>
+<dd>The current player.</dd>
+<dt><strong><code>cell_size</code></strong> :&ensp;<code>int</code></dt>
+<dd>The size of each cell on the game board.</dd>
+<dt><strong><code>board_offset</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The offset of the board from the window edges.</dd>
+<dt><strong><code>font</code></strong> :&ensp;<code>pygame.font.Font</code></dt>
+<dd>The font used for rendering text.</dd>
+</dl>
+<p>Initialize the GameScreen.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>window</code></strong> :&ensp;<code>Window</code></dt>
+<dd>The game window.</dd>
+<dt><strong><code>game_board</code></strong> :&ensp;<code>GameBoard</code></dt>
+<dd>The game board.</dd>
+<dt><strong><code>player</code></strong> :&ensp;<code>Player</code></dt>
+<dd>The current player.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the window, game_board, or player is None.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GameScreen:
+    &#34;&#34;&#34;
+    Represents the game screen for the Black Box game.
+
+    This class is responsible for rendering the game board, handling user input,
+    and managing the visual representation of the game state.
+
+    Attributes:
+        window (Window): The game window.
+        game_board (GameBoard): The game board.
+        player (Player): The current player.
+        cell_size (int): The size of each cell on the game board.
+        board_offset (Tuple[int, int]): The offset of the board from the window edges.
+        font (pygame.font.Font): The font used for rendering text.
+    &#34;&#34;&#34;
+
+    def __init__(self, window: Window, game_board: GameBoard, player: Player):
+        &#34;&#34;&#34;
+        Initialize the GameScreen.
+
+        Args:
+            window (Window): The game window.
+            game_board (GameBoard): The game board.
+            player (Player): The current player.
+
+        Raises:
+            ValueError: If the window, game_board, or player is None.
+        &#34;&#34;&#34;
+        if not all([window, game_board, player]):
+            raise ValueError(&#34;Window, game_board, and player must not be None&#34;)
+
+        self.window = window
+        self.game_board = game_board
+        self.player = player
+        self.cell_size = min(window.width, window.height) // (game_board.size + 2)
+        self.board_offset = (
+            (window.width - self.cell_size * game_board.size) // 2,
+            (window.height - self.cell_size * game_board.size) // 2,
+        )
+        self.font = pygame.font.Font(None, 24)
+        self.history = False
+
+        # Load and validate the game configuration
+        self.config = self._load_config(&#34;config/config.yaml&#34;)
+
+    def _load_config(self, config_path: str) -&gt; dict:
+        &#34;&#34;&#34;
+        Load and validate the configuration from a YAML file.
+
+        Args:
+            config_path (str): The path to the configuration file.
+
+        Returns:
+            dict: The loaded configuration dictionary.
+        &#34;&#34;&#34;
+        try:
+            with open(config_path, &#34;r&#34;) as f:
+                config = yaml.safe_load(f)
+            # Validate required config keys
+            required_keys = [&#34;options.difficulty&#34;, &#34;options.sound&#34;, &#34;options.debug&#34;]
+            for key in required_keys:
+                if self._nested_get(config, key.split(&#34;.&#34;)) is None:
+                    raise ValueError(f&#34;Missing required config key: {key}&#34;)
+            logging.info(&#34;Menu configuration loaded and validated&#34;)
+            return config
+        except Exception as e:
+            logging.error(
+                f&#34;Failed to load or validate menu configuration: {e}&#34;, exc_info=True
+            )
+            # Return a default configuration
+            return {&#34;options&#34;: {&#34;difficulty&#34;: 0, &#34;sound&#34;: True, &#34;debug&#34;: False}}
+
+    def _nested_get(self, d: dict, keys: list) -&gt; Union[dict, None]:
+        &#34;&#34;&#34;
+        Get a nested value from a dictionary using a list of keys.
+
+        Args:
+            d (dict): The dictionary to search.
+            keys (list): The list of keys representing the path to the desired value.
+
+        Returns:
+            Any: The value at the specified nested location, or None if not found.
+        &#34;&#34;&#34;
+        for key in keys:
+            d = d.get(key)
+            if d is None:
+                return None
+        return d
+
+    def draw_debug(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw the entire game screen with debug option enabled which allow user to see all the rays and atoms.
+
+        This method clears the screen, draws the grid, rays, guesses, and score,
+        then updates the display.
+        &#34;&#34;&#34;
+        try:
+            self.window.clear()
+            self.draw_grid()
+            self.draw_atoms(self.game_board.atoms)
+            if not self.history:
+                self.draw_Active_rays_debug()
+                self.draw_current_guess()
+            else:
+                self.draw_all_rays_debug()
+                self.draw_all_guesses()
+            self.draw_guesses()
+            self.draw_score()
+            self.draw_buttons()
+            self.window.update()
+        except pygame.error as e:
+            logging.error(f&#34;Error drawing game screen: {e}&#34;)
+
+    def draw_normal(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw the entire game screen.
+
+        This method clears the screen, draws the grid, rays, guesses, and score,
+        then updates the display.
+        &#34;&#34;&#34;
+        try:
+            self.window.clear()
+            self.draw_grid()
+            if not self.history:
+                self.draw_active_rays_normal()
+                self.draw_current_guess()
+            else:
+                self.draw_all_rays_normal()
+                self.draw_all_guesses()
+            self.draw_guesses()
+            self.draw_score()
+            self.draw_buttons()
+            self.window.update()
+        except pygame.error as e:
+            logging.error(f&#34;Error drawing game screen: {e}&#34;)
+
+    def draw(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw the entire game screen.
+
+        This method clears the screen, draws the grid, rays, guesses, and score,
+        then updates the display.
+        &#34;&#34;&#34;
+        if self.config[&#34;options&#34;][&#34;debug&#34;]:
+            self.draw_debug()
+        else:
+            self.draw_normal()
+
+    def draw_grid(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw the game grid on the screen.
+
+        This method draws both vertical and horizontal lines to create the game grid.
+        &#34;&#34;&#34;
+        try:
+            for i in range(self.game_board.size + 1):
+                start_x = self.board_offset[0] + i * self.cell_size
+                start_y = self.board_offset[1]
+                end_x = start_x
+                end_y = start_y + self.game_board.size * self.cell_size
+                self.window.draw_line(COLOR_WHITE, (start_x, start_y), (end_x, end_y))
+
+                start_x = self.board_offset[0]
+                start_y = self.board_offset[1] + i * self.cell_size
+                end_x = start_x + self.game_board.size * self.cell_size
+                end_y = start_y
+                self.window.draw_line(COLOR_WHITE, (start_x, start_y), (end_x, end_y))
+        except pygame.error as e:
+            logging.error(f&#34;Error drawing grid: {e}&#34;)
+
+    def draw_atoms(self, atoms: List[Atom]) -&gt; None:
+        &#34;&#34;&#34;
+        Draw atoms on the game screen.
+
+        Args:
+            atoms (List[Atom]): The list of atoms to draw.
+        &#34;&#34;&#34;
+        try:
+            for atom in atoms:
+                pos = self.get_screen_position(atom.get_position())
+                self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
+        except pygame.error as e:
+            logging.error(f&#34;Error drawing atoms: {e}&#34;)
+
+    def draw_Active_rays_debug(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw fired rays of the current turn on the game screen.
+
+        This method iterates through all fired rays of the current turn and draws them on the screen.
+        &#34;&#34;&#34;
+        for ray in self.player.get_active_turn_rays():
+            self.draw_ray_debug(ray)
+
+    def draw_all_rays_debug(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw all rays fired on the game screen.
+
+        This method iterates through all fired rays and draws them on the screen.
+        &#34;&#34;&#34;
+        for ray in self.player.get_fired_rays():
+            self.draw_ray_debug(ray)
+
+    def draw_ray_debug(self, ray: Ray) -&gt; None:
+        &#34;&#34;&#34;
+        Draw a single ray on the game screen.
+
+        Args:
+            ray (Ray): The ray to be drawn.
+        &#34;&#34;&#34;
+        if self.check_ray_detoured(ray):
+            pass
+        try:
+            color = COLOR_RED if ray.exit_point is None else COLOR_GREEN
+            for i in range(len(ray.path) - 1):
+                start = self.get_screen_position(ray.path[i])
+                end = self.get_screen_position(ray.path[i + 1])
+                self.window.draw_line(color, start, end, 2)
+        except pygame.error as e:
+            logging.error(f&#34;Error drawing ray: {e}&#34;, exc_info=True)
+
+    def draw_active_rays_normal(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw fired rays of the current turn on the game screen.
+
+        This method iterates through all fired rays of the current turn and draws them on the screen.
+        &#34;&#34;&#34;
+        for ray in self.player.get_active_turn_rays():
+            self.draw_ray_normal(ray)
+
+    def draw_all_rays_normal(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw all rays fired on the game screen.
+
+        This method iterates through all fired rays and draws them on the screen.
+        &#34;&#34;&#34;
+        for ray in self.player.get_fired_rays():
+            self.draw_ray_normal(ray)
+
+    def draw_ray_normal(self, ray: Ray) -&gt; None:
+        &#34;&#34;&#34;
+        Only draw the entry and the exit points of the ray.
+
+        Args:
+            ray (Ray): The ray to be drawn.
+        &#34;&#34;&#34;
+        if self.check_ray_detoured(ray):
+            pass
+        try:
+            color = COLOR_RED if ray.exit_point is None else COLOR_GREEN
+            if ray.entry_point is not None:
+                start = self.get_screen_position(ray.entry_point)
+                self.window.draw_circle(color, start, self.cell_size // 4)
+            if ray.exit_point is not None:
+                end = self.get_screen_position(ray.exit_point)
+                self.window.draw_circle(color, end, self.cell_size // 4)
+        except pygame.error as e:
+            logging.error(f&#34;Error drawing ray: {e}&#34;, exc_info=True)
+
+    def draw_guesses(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw all guessed atom positions on the game screen.
+
+        This method iterates through all guessed atoms and draws them on the screen.
+        &#34;&#34;&#34;
+        try:
+            for guess in self.player.get_guessed_atoms():
+                pos = self.get_screen_position(guess.get_position())
+                self.window.draw_circle(COLOR_GREEN, pos, self.cell_size // 4)
+        except pygame.error as e:
+            logging.error(f&#34;Error drawing guesses: {e}&#34;, exc_info=True)
+
+    def draw_current_guess(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw the current guessed atom position on the game screen.
+        &#34;&#34;&#34;
+        try:
+            for guess in self.player.get_active_turn_guesses():
+                pos = self.get_screen_position(guess)
+                self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
+        except pygame.error as e:
+            logging.error(f&#34;Error drawing current guess: {e}&#34;, exc_info=True)
+
+    def draw_all_guesses(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw all guessed atom positions on the game screen.
+
+        This method iterates through all guessed atoms and draws them on the screen.
+        &#34;&#34;&#34;
+        try:
+            for guess in self.player.get_guesses():
+                pos = self.get_screen_position(guess)
+                self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
+        except pygame.error as e:
+            logging.error(f&#34;Error drawing guesses: {e}&#34;, exc_info=True)
+
+    def draw_score(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw the current player&#39;s score on the game screen.
+        &#34;&#34;&#34;
+        try:
+            score_text = f&#34;Score: {self.player.get_score()}&#34;
+            text_surface = self.font.render(score_text, True, COLOR_WHITE)
+            self.window.get_screen().blit(text_surface, (10, 10))
+        except pygame.error as e:
+            logging.error(f&#34;Error drawing score: {e}&#34;, exc_info=True)
+
+    def draw_button(
+        self,
+        text: str,
+        pos: Tuple[int, int],
+        size: Tuple[int, int],
+        color: Tuple[int, int, int],
+    ) -&gt; None:
+        &#34;&#34;&#34;
+        Draw a button on the game screen.
+
+        Args:
+            text (str): The text to display on the button.
+            pos (Tuple[int, int]): The position of the button on the screen.
+            size (Tuple[int, int]): The size of the button.
+            color (Tuple[int, int, int]): The color of the button.
+        &#34;&#34;&#34;
+        try:
+            rect = pygame.Rect(pos[0], pos[1], size[0], size[1])
+            pygame.draw.rect(self.window.get_screen(), color, rect)
+            text_surface = self.font.render(text, True, COLOR_WHITE)
+            text_rect = text_surface.get_rect(center=rect.center)
+            self.window.get_screen().blit(text_surface, text_rect)
+        except pygame.error as e:
+            logging.error(f&#34;Error drawing button: {e}&#34;, exc_info=True)
+
+    def draw_buttons(self) -&gt; None:
+        &#34;&#34;&#34;
+        Draw all buttons on the game screen.
+        &#34;&#34;&#34;
+        self.draw_button(&#34;Next turn&#34;, (10, 100), (100, 40), COLOR_BLUE)
+        self.draw_button(&#34;Show History&#34;, (10, 150), (100, 40), COLOR_BLUE)
+        self.draw_button(&#34;Quit&#34;, (10, 200), (100, 40), COLOR_RED)
+
+    def get_screen_position(self, board_pos: Tuple[int, int]) -&gt; Tuple[int, int]:
+        &#34;&#34;&#34;
+        Convert a board position to screen coordinates.
+
+        Args:
+            board_pos (Tuple[int, int]): The position on the game board.
+
+        Returns:
+            Tuple[int, int]: The corresponding position on the screen.
+        &#34;&#34;&#34;
+        return (
+            self.board_offset[0] + board_pos[0] * self.cell_size + self.cell_size // 2,
+            self.board_offset[1] + board_pos[1] * self.cell_size + self.cell_size // 2,
+        )
+
+    def get_board_position(self, screen_pos: Tuple[int, int]) -&gt; Tuple[int, int]:
+        &#34;&#34;&#34;
+        Convert screen coordinates to a board position.
+
+        Args:
+            screen_pos (Tuple[int, int]): The position on the screen.
+
+        Returns:
+            Tuple[int, int]: The corresponding position on the game board.
+        &#34;&#34;&#34;
+        return (
+            (screen_pos[0] - self.board_offset[0]) // self.cell_size,
+            (screen_pos[1] - self.board_offset[1]) // self.cell_size,
+        )
+
+    def get_detour_positions(self, screen_pos: Tuple[int, int]) -&gt; Tuple[int, int]:
+        &#34;&#34;&#34;
+        Convert screen coordinates to a board position.
+
+        Args:
+            screen_pos (Tuple[int, int]): The position on the screen.
+
+        Returns:
+            Tuple[int, int]: The corresponding position on the game board.
+        &#34;&#34;&#34;
+        return (
+            (screen_pos[0] - self.board_offset[0]) // (self.cell_size // 2),
+            (screen_pos[1] - self.board_offset[1]) // (self.cell_size // 2),
+        )
+
+    def check_ray_detoured(self, ray: Ray) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if a ray has been detoured by atoms.
+
+        Args:
+            ray (Ray): The ray to check.
+
+        Returns:
+            bool: True if the ray has been detoured, False otherwise.
+        &#34;&#34;&#34;
+        return ray.is_detoured
+
+    def handle_draw_detour(self, ray: Ray) -&gt; None:
+        &#34;&#34;&#34;
+        Handle the drawing of a detoured ray.
+
+        Args:
+            ray (Ray): The detoured ray to draw.
+        &#34;&#34;&#34;
+        color = COLOR_GREEN
+        try:
+            for i in range(len(ray.path) - 1):
+                start = self.get_detour_positions(ray.path[i])
+                end = self.get_detour_positions(ray.path[i + 1])
+                self.window.draw_line(color, start, end, 2)
+        except pygame.error as e:
+            logging.error(f&#34;Error drawing detoured ray: {e}&#34;, exc_info=True)
+        except Exception as e:
+            logging.error(f&#34;Error handling detoured ray: {e}&#34;, exc_info=True)
+
+    def handle_input(self) -&gt; str:
+        &#34;&#34;&#34;
+        Handle user input events.
+
+        Returns:
+            str: A string indicating the action to be taken (&#39;QUIT&#39;, &#39;MAIN_MENU&#39;, or &#39;CONTINUE&#39;).
+        &#34;&#34;&#34;
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return &#34;QUIT&#34;
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:  # Left click
+                    r = self.handle_left_click(event.pos)
+                    if r:
+                        return r
+                elif event.button == 3:  # Right click
+                    self.handle_right_click(event.pos)
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return &#34;MAIN_MENU&#34;
+        return &#34;CONTINUE&#34;
+
+    def handle_left_click(self, pos: Tuple[int, int]) -&gt; Union[str, None]:
+        &#34;&#34;&#34;
+        Handle left mouse click events.
+
+        This method is responsible for firing rays when the player clicks on the edge of the board.
+
+        Args:
+            pos (Tuple[int, int]): The position of the mouse click on the screen.
+        &#34;&#34;&#34;
+        # Handle clicks on the edge of the board
+        try:
+            board_pos = self.get_board_position(pos)
+            if self.is_valid_ray_start(board_pos):
+                direction = self.get_ray_direction(board_pos)
+                if direction:
+                    ray = self.player.fire_ray(board_pos[0], board_pos[1], direction)
+                    self.draw()
+        except ValueError as e:
+            logging.error(f&#34;Error handling left click: {e}&#34;, exc_info=True)
+
+        # Handle clicks on the buttons
+        try:
+            if 10 &lt;= pos[0] &lt;= 110 and 100 &lt;= pos[1] &lt;= 140:
+                self.player.refresh_turn()
+            elif 10 &lt;= pos[0] &lt;= 110 and 150 &lt;= pos[1] &lt;= 190:
+                self.history = not self.history
+            elif 10 &lt;= pos[0] &lt;= 110 and 200 &lt;= pos[1] &lt;= 240:
+                return &#34;MAIN_MENU&#34;
+        except ValueError as e:
+            logging.error(f&#34;Error handling left click: {e}&#34;, exc_info=True)
+        except Exception as e:
+            logging.error(f&#34;Error handling left click: {e}&#34;, exc_info=True)
+
+    def handle_right_click(self, pos: Tuple[int, int]) -&gt; None:
+        &#34;&#34;&#34;
+        Handle right mouse click events.
+
+        This method is responsible for placing or removing atom guesses when the player right-clicks on the board.
+
+        Args:
+            pos (Tuple[int, int]): The position of the mouse click on the screen.
+        &#34;&#34;&#34;
+        try:
+            board_pos = self.get_board_position(pos)
+            if self.is_valid_guess_position(board_pos):
+                self.player.guess_atom_position(board_pos[0], board_pos[1])
+                self.draw()
+        except ValueError as e:
+            logging.error(f&#34;Error handling right click: {e}&#34;)
+
+    def is_valid_ray_start(self, pos: Tuple[int, int]) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if the given position is a valid starting point for a ray.
+
+        Args:
+            pos (Tuple[int, int]): The position to check.
+
+        Returns:
+            bool: True if the position is on the edge of the board, False otherwise.
+        &#34;&#34;&#34;
+        x, y = pos
+        return (
+            x == -1 or x == self.game_board.size or y == -1 or y == self.game_board.size
+        ) and not (
+            (x == -1 and y == -1)
+            or (x == -1 and y == self.game_board.size)
+            or (x == self.game_board.size and y == -1)
+            or (x == self.game_board.size and y == self.game_board.size)
+        )
+
+    def get_ray_direction(self, pos: Tuple[int, int]) -&gt; Optional[Tuple[int, int]]:
+        &#34;&#34;&#34;
+        Get the direction of a ray based on its starting position.
+
+        Args:
+            pos (Tuple[int, int]): The starting position of the ray.
+
+        Returns:
+            Optional[Tuple[int, int]]: The direction of the ray as (dx, dy), or None if invalid.
+        &#34;&#34;&#34;
+        x, y = pos
+        if x == -1:
+            return (1, 0)
+        elif x == self.game_board.size:
+            return (-1, 0)
+        elif y == -1:
+            return (0, 1)
+        elif y == self.game_board.size:
+            return (0, -1)
+        return None
+
+    def is_valid_guess_position(self, pos: Tuple[int, int]) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if the given position is a valid position for guessing an atom.
+
+        Args:
+            pos (Tuple[int, int]): The position to check.
+
+        Returns:
+            bool: True if the position is within the board and not on the edge, False otherwise.
+        &#34;&#34;&#34;
+        x, y = pos
+        return 0 &lt;= x &lt; self.game_board.size and 0 &lt;= y &lt; self.game_board.size
+
+    def highlight_cell(self, pos: Tuple[int, int], color: Tuple[int, int, int]) -&gt; None:
+        &#34;&#34;&#34;
+        Highlight a cell on the game board.
+
+        Args:
+            pos (Tuple[int, int]): The position of the cell to highlight.
+            color (Tuple[int, int, int]): The color to use for highlighting.
+        &#34;&#34;&#34;
+        try:
+            screen_pos = self.get_screen_position(pos)
+            rect = pygame.Rect(
+                screen_pos[0], screen_pos[1], self.cell_size, self.cell_size
+            )
+            self.window.draw_rect(color, rect)
+        except pygame.error as e:
+            logging.error(f&#34;Error highlighting cell: {e}&#34;)
+
+    def show_game_over(self) -&gt; None:
+        &#34;&#34;&#34;
+        Display the game over screen.
+
+        This method shows the final score and a message indicating the end of the game.
+        &#34;&#34;&#34;
+        try:
+            self.window.clear()
+            game_over_text = self.font.render(&#34;Game Over&#34;, True, COLOR_WHITE)
+            score_text = self.font.render(
+                f&#34;Final Score: {self.player.get_score()}. Press Space to main menu&#34;,
+                True,
+                COLOR_WHITE,
+            )
+
+            self.window.get_screen().blit(
+                game_over_text,
+                (
+                    self.window.width // 2 - game_over_text.get_width() // 2,
+                    self.window.height // 2 - 50,
+                ),
+            )
+            self.window.get_screen().blit(
+                score_text,
+                (
+                    self.window.width // 2 - score_text.get_width() // 2,
+                    self.window.height // 2 + 50,
+                ),
+            )
+
+            self.window.update()
+        except pygame.error as e:
+            logging.error(f&#34;Error showing game over screen: {e}&#34;)
+
+    def show_game_finished(self) -&gt; None:
+        &#34;&#34;&#34;
+        Display the game finished screen.
+
+        This method shows the final score and a message indicating the end of the game.
+        &#34;&#34;&#34;
+        try:
+            self.window.clear()
+            game_finished_text = self.font.render(&#34;Game Finished&#34;, True, COLOR_WHITE)
+            score_text = self.font.render(
+                f&#34;Final Score: {self.player.get_score()}. Press Space to main menu&#34;,
+                True,
+                COLOR_WHITE,
+            )
+
+            self.window.get_screen().blit(
+                game_finished_text,
+                (
+                    self.window.width // 2 - game_finished_text.get_width() // 2,
+                    self.window.height // 2 - 50,
+                ),
+            )
+            self.window.get_screen().blit(
+                score_text,
+                (
+                    self.window.width // 2 - score_text.get_width() // 2,
+                    self.window.height // 2 + 50,
+                ),
+            )
+
+            self.window.update()
+        except pygame.error as e:
+            logging.error(f&#34;Error showing game finished screen: {e}&#34;)
+
+    def update(self) -&gt; None:
+        &#34;&#34;&#34;
+        Update the game state and redraw the screen.
+
+        This method should be called once per frame to keep the game display current.
+        &#34;&#34;&#34;
+        try:
+            if self.game_board.all_atoms_guessed(self.player.get_guessed_atoms()):
+                self.show_game_finished()
+            elif self.player.get_score() &lt;= 0:
+                self.show_game_over
+            else:
+                self.draw()
+        except Exception as e:
+            logging.error(f&#34;Error updating game screen: {e}&#34;)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="src.ui.gamescreen_solo.GameScreen.check_ray_detoured"><code class="name flex">
+<span>def <span class="ident">check_ray_detoured</span></span>(<span>self, ray: <a title="src.game.ray.Ray" href="../game/ray.html#src.game.ray.Ray">Ray</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if a ray has been detoured by atoms.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>ray</code></strong> :&ensp;<code>Ray</code></dt>
+<dd>The ray to check.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the ray has been detoured, False otherwise.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw the entire game screen.</p>
+<p>This method clears the screen, draws the grid, rays, guesses, and score,
+then updates the display.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_Active_rays_debug"><code class="name flex">
+<span>def <span class="ident">draw_Active_rays_debug</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw fired rays of the current turn on the game screen.</p>
+<p>This method iterates through all fired rays of the current turn and draws them on the screen.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_active_rays_normal"><code class="name flex">
+<span>def <span class="ident">draw_active_rays_normal</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw fired rays of the current turn on the game screen.</p>
+<p>This method iterates through all fired rays of the current turn and draws them on the screen.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_all_guesses"><code class="name flex">
+<span>def <span class="ident">draw_all_guesses</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw all guessed atom positions on the game screen.</p>
+<p>This method iterates through all guessed atoms and draws them on the screen.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_all_rays_debug"><code class="name flex">
+<span>def <span class="ident">draw_all_rays_debug</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw all rays fired on the game screen.</p>
+<p>This method iterates through all fired rays and draws them on the screen.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_all_rays_normal"><code class="name flex">
+<span>def <span class="ident">draw_all_rays_normal</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw all rays fired on the game screen.</p>
+<p>This method iterates through all fired rays and draws them on the screen.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_atoms"><code class="name flex">
+<span>def <span class="ident">draw_atoms</span></span>(<span>self, atoms: List[<a title="src.game.atom.Atom" href="../game/atom.html#src.game.atom.Atom">Atom</a>]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw atoms on the game screen.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>atoms</code></strong> :&ensp;<code>List[Atom]</code></dt>
+<dd>The list of atoms to draw.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_button"><code class="name flex">
+<span>def <span class="ident">draw_button</span></span>(<span>self, text: str, pos: Tuple[int, int], size: Tuple[int, int], color: Tuple[int, int, int]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw a button on the game screen.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>text</code></strong> :&ensp;<code>str</code></dt>
+<dd>The text to display on the button.</dd>
+<dt><strong><code>pos</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The position of the button on the screen.</dd>
+<dt><strong><code>size</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The size of the button.</dd>
+<dt><strong><code>color</code></strong> :&ensp;<code>Tuple[int, int, int]</code></dt>
+<dd>The color of the button.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_buttons"><code class="name flex">
+<span>def <span class="ident">draw_buttons</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw all buttons on the game screen.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_current_guess"><code class="name flex">
+<span>def <span class="ident">draw_current_guess</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw the current guessed atom position on the game screen.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_debug"><code class="name flex">
+<span>def <span class="ident">draw_debug</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw the entire game screen with debug option enabled which allow user to see all the rays and atoms.</p>
+<p>This method clears the screen, draws the grid, rays, guesses, and score,
+then updates the display.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_grid"><code class="name flex">
+<span>def <span class="ident">draw_grid</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw the game grid on the screen.</p>
+<p>This method draws both vertical and horizontal lines to create the game grid.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_guesses"><code class="name flex">
+<span>def <span class="ident">draw_guesses</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw all guessed atom positions on the game screen.</p>
+<p>This method iterates through all guessed atoms and draws them on the screen.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_normal"><code class="name flex">
+<span>def <span class="ident">draw_normal</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw the entire game screen.</p>
+<p>This method clears the screen, draws the grid, rays, guesses, and score,
+then updates the display.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_ray_debug"><code class="name flex">
+<span>def <span class="ident">draw_ray_debug</span></span>(<span>self, ray: <a title="src.game.ray.Ray" href="../game/ray.html#src.game.ray.Ray">Ray</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw a single ray on the game screen.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>ray</code></strong> :&ensp;<code>Ray</code></dt>
+<dd>The ray to be drawn.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_ray_normal"><code class="name flex">
+<span>def <span class="ident">draw_ray_normal</span></span>(<span>self, ray: <a title="src.game.ray.Ray" href="../game/ray.html#src.game.ray.Ray">Ray</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Only draw the entry and the exit points of the ray.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>ray</code></strong> :&ensp;<code>Ray</code></dt>
+<dd>The ray to be drawn.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.draw_score"><code class="name flex">
+<span>def <span class="ident">draw_score</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Draw the current player's score on the game screen.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.get_board_position"><code class="name flex">
+<span>def <span class="ident">get_board_position</span></span>(<span>self, screen_pos: Tuple[int, int]) ‑> Tuple[int, int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert screen coordinates to a board position.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>screen_pos</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The position on the screen.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[int, int]</code></dt>
+<dd>The corresponding position on the game board.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.get_detour_positions"><code class="name flex">
+<span>def <span class="ident">get_detour_positions</span></span>(<span>self, screen_pos: Tuple[int, int]) ‑> Tuple[int, int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert screen coordinates to a board position.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>screen_pos</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The position on the screen.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[int, int]</code></dt>
+<dd>The corresponding position on the game board.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.get_ray_direction"><code class="name flex">
+<span>def <span class="ident">get_ray_direction</span></span>(<span>self, pos: Tuple[int, int]) ‑> Optional[Tuple[int, int]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the direction of a ray based on its starting position.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>pos</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The starting position of the ray.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Optional[Tuple[int, int]]</code></dt>
+<dd>The direction of the ray as (dx, dy), or None if invalid.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.get_screen_position"><code class="name flex">
+<span>def <span class="ident">get_screen_position</span></span>(<span>self, board_pos: Tuple[int, int]) ‑> Tuple[int, int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert a board position to screen coordinates.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>board_pos</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The position on the game board.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[int, int]</code></dt>
+<dd>The corresponding position on the screen.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.handle_draw_detour"><code class="name flex">
+<span>def <span class="ident">handle_draw_detour</span></span>(<span>self, ray: <a title="src.game.ray.Ray" href="../game/ray.html#src.game.ray.Ray">Ray</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handle the drawing of a detoured ray.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>ray</code></strong> :&ensp;<code>Ray</code></dt>
+<dd>The detoured ray to draw.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.handle_input"><code class="name flex">
+<span>def <span class="ident">handle_input</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handle user input events.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>A string indicating the action to be taken ('QUIT', 'MAIN_MENU', or 'CONTINUE').</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.handle_left_click"><code class="name flex">
+<span>def <span class="ident">handle_left_click</span></span>(<span>self, pos: Tuple[int, int]) ‑> Optional[str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handle left mouse click events.</p>
+<p>This method is responsible for firing rays when the player clicks on the edge of the board.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>pos</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The position of the mouse click on the screen.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.handle_right_click"><code class="name flex">
+<span>def <span class="ident">handle_right_click</span></span>(<span>self, pos: Tuple[int, int]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handle right mouse click events.</p>
+<p>This method is responsible for placing or removing atom guesses when the player right-clicks on the board.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>pos</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The position of the mouse click on the screen.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.highlight_cell"><code class="name flex">
+<span>def <span class="ident">highlight_cell</span></span>(<span>self, pos: Tuple[int, int], color: Tuple[int, int, int]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Highlight a cell on the game board.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>pos</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The position of the cell to highlight.</dd>
+<dt><strong><code>color</code></strong> :&ensp;<code>Tuple[int, int, int]</code></dt>
+<dd>The color to use for highlighting.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.is_valid_guess_position"><code class="name flex">
+<span>def <span class="ident">is_valid_guess_position</span></span>(<span>self, pos: Tuple[int, int]) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if the given position is a valid position for guessing an atom.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>pos</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The position to check.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the position is within the board and not on the edge, False otherwise.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.is_valid_ray_start"><code class="name flex">
+<span>def <span class="ident">is_valid_ray_start</span></span>(<span>self, pos: Tuple[int, int]) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if the given position is a valid starting point for a ray.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>pos</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The position to check.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the position is on the edge of the board, False otherwise.</dd>
+</dl></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.show_game_finished"><code class="name flex">
+<span>def <span class="ident">show_game_finished</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Display the game finished screen.</p>
+<p>This method shows the final score and a message indicating the end of the game.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.show_game_over"><code class="name flex">
+<span>def <span class="ident">show_game_over</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Display the game over screen.</p>
+<p>This method shows the final score and a message indicating the end of the game.</p></div>
+</dd>
+<dt id="src.ui.gamescreen_solo.GameScreen.update"><code class="name flex">
+<span>def <span class="ident">update</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Update the game state and redraw the screen.</p>
+<p>This method should be called once per frame to keep the game display current.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.ui" href="index.html">src.ui</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.ui.gamescreen_solo.GameScreen" href="#src.ui.gamescreen_solo.GameScreen">GameScreen</a></code></h4>
+<ul class="">
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.check_ray_detoured" href="#src.ui.gamescreen_solo.GameScreen.check_ray_detoured">check_ray_detoured</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw" href="#src.ui.gamescreen_solo.GameScreen.draw">draw</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_Active_rays_debug" href="#src.ui.gamescreen_solo.GameScreen.draw_Active_rays_debug">draw_Active_rays_debug</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_active_rays_normal" href="#src.ui.gamescreen_solo.GameScreen.draw_active_rays_normal">draw_active_rays_normal</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_all_guesses" href="#src.ui.gamescreen_solo.GameScreen.draw_all_guesses">draw_all_guesses</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_all_rays_debug" href="#src.ui.gamescreen_solo.GameScreen.draw_all_rays_debug">draw_all_rays_debug</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_all_rays_normal" href="#src.ui.gamescreen_solo.GameScreen.draw_all_rays_normal">draw_all_rays_normal</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_atoms" href="#src.ui.gamescreen_solo.GameScreen.draw_atoms">draw_atoms</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_button" href="#src.ui.gamescreen_solo.GameScreen.draw_button">draw_button</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_buttons" href="#src.ui.gamescreen_solo.GameScreen.draw_buttons">draw_buttons</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_current_guess" href="#src.ui.gamescreen_solo.GameScreen.draw_current_guess">draw_current_guess</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_debug" href="#src.ui.gamescreen_solo.GameScreen.draw_debug">draw_debug</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_grid" href="#src.ui.gamescreen_solo.GameScreen.draw_grid">draw_grid</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_guesses" href="#src.ui.gamescreen_solo.GameScreen.draw_guesses">draw_guesses</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_normal" href="#src.ui.gamescreen_solo.GameScreen.draw_normal">draw_normal</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_ray_debug" href="#src.ui.gamescreen_solo.GameScreen.draw_ray_debug">draw_ray_debug</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_ray_normal" href="#src.ui.gamescreen_solo.GameScreen.draw_ray_normal">draw_ray_normal</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.draw_score" href="#src.ui.gamescreen_solo.GameScreen.draw_score">draw_score</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.get_board_position" href="#src.ui.gamescreen_solo.GameScreen.get_board_position">get_board_position</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.get_detour_positions" href="#src.ui.gamescreen_solo.GameScreen.get_detour_positions">get_detour_positions</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.get_ray_direction" href="#src.ui.gamescreen_solo.GameScreen.get_ray_direction">get_ray_direction</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.get_screen_position" href="#src.ui.gamescreen_solo.GameScreen.get_screen_position">get_screen_position</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.handle_draw_detour" href="#src.ui.gamescreen_solo.GameScreen.handle_draw_detour">handle_draw_detour</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.handle_input" href="#src.ui.gamescreen_solo.GameScreen.handle_input">handle_input</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.handle_left_click" href="#src.ui.gamescreen_solo.GameScreen.handle_left_click">handle_left_click</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.handle_right_click" href="#src.ui.gamescreen_solo.GameScreen.handle_right_click">handle_right_click</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.highlight_cell" href="#src.ui.gamescreen_solo.GameScreen.highlight_cell">highlight_cell</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.is_valid_guess_position" href="#src.ui.gamescreen_solo.GameScreen.is_valid_guess_position">is_valid_guess_position</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.is_valid_ray_start" href="#src.ui.gamescreen_solo.GameScreen.is_valid_ray_start">is_valid_ray_start</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.show_game_finished" href="#src.ui.gamescreen_solo.GameScreen.show_game_finished">show_game_finished</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.show_game_over" href="#src.ui.gamescreen_solo.GameScreen.show_game_over">show_game_over</a></code></li>
+<li><code><a title="src.ui.gamescreen_solo.GameScreen.update" href="#src.ui.gamescreen_solo.GameScreen.update">update</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

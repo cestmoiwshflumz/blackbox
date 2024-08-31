@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>src.game.ray API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.game.ray</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.game.ray.Ray"><code class="flex name class">
+<span>class <span class="ident">Ray</span></span>
+<span>(</span><span>start_x: int, start_y: int, direction: Tuple[int, int])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents a ray in the Black Box game.</p>
+<p>This class manages the state and movement of a ray on the game board,
+including its interactions with atoms.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>start_x</code></strong> :&ensp;<code>int</code></dt>
+<dd>The starting x-coordinate of the ray.</dd>
+<dt><strong><code>start_y</code></strong> :&ensp;<code>int</code></dt>
+<dd>The starting y-coordinate of the ray.</dd>
+<dt><strong><code>direction</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The current direction of the ray as (dx, dy).</dd>
+<dt><strong><code>path</code></strong> :&ensp;<code>List[Tuple[int, int]]</code></dt>
+<dd>The path of the ray through the board.</dd>
+<dt><strong><code>entry_point</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The entry point of the ray on the board.</dd>
+<dt><strong><code>exit_point</code></strong> :&ensp;<code>Optional[Tuple[int, int]]</code></dt>
+<dd>The exit point of the ray, if it exits.</dd>
+</dl>
+<p>Initialize a Ray instance.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>start_x</code></strong> :&ensp;<code>int</code></dt>
+<dd>The starting x-coordinate of the ray.</dd>
+<dt><strong><code>start_y</code></strong> :&ensp;<code>int</code></dt>
+<dd>The starting y-coordinate of the ray.</dd>
+<dt><strong><code>direction</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The initial direction of the ray as (dx, dy).</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the coordinates are negative or the direction is invalid.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Ray:
+    &#34;&#34;&#34;
+    Represents a ray in the Black Box game.
+
+    This class manages the state and movement of a ray on the game board,
+    including its interactions with atoms.
+
+    Attributes:
+        start_x (int): The starting x-coordinate of the ray.
+        start_y (int): The starting y-coordinate of the ray.
+        direction (Tuple[int, int]): The current direction of the ray as (dx, dy).
+        path (List[Tuple[int, int]]): The path of the ray through the board.
+        entry_point (Tuple[int, int]): The entry point of the ray on the board.
+        exit_point (Optional[Tuple[int, int]]): The exit point of the ray, if it exits.
+    &#34;&#34;&#34;
+
+    def __init__(self, start_x: int, start_y: int, direction: Tuple[int, int]):
+        &#34;&#34;&#34;
+        Initialize a Ray instance.
+
+        Args:
+            start_x (int): The starting x-coordinate of the ray.
+            start_y (int): The starting y-coordinate of the ray.
+            direction (Tuple[int, int]): The initial direction of the ray as (dx, dy).
+
+        Raises:
+            ValueError: If the coordinates are negative or the direction is invalid.
+        &#34;&#34;&#34;
+        if start_x &lt; -1 or start_y &lt; -1:
+            raise ValueError(&#34;Ray coordinates must be non-negative.&#34;)
+        if direction not in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+            raise ValueError(
+                &#34;Invalid direction. Must be one of (0, 1), (0, -1), (1, 0), (-1, 0).&#34;
+            )
+
+        self.start_x: int = start_x
+        self.start_y: int = start_y
+        self.direction: Tuple[int, int] = direction
+        self.path: List[Tuple[int, int]] = [(start_x, start_y)]
+        self.entry_point: Tuple[int, int] = (start_x, start_y)
+        self.exit_point: Optional[Tuple[int, int]] = None
+        self.is_detoured: bool = False
+
+        logging.info(
+            f&#34;Ray created at ({start_x}, {start_y}) with direction {direction}&#34;
+        )
+
+    def move(self) -&gt; None:
+        &#34;&#34;&#34;
+        Move the ray one step in its current direction.
+        &#34;&#34;&#34;
+        new_x = self.path[-1][0] + self.direction[0]
+        new_y = self.path[-1][1] + self.direction[1]
+        self.path.append((new_x, new_y))
+        logging.debug(f&#34;Ray moved to ({new_x}, {new_y})&#34;)
+
+    def change_direction(self, new_direction: Tuple[int, int]) -&gt; None:
+        &#34;&#34;&#34;
+        Change the direction of the ray.
+
+        Args:
+            new_direction (Tuple[int, int]): The new direction as (dx, dy).
+
+        Raises:
+            ValueError: If the new direction is invalid.
+        &#34;&#34;&#34;
+        if new_direction not in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+            raise ValueError(
+                &#34;Invalid direction. Must be one of (0, 1), (0, -1), (1, 0), (-1, 0).&#34;
+            )
+
+        self.direction = new_direction
+        logging.info(f&#34;Ray direction changed to {new_direction}&#34;)
+
+    def check_hit(self, atom: Atom) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if the ray hits the given atom.
+
+        Args:
+            atom (Atom): The atom to check for collision.
+
+        Returns:
+            bool: True if the ray hits the atom, False otherwise.
+        &#34;&#34;&#34;
+        return atom.is_hit(self.path[-1][0], self.path[-1][1])
+
+    def check_reflection(self, atom: Atom) -&gt; Tuple[bool, int]:
+        &#34;&#34;&#34;
+        Check if the ray is reflected by the given atom.
+
+        Args:
+            atom (Atom): The atom to check for reflection.
+
+        Returns:
+            Tuple[bool, int]: A tuple containing:
+                - bool: True if the point is diagonally adjacent, False otherwise.
+                - int: The corner number (1-4) if adjacent, 0 otherwise.
+                    1: top-left, 2: top-right, 3: bottom-left, 4: bottom-right
+        &#34;&#34;&#34;
+        return atom.is_adjacent(self.path[-1][0], self.path[-1][1])
+
+    def check_detour(self, atom1: Atom, atom2: Atom) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if the ray is detoured by two atoms.
+
+        Args:
+            atom1 (Atom): The first atom to check for detour.
+            atom2 (Atom): The second atom to check for detour.
+
+        Returns:
+            bool: True if the ray is detoured by the two atoms, False otherwise.
+        &#34;&#34;&#34;
+        x, y = self.path[-1]
+        is_adjacent1, _ = atom1.is_adjacent(x, y)
+        is_adjacent2, _ = atom2.is_adjacent(x, y)
+        return is_adjacent1 and is_adjacent2
+
+    def trace(self, gameboard: GameBoard) -&gt; None:
+        &#34;&#34;&#34;
+        Trace the path of the ray through the game board.
+
+        Args:
+            gameboard (GameBoard): The game board to trace the ray through.
+        &#34;&#34;&#34;
+        while True:
+            self.move()
+            x, y = self.path[-1]
+
+            if gameboard.is_edge(x, y):
+                self.exit_point = (x, y)
+                logging.info(f&#34;Ray exited at ({x}, {y})&#34;)
+                break
+            try:
+                # Check for detour
+                if not self.is_detoured:
+                    for i, atom1 in enumerate(gameboard.atoms):
+                        for atom2 in gameboard.atoms[i + 1 :]:
+                            if self.check_detour(atom1, atom2):
+                                logging.info(
+                                    f&#34;Ray detoured by atoms at ({atom1.x}, {atom1.y}) and ({atom2.x}, {atom2.y})&#34;
+                                )
+                                self._handle_detour()
+                                continue
+                        break
+
+                # Check for hit or reflection
+                for atom in gameboard.atoms:
+                    is_adjacent, corner = self.check_reflection(atom)
+
+                    if self.check_hit(atom):
+                        logging.info(f&#34;Ray hit atom at ({atom.x}, {atom.y})&#34;)
+                        return
+                    elif is_adjacent:
+                        self._handle_reflection(atom, corner)
+                        break
+            except Exception as e:
+                logging.error(f&#34;Error tracing ray: {e}&#34;, exc_info=True)
+                return
+
+    def _handle_reflection(self, atom: Atom, corner: int) -&gt; None:
+        &#34;&#34;&#34;
+        Handle the reflection of the ray by an atom.
+
+        Args:
+            atom (Atom): The atom causing the reflection.
+            corner (int): The corner number of the atom causing the reflection.
+        &#34;&#34;&#34;
+        x, y = self.path[-1]
+        dx, dy = self.direction
+
+        # Define reflection rules based on incoming direction and corner
+        reflection_rules = {
+            (1, (1, 0)): (0, -1),  # Top-left, from left
+            (1, (0, 1)): (-1, 0),  # Top-left, from top
+            (2, (-1, 0)): (0, -1),  # Top-right, from right
+            (2, (0, 1)): (1, 0),  # Top-right, from top
+            (3, (1, 0)): (0, 1),  # Bottom-left, from left
+            (3, (0, -1)): (-1, 0),  # Bottom-left, from bottom
+            (4, (-1, 0)): (0, 1),  # Bottom-right, from right
+            (4, (0, -1)): (1, 0),  # Bottom-right, from bottom
+        }
+
+        new_direction = reflection_rules.get((corner, self.direction))
+        if new_direction:
+            self.change_direction(new_direction)
+        else:
+            # If not in reflection rules, reverse direction
+            self.change_direction((-dx, -dy))
+
+        logging.info(f&#34;Ray reflected by atom at ({atom.x}, {atom.y}), corner {corner}&#34;)
+
+    def _handle_detour(self) -&gt; None:
+        &#34;&#34;&#34;
+        Handle the detour of the ray by two atoms.
+        &#34;&#34;&#34;
+        self.direction = (-self.direction[0], -self.direction[1])
+        self.is_detoured = True
+        logging.info(&#34;Ray detoured back to entry point&#34;)
+
+    def get_entry_point(self) -&gt; Tuple[int, int]:
+        &#34;&#34;&#34;
+        Get the entry point of the ray.
+
+        Returns:
+            Tuple[int, int]: The entry point coordinates.
+        &#34;&#34;&#34;
+        return self.entry_point
+
+    def get_exit_point(self) -&gt; Optional[Tuple[int, int]]:
+        &#34;&#34;&#34;
+        Get the exit point of the ray, if it exists.
+
+        Returns:
+            Optional[Tuple[int, int]]: The exit point coordinates, or None if the ray didn&#39;t exit.
+        &#34;&#34;&#34;
+        return self.exit_point
+
+    def get_path(self) -&gt; List[Tuple[int, int]]:
+        &#34;&#34;&#34;
+        Get the full path of the ray.
+
+        Returns:
+            List[Tuple[int, int]]: The list of coordinates representing the ray&#39;s path.
+        &#34;&#34;&#34;
+        return self.path
+
+    def __str__(self) -&gt; str:
+        &#34;&#34;&#34;
+        Return a string representation of the Ray.
+
+        Returns:
+            str: A string describing the ray&#39;s path and status.
+        &#34;&#34;&#34;
+        status = &#34;exited&#34; if self.exit_point else &#34;absorbed&#34;
+        return f&#34;Ray from {self.entry_point} to {self.exit_point or self.path[-1]}, {status}&#34;
+
+    def __repr__(self) -&gt; str:
+        &#34;&#34;&#34;
+        Return a string representation of the Ray for debugging.
+
+        Returns:
+            str: A string representation of the Ray instance.
+        &#34;&#34;&#34;
+        return f&#34;Ray(start_x={self.start_x}, start_y={self.start_y}, direction={self.direction})&#34;</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="src.game.ray.Ray.change_direction"><code class="name flex">
+<span>def <span class="ident">change_direction</span></span>(<span>self, new_direction: Tuple[int, int]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Change the direction of the ray.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>new_direction</code></strong> :&ensp;<code>Tuple[int, int]</code></dt>
+<dd>The new direction as (dx, dy).</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If the new direction is invalid.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.ray.Ray.check_detour"><code class="name flex">
+<span>def <span class="ident">check_detour</span></span>(<span>self, atom1: <a title="src.game.atom.Atom" href="atom.html#src.game.atom.Atom">Atom</a>, atom2: <a title="src.game.atom.Atom" href="atom.html#src.game.atom.Atom">Atom</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if the ray is detoured by two atoms.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>atom1</code></strong> :&ensp;<code>Atom</code></dt>
+<dd>The first atom to check for detour.</dd>
+<dt><strong><code>atom2</code></strong> :&ensp;<code>Atom</code></dt>
+<dd>The second atom to check for detour.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the ray is detoured by the two atoms, False otherwise.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.ray.Ray.check_hit"><code class="name flex">
+<span>def <span class="ident">check_hit</span></span>(<span>self, atom: <a title="src.game.atom.Atom" href="atom.html#src.game.atom.Atom">Atom</a>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if the ray hits the given atom.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>atom</code></strong> :&ensp;<code>Atom</code></dt>
+<dd>The atom to check for collision.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the ray hits the atom, False otherwise.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.ray.Ray.check_reflection"><code class="name flex">
+<span>def <span class="ident">check_reflection</span></span>(<span>self, atom: <a title="src.game.atom.Atom" href="atom.html#src.game.atom.Atom">Atom</a>) ‑> Tuple[bool, int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if the ray is reflected by the given atom.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>atom</code></strong> :&ensp;<code>Atom</code></dt>
+<dd>The atom to check for reflection.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[bool, int]</code></dt>
+<dd>A tuple containing:
+- bool: True if the point is diagonally adjacent, False otherwise.
+- int: The corner number (1-4) if adjacent, 0 otherwise.
+1: top-left, 2: top-right, 3: bottom-left, 4: bottom-right</dd>
+</dl></div>
+</dd>
+<dt id="src.game.ray.Ray.get_entry_point"><code class="name flex">
+<span>def <span class="ident">get_entry_point</span></span>(<span>self) ‑> Tuple[int, int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the entry point of the ray.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Tuple[int, int]</code></dt>
+<dd>The entry point coordinates.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.ray.Ray.get_exit_point"><code class="name flex">
+<span>def <span class="ident">get_exit_point</span></span>(<span>self) ‑> Optional[Tuple[int, int]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the exit point of the ray, if it exists.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Optional[Tuple[int, int]]</code></dt>
+<dd>The exit point coordinates, or None if the ray didn't exit.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.ray.Ray.get_path"><code class="name flex">
+<span>def <span class="ident">get_path</span></span>(<span>self) ‑> List[Tuple[int, int]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the full path of the ray.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>List[Tuple[int, int]]</code></dt>
+<dd>The list of coordinates representing the ray's path.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.ray.Ray.move"><code class="name flex">
+<span>def <span class="ident">move</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Move the ray one step in its current direction.</p></div>
+</dd>
+<dt id="src.game.ray.Ray.trace"><code class="name flex">
+<span>def <span class="ident">trace</span></span>(<span>self, gameboard: <a title="src.game.gameboard.GameBoard" href="gameboard.html#src.game.gameboard.GameBoard">GameBoard</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Trace the path of the ray through the game board.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>gameboard</code></strong> :&ensp;<code>GameBoard</code></dt>
+<dd>The game board to trace the ray through.</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.game" href="index.html">src.game</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.game.ray.Ray" href="#src.game.ray.Ray">Ray</a></code></h4>
+<ul class="two-column">
+<li><code><a title="src.game.ray.Ray.change_direction" href="#src.game.ray.Ray.change_direction">change_direction</a></code></li>
+<li><code><a title="src.game.ray.Ray.check_detour" href="#src.game.ray.Ray.check_detour">check_detour</a></code></li>
+<li><code><a title="src.game.ray.Ray.check_hit" href="#src.game.ray.Ray.check_hit">check_hit</a></code></li>
+<li><code><a title="src.game.ray.Ray.check_reflection" href="#src.game.ray.Ray.check_reflection">check_reflection</a></code></li>
+<li><code><a title="src.game.ray.Ray.get_entry_point" href="#src.game.ray.Ray.get_entry_point">get_entry_point</a></code></li>
+<li><code><a title="src.game.ray.Ray.get_exit_point" href="#src.game.ray.Ray.get_exit_point">get_exit_point</a></code></li>
+<li><code><a title="src.game.ray.Ray.get_path" href="#src.game.ray.Ray.get_path">get_path</a></code></li>
+<li><code><a title="src.game.ray.Ray.move" href="#src.game.ray.Ray.move">move</a></code></li>
+<li><code><a title="src.game.ray.Ray.trace" href="#src.game.ray.Ray.trace">trace</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>

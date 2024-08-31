@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>src.gameloop API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.gameloop</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.gameloop.GameLoop"><code class="flex name class">
+<span>class <span class="ident">GameLoop</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Manages the main game loop and game state transitions.</p>
+<p>This class is responsible for initializing the game, handling state transitions,
+and managing the overall flow of the game.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>logger</code></strong></dt>
+<dd>The logger instance for logging game events.</dd>
+<dt><strong><code>window</code></strong> :&ensp;<code>Window</code></dt>
+<dd>The game window instance.</dd>
+<dt><strong><code>game_state</code></strong> :&ensp;<code>str</code></dt>
+<dd>The current state of the game.</dd>
+<dt><strong><code>clock</code></strong> :&ensp;<code>pygame.time.Clock</code></dt>
+<dd>The game clock for controlling frame rate.</dd>
+<dt><strong><code>game_board</code></strong> :&ensp;<code>Optional[GameBoard]</code></dt>
+<dd>The current game board instance.</dd>
+<dt><strong><code>player</code></strong> :&ensp;<code>Optional[Player]</code></dt>
+<dd>The current player instance.</dd>
+<dt><strong><code>game_screen</code></strong> :&ensp;<code>Optional[GameScreen]</code></dt>
+<dd>The current game screen instance.</dd>
+</dl>
+<p>Initialize the GameLoop instance.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GameLoop:
+    &#34;&#34;&#34;
+    Manages the main game loop and game state transitions.
+
+    This class is responsible for initializing the game, handling state transitions,
+    and managing the overall flow of the game.
+
+    Attributes:
+        logger: The logger instance for logging game events.
+        window (Window): The game window instance.
+        game_state (str): The current state of the game.
+        clock (pygame.time.Clock): The game clock for controlling frame rate.
+        game_board (Optional[GameBoard]): The current game board instance.
+        player (Optional[Player]): The current player instance.
+        game_screen (Optional[GameScreen]): The current game screen instance.
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        &#34;&#34;&#34;Initialize the GameLoop instance.&#34;&#34;&#34;
+        self.logger = game_logger
+        self.config = self._load_config(&#34;config/config.yaml&#34;)
+        self.window: Window = Window()
+        self.game_state: str = &#34;MAIN_MENU&#34;
+        self.clock: pygame.time.Clock = pygame.time.Clock()
+        self.game_board: Optional[GameBoard] = None
+        self.player: Optional[Player] = None
+        self.game_screen: Optional[GameScreen] = None
+        self.logger.info(&#34;GameLoop initialized&#34;)
+        self.difficulty = (
+            &#34;hard&#34;
+            if self.config[&#34;options&#34;][&#34;difficulty&#34;] == 1
+            else &#34;medium&#34; if self.config[&#34;options&#34;][&#34;difficulty&#34;] == 0 else &#34;easy&#34;
+        )
+        self.logger.info(f&#34;Game difficulty set to: {self.difficulty}&#34;)
+
+    def _load_config(self, config_path: str) -&gt; dict:
+        &#34;&#34;&#34;
+        Load and validate the configuration from a YAML file.
+
+        Args:
+            config_path (str): The path to the configuration file.
+
+        Returns:
+            dict: The loaded configuration dictionary.
+        &#34;&#34;&#34;
+        try:
+            with open(config_path, &#34;r&#34;) as f:
+                config = yaml.safe_load(f)
+            # Validate required config keys
+            required_keys = [&#34;options.difficulty&#34;, &#34;options.sound&#34;, &#34;options.debug&#34;]
+            for key in required_keys:
+                if self._nested_get(config, key.split(&#34;.&#34;)) is None:
+                    raise ValueError(f&#34;Missing required config key: {key}&#34;)
+            self.logger.info(&#34;Menu configuration loaded and validated&#34;)
+            return config
+        except Exception as e:
+            self.logger.error(
+                f&#34;Failed to load or validate menu configuration: {e}&#34;, exc_info=True
+            )
+            # Return a default configuration
+            return {&#34;options&#34;: {&#34;difficulty&#34;: 0, &#34;sound&#34;: True, &#34;debug&#34;: False}}
+
+    def _nested_get(self, d: dict, keys: list) -&gt; Union[dict, None]:
+        &#34;&#34;&#34;
+        Get a nested value from a dictionary using a list of keys.
+
+        Args:
+            d (dict): The dictionary to search.
+            keys (list): The list of keys representing the path to the desired value.
+
+        Returns:
+            Any: The value at the specified nested location, or None if not found.
+        &#34;&#34;&#34;
+        for key in keys:
+            d = d.get(key)
+            if d is None:
+                return None
+        return d
+
+    def _refresh_config(self) -&gt; None:
+        &#34;&#34;&#34;
+        Refresh the game configuration based on the current settings.
+        &#34;&#34;&#34;
+        self.config = self._load_config(&#34;config/config.yaml&#34;)
+        self.difficulty = (
+            &#34;hard&#34;
+            if self.config[&#34;options&#34;][&#34;difficulty&#34;] == 1
+            else &#34;medium&#34; if self.config[&#34;options&#34;][&#34;difficulty&#34;] == 0 else &#34;easy&#34;
+        )
+
+    def run(self) -&gt; None:
+        &#34;&#34;&#34;
+        Run the main game loop.
+
+        This method handles the game state transitions and calls the appropriate
+        methods based on the current game state.
+        &#34;&#34;&#34;
+        self.logger.info(&#34;Starting game loop&#34;)
+        while True:
+            try:
+                if self.game_state == &#34;MAIN_MENU&#34;:
+                    self.game_state = run_menu(self.window)
+                elif self.game_state == &#34;START_GAME&#34;:
+                    self.start_new_game()
+                elif self.game_state == &#34;PLAYING&#34;:
+                    self.play_game()
+                elif self.game_state == &#34;GAME_OVER&#34;:
+                    self.show_game_over()
+                elif self.game_state == &#34;QUIT&#34;:
+                    self.quit_game()
+                    break
+                else:
+                    self.logger.error(f&#34;Unknown game state: {self.game_state}&#34;)
+                    self.game_state = &#34;MAIN_MENU&#34;
+
+                self.clock.tick(60)  # Limit the frame rate to 60 FPS
+            except Exception as e:
+                self.logger.error(
+                    f&#34;An error occurred in the game loop: {e}&#34;, exc_info=True
+                )
+                self.game_state = &#34;MAIN_MENU&#34;
+
+    def start_new_game(self) -&gt; None:
+        &#34;&#34;&#34;
+        Start a new game by initializing the game board, player, and game screen.
+        &#34;&#34;&#34;
+        try:
+            self.logger.info(&#34;Starting new game&#34;)
+            self._refresh_config()
+            self.game_board = GameBoard(self.difficulty)
+            self.player = Player(&#34;Player 1&#34;, self.game_board)
+            self.game_screen = GameScreen(self.window, self.game_board, self.player)
+            self.game_state = &#34;PLAYING&#34;
+        except Exception as e:
+            self.logger.error(f&#34;Error starting new game: {e}&#34;, exc_info=True)
+            self.game_state = &#34;MAIN_MENU&#34;
+
+    def play_game(self) -&gt; None:
+        &#34;&#34;&#34;
+        Handle the main gameplay loop, including drawing the game screen and processing input.
+        &#34;&#34;&#34;
+        try:
+            if self.game_screen is None:
+                raise ValueError(&#34;Game screen is not initialized&#34;)
+
+            self.game_screen.draw()
+            action = self.game_screen.handle_input()
+
+            if action == &#34;QUIT&#34;:
+                self.game_state = &#34;QUIT&#34;
+            elif action == &#34;MAIN_MENU&#34;:
+                self.game_state = &#34;MAIN_MENU&#34;
+            elif self.check_game_over():
+                self.game_state = &#34;GAME_OVER&#34;
+        except Exception as e:
+            self.logger.error(f&#34;Error during gameplay: {e}&#34;, exc_info=True)
+            self.game_state = &#34;MAIN_MENU&#34;
+
+    def check_game_over(self) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if the game is over based on the player&#39;s score and guessed atoms.
+
+        Returns:
+            bool: True if the game is over, False otherwise.
+        &#34;&#34;&#34;
+        try:
+            if self.player is None or self.game_board is None:
+                raise ValueError(&#34;Player or game board is not initialized&#34;)
+
+            if self.player.get_score() &lt;= 0:
+                self.logger.info(&#34;Game over: Player ran out of points&#34;)
+                return True
+            if self.game_board.all_atoms_guessed(self.player.get_guessed_atoms()):
+                self.logger.info(&#34;Game over: All atoms guessed correctly&#34;)
+                return True
+            return False
+        except Exception as e:
+            self.logger.error(f&#34;Error checking game over condition: {e}&#34;)
+            return True
+
+    def show_game_over(self) -&gt; None:
+        &#34;&#34;&#34;
+        Display the game over screen and handle input for returning to the main menu.
+        &#34;&#34;&#34;
+        try:
+            self.window.clear()
+
+            if self.player.get_score() &lt;= 0:
+                self.game_screen.show_game_over()
+            else:
+                self.game_screen.show_game_finished()
+
+            waiting = True
+            while waiting:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.game_state = &#34;QUIT&#34;
+                        waiting = False
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                        self.game_state = &#34;MAIN_MENU&#34;
+                        waiting = False
+        except Exception as e:
+            self.logger.error(f&#34;Error displaying game over screen: {e}&#34;)
+            self.game_state = &#34;MAIN_MENU&#34;
+
+    def show_game_finished(self) -&gt; None:
+        &#34;&#34;&#34;
+        Display the game finished screen.
+
+        This method shows the final score and a message indicating the end of the game.
+        &#34;&#34;&#34;
+        try:
+            self.window.clear()
+            font = pygame.font.Font(None, 36)
+            game_finished_text = font.render(
+                &#34;Game Finished, Press Space to go to main menu.&#34;, True, COLOR_WHITE
+            )
+            score_text = font.render(
+                f&#34;Final Score: {self.player.get_score()}&#34;, True, COLOR_WHITE
+            )
+
+            self.window.get_screen().blit(
+                game_finished_text,
+                (
+                    self.window.width // 2 - game_finished_text.get_width() // 2,
+                    self.window.height // 2 - 50,
+                ),
+            )
+            self.window.get_screen().blit(
+                score_text,
+                (
+                    self.window.width // 2 - score_text.get_width() // 2,
+                    self.window.height // 2 + 50,
+                ),
+            )
+
+            self.window.update()
+
+            waiting = True
+            while waiting:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.game_state = &#34;QUIT&#34;
+                        waiting = False
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                        self.game_state = &#34;MAIN_MENU&#34;
+                        waiting = False
+        except Exception as e:
+            self.logger.error(f&#34;Error displaying game over screen: {e}&#34;)
+            self.game_state = &#34;MAIN_MENU&#34;
+
+    def quit_game(self) -&gt; None:
+        &#34;&#34;&#34;
+        Perform cleanup operations and quit the game.
+        &#34;&#34;&#34;
+        try:
+            self.logger.info(&#34;Quitting game&#34;)
+            self.window.quit()
+        except Exception as e:
+            self.logger.error(f&#34;Error quitting game: {e}&#34;)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="src.gameloop.GameLoop.check_game_over"><code class="name flex">
+<span>def <span class="ident">check_game_over</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if the game is over based on the player's score and guessed atoms.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the game is over, False otherwise.</dd>
+</dl></div>
+</dd>
+<dt id="src.gameloop.GameLoop.play_game"><code class="name flex">
+<span>def <span class="ident">play_game</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handle the main gameplay loop, including drawing the game screen and processing input.</p></div>
+</dd>
+<dt id="src.gameloop.GameLoop.quit_game"><code class="name flex">
+<span>def <span class="ident">quit_game</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Perform cleanup operations and quit the game.</p></div>
+</dd>
+<dt id="src.gameloop.GameLoop.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the main game loop.</p>
+<p>This method handles the game state transitions and calls the appropriate
+methods based on the current game state.</p></div>
+</dd>
+<dt id="src.gameloop.GameLoop.show_game_finished"><code class="name flex">
+<span>def <span class="ident">show_game_finished</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Display the game finished screen.</p>
+<p>This method shows the final score and a message indicating the end of the game.</p></div>
+</dd>
+<dt id="src.gameloop.GameLoop.show_game_over"><code class="name flex">
+<span>def <span class="ident">show_game_over</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Display the game over screen and handle input for returning to the main menu.</p></div>
+</dd>
+<dt id="src.gameloop.GameLoop.start_new_game"><code class="name flex">
+<span>def <span class="ident">start_new_game</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Start a new game by initializing the game board, player, and game screen.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src" href="index.html">src</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.gameloop.GameLoop" href="#src.gameloop.GameLoop">GameLoop</a></code></h4>
+<ul class="two-column">
+<li><code><a title="src.gameloop.GameLoop.check_game_over" href="#src.gameloop.GameLoop.check_game_over">check_game_over</a></code></li>
+<li><code><a title="src.gameloop.GameLoop.play_game" href="#src.gameloop.GameLoop.play_game">play_game</a></code></li>
+<li><code><a title="src.gameloop.GameLoop.quit_game" href="#src.gameloop.GameLoop.quit_game">quit_game</a></code></li>
+<li><code><a title="src.gameloop.GameLoop.run" href="#src.gameloop.GameLoop.run">run</a></code></li>
+<li><code><a title="src.gameloop.GameLoop.show_game_finished" href="#src.gameloop.GameLoop.show_game_finished">show_game_finished</a></code></li>
+<li><code><a title="src.gameloop.GameLoop.show_game_over" href="#src.gameloop.GameLoop.show_game_over">show_game_over</a></code></li>
+<li><code><a title="src.gameloop.GameLoop.start_new_game" href="#src.gameloop.GameLoop.start_new_game">start_new_game</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>
