@@ -127,19 +127,34 @@ class GameScreenMP:
         then updates the display.
         """
         try:
-            self.window.clear()
-            self.draw_grid()
-            self.draw_atoms(self.game_board.atoms)
-            if not self.history:
-                self.draw_Active_rays_debug()
-                self.draw_current_guess()
+            if self.current_player == self.players[0]:
+                self.window.clear()
+                self.draw_grid()
+                self.draw_atoms(self.game_board1.atoms)
+                if not self.history:
+                    self.draw_Active_rays_debug()
+                    self.draw_current_guess()
+                else:
+                    self.draw_all_rays_debug()
+                    self.draw_all_guesses()
+                self.draw_guesses()
+                self.draw_score()
+                self.draw_buttons()
+                self.window.update()
             else:
-                self.draw_all_rays_debug()
-                self.draw_all_guesses()
-            self.draw_guesses()
-            self.draw_score()
-            self.draw_buttons()
-            self.window.update()
+                self.window.clear()
+                self.draw_grid()
+                self.draw_atoms(self.game_board2.atoms)
+                if not self.history:
+                    self.draw_Active_rays_debug()
+                    self.draw_current_guess()
+                else:
+                    self.draw_all_rays_debug()
+                    self.draw_all_guesses()
+                self.draw_guesses()
+                self.draw_score()
+                self.draw_buttons()
+                self.window.update()
         except pygame.error as e:
             logging.error(f"Error drawing game screen: {e}")
 
