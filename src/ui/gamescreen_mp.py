@@ -36,30 +36,38 @@ class GameScreenMP:
     """
 
     def __init__(
-        self, window: Window, game_board: GameBoard, player1: Player, player2: Player
+        self,
+        window: Window,
+        game_board1: GameBoard,
+        game_board2: GameBoard,
+        player1: Player,
+        player2: Player,
     ):
         """
         Initialize the GameScreen.
 
         Args:
             window (Window): The game window.
-            game_board (GameBoard): The game board.
-            player (Player): The current player.
+            game_board1 (GameBoard): The game board for player 1.
+            game_board2 (GameBoard): The game board for player 2.
+            player1 (Player): Player 1.
+            player2 (Player): Player 2.
 
         Raises:
             ValueError: If the window, game_board, or player is None.
         """
-        if not all([window, game_board, player1, player2]):
+        if not all([window, game_board1, game_board2, player1, player2]):
             raise ValueError("Window, game_board, and player must not be None")
 
         self.window = window
-        self.game_board = game_board
+        self.game_board1 = game_board1
+        self.game_board2 = game_board2
         self.players = [player1, player2]
         self.current_player = player1
-        self.cell_size = min(window.width, window.height) // (game_board.size + 2)
+        self.cell_size = min(window.width, window.height) // (game_board1.size + 2)
         self.board_offset = (
-            (window.width - self.cell_size * game_board.size) // 2,
-            (window.height - self.cell_size * game_board.size) // 2,
+            (window.width - self.cell_size * game_board1.size) // 2,
+            (window.height - self.cell_size * game_board1.size) // 2,
         )
         self.font = pygame.font.Font(None, 24)
         self.history = False
