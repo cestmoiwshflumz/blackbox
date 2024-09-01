@@ -122,6 +122,10 @@ class GameLoop:
                     self.play_game()
                 elif self.game_state == "GAME_OVER":
                     self.show_game_over()
+                elif self.game_state == "PLAYING_MP":
+                    self.play_game_mp()
+                elif self.game_state == "GAME_OVER_MP":
+                    self.show_game_over_mp()
                 elif self.game_state == "QUIT":
                     self.quit_game()
                     break
