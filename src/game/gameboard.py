@@ -85,6 +85,28 @@ class GameBoard:
                 self.atoms.append(atom)
                 self.grid[y][x] = atom
 
+    def set_cell(self, x: int, y: int, value: Optional[Atom]) -> None:
+        """
+        Set the content of a cell on the grid.
+
+        Args:
+            x (int): The x-coordinate of the cell.
+            y (int): The y-coordinate of the cell.
+            value (Optional[Atom]): The value to set in the cell (Atom or None for empty).
+        """
+        if value is not None:
+            self.grid[y][x] = value
+            self.place_atom(value)
+
+    def place_atom(self, atom: Atom) -> None:
+        """
+        Place an atom on the grid.
+
+        Args:
+            atom (Atom): The Atom object to place on the grid.
+        """
+        self.atoms.append(atom)
+
     def is_empty(self, x: int, y: int) -> bool:
         """
         Check if a cell is empty.

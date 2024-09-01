@@ -226,6 +226,161 @@ class GameScreenMP:
         except pygame.error as e:
             logging.error(f"Error drawing atoms: {e}")
 
+    def draw_Active_rays_debug(self) -> None:
+        """
+        Draw fired rays of the current turn on the game screen.
+
+        This method iterates through all fired rays of the current turn and draws them on the screen.
+        """
+        for ray in self.current_player.get_active_turn_rays():
+            self.draw_ray_debug(ray)
+
+    def draw_all_rays_debug(self) -> None:
+        """
+        Draw all rays fired on the game screen.
+
+        This method iterates through all fired rays and draws them on the screen.
+        """
+        for ray in self.current_player.get_fired_rays():
+            self.draw_ray_debug(ray)
+
+    def draw_ray_debug(self, ray: Ray) -> None:
+        """
+        Draw a single ray on the game screen.
+
+        Args:
+            ray (Ray): The ray to be drawn.
+        """
+        if self.check_ray_detoured(ray):
+            pass
+        try:
+            color = COLOR_RED if ray.exit_point is None else COLOR_GREEN
+            for i in range(len(ray.path) - 1):
+                start = self.get_screen_position(ray.path[i])
+                end = self.get_screen_position(ray.path[i + 1])
+                self.window.draw_line(color, start, end, 2)
+        except pygame.error as e:
+            logging.error(f"Error drawing ray: {e}", exc_info=True)
+
+    def draw_active_rays_normal(self) -> None:
+        """
+        Draw fired rays of the current turn on the game screen.
+
+        This method iterates through all fired rays of the current turn and draws them on the screen.
+        """
+        for ray in self.current_player.get_active_turn_rays():
+            self.draw_ray_normal(ray)
+
+    def draw_all_rays_normal(self) -> None:
+        """
+        Draw all rays fired on the game screen.
+
+        This method iterates through all fired rays and draws them on the screen.
+        """
+        for ray in self.current_player.get_fired_rays():
+            self.draw_ray_normal(ray)
+
+    def draw_ray_normal(self, ray: Ray) -> None:
+        """
+        Only draw the entry and the exit points of the ray.
+
+        Args:
+            ray (Ray): The ray to be drawn.
+        """
+        if self.check_ray_detoured(ray):
+            pass
+        try:
+            color = COLOR_RED if ray.exit_point is None else COLOR_GREEN
+            if ray.entry_point is not None:
+                start = self.get_screen_position(ray.entry_point)
+                self.window.draw_circle(color, start, self.cell_size // 4)
+            if ray.exit_point is not None:
+                end = self.get_screen_position(ray.exit_point)
+                self.window.draw_circle(color, end, self.cell_size // 4)
+        except pygame.error as e:
+            logging.error(f"Error drawing ray: {e}", exc_info=True)
+
+    def draw_guesses(self) -> None:
+        """
+        Draw all guessed atom positions on the game screen.
+
+        This method iterates through all guessed atoms and draws them on the screen.
+        """
+        try:
+            for guess in self.current_player.get_guessed_atoms():
+                pos = self.get_screen_position(guess.get_position())
+                self.window.draw_circle(COLOR_GREEN, pos, self.cell_size // 4)
+        except pygame.error as e:
+            logging.error(f"Error drawing guesses: {e}", exc_info=True)
+
+    def draw_current_guess(self) -> None:
+        """
+        Draw the current guessed atom position on the game screen.
+        """
+        try:
+            for guess in self.current_player.get_active_turn_guesses():
+                pos = self.get_screen_position(guess)
+                self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
+        except pygame.error as e:
+            logging.error(f"Error drawing current guess: {e}", exc_info=True)
+
+    def draw_all_guesses(self) -> None:
+        """
+        Draw all guessed atom positions on the game screen.
+
+        This method iterates through all guessed atoms and draws them on the screen.
+        """
+        try:
+            for guess in self.current_player.get_guesses():
+                pos = self.get_screen_position(guess)
+                self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
+        except pygame.error as e:
+            logging.error(f"Error drawing guesses: {e}", exc_info=True)
+
+    def draw_score(self) -> None:
+        """
+        Draw the current player's score on the game screen.
+        """
+        try:
+            score_text = f"Score: {self.current_player.get_score()}"
+            text_surface = self.font.render(score_text, True, COLOR_WHITE)
+            self.window.get_screen().blit(text_surface, (10, 10))
+        except pygame.error as e:
+            logging.error(f"Error drawing score: {e}", exc_info=True)
+
+    def draw_button(
+        self,
+        text: str,
+        pos: Tuple[int, int],
+        size: Tuple[int, int],
+        color: Tuple[int, int, int],
+    ) -> None:
+        """
+        Draw a button on the game screen.
+
+        Args:
+            text (str): The text to display on the button.
+            pos (Tuple[int, int]): The position of the button on the screen.
+            size (Tuple[int, int]): The size of the button.
+            color (Tuple[int, int, int]): The color of the button.
+        """
+        try:
+            rect = pygame.Rect(pos[0], pos[1], size[0], size[1])
+            pygame.draw.rect(self.window.get_screen(), color, rect)
+            text_surface = self.font.render(text, True, COLOR_WHITE)
+            text_rect = text_surface.get_rect(center=rect.center)
+            self.window.get_screen().blit(text_surface, text_rect)
+        except pygame.error as e:
+            logging.error(f"Error drawing button: {e}", exc_info=True)
+
+    def draw_buttons(self) -> None:
+        """
+        Draw all buttons on the game screen.
+        """
+        self.draw_button("Next turn", (10, 100), (100, 40), COLOR_BLUE)
+        self.draw_button("Show History", (10, 150), (100, 40), COLOR_BLUE)
+        self.draw_button("Quit", (10, 200), (100, 40), COLOR_RED)
+
     def get_screen_position(self, board_pos: Tuple[int, int]) -> Tuple[int, int]:
         """
         Convert a board position to screen coordinates.
@@ -255,3 +410,48 @@ class GameScreenMP:
             (screen_pos[0] - self.board_offset[0]) // self.cell_size,
             (screen_pos[1] - self.board_offset[1]) // self.cell_size,
         )
+
+    def get_detour_positions(self, screen_pos: Tuple[int, int]) -> Tuple[int, int]:
+        """
+        Convert screen coordinates to a board position.
+
+        Args:
+            screen_pos (Tuple[int, int]): The position on the screen.
+
+        Returns:
+            Tuple[int, int]: The corresponding position on the game board.
+        """
+        return (
+            (screen_pos[0] - self.board_offset[0]) // (self.cell_size // 2),
+            (screen_pos[1] - self.board_offset[1]) // (self.cell_size // 2),
+        )
+
+    def check_ray_detoured(self, ray: Ray) -> bool:
+        """
+        Check if a ray has been detoured by atoms.
+
+        Args:
+            ray (Ray): The ray to check.
+
+        Returns:
+            bool: True if the ray has been detoured, False otherwise.
+        """
+        return ray.is_detoured
+
+    def handle_draw_detour(self, ray: Ray) -> None:
+        """
+        Handle the drawing of a detoured ray.
+
+        Args:
+            ray (Ray): The detoured ray to draw.
+        """
+        color = COLOR_GREEN
+        try:
+            for i in range(len(ray.path) - 1):
+                start = self.get_detour_positions(ray.path[i])
+                end = self.get_detour_positions(ray.path[i + 1])
+                self.window.draw_line(color, start, end, 2)
+        except pygame.error as e:
+            logging.error(f"Error drawing detoured ray: {e}", exc_info=True)
+        except Exception as e:
+            logging.error(f"Error handling detoured ray: {e}", exc_info=True)
