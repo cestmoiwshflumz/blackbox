@@ -197,16 +197,16 @@ class GameScreenMP:
         This method draws both vertical and horizontal lines to create the game grid.
         """
         try:
-            for i in range(self.game_board.size + 1):
+            for i in range(self.game_board1.size + 1):
                 start_x = self.board_offset[0] + i * self.cell_size
                 start_y = self.board_offset[1]
                 end_x = start_x
-                end_y = start_y + self.game_board.size * self.cell_size
+                end_y = start_y + self.game_board1.size * self.cell_size
                 self.window.draw_line(COLOR_WHITE, (start_x, start_y), (end_x, end_y))
 
                 start_x = self.board_offset[0]
                 start_y = self.board_offset[1] + i * self.cell_size
-                end_x = start_x + self.game_board.size * self.cell_size
+                end_x = start_x + self.game_board1.size * self.cell_size
                 end_y = start_y
                 self.window.draw_line(COLOR_WHITE, (start_x, start_y), (end_x, end_y))
         except pygame.error as e:
