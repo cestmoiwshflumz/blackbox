@@ -25,7 +25,13 @@ class Menu:
         self.window = window
         self.logger = game_logger
         self.font = pygame.font.Font(None, 36)
-        self.menu_items = ["Start Game", "Instructions", "Options", "Quit"]
+        self.menu_items = [
+            "Start Game",
+            "Multiplayer",
+            "Instructions",
+            "Options",
+            "Quit",
+        ]
         self.selected_item = 0
 
     def draw(self):
@@ -337,7 +343,7 @@ def run_menu(window):
 
         if action == "QUIT":
             return "QUIT"
-        elif action in ["START_GAME", "INSTRUCTIONS", "OPTIONS"]:
+        elif action in ["START_GAME", "MULTIPLAYER", "INSTRUCTIONS", "OPTIONS"]:
             current_screen = action
         elif action == "MAIN_MENU":
             current_screen = "MAIN_MENU"

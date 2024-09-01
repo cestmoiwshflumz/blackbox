@@ -8,6 +8,7 @@ from typing import Union
 from src.ui.window import Window
 from src.ui.menu import run_menu
 from src.ui.gamescreen_solo import GameScreen
+from src.ui.gamescreen_mp import GameScreenMP
 from src.game.gameboard import GameBoard
 from src.game.player import Player
 from src.utils.log_instances import game_logger
@@ -40,7 +41,7 @@ class GameLoop:
         self.clock: pygame.time.Clock = pygame.time.Clock()
         self.game_board: Optional[GameBoard] = None
         self.player: Optional[Player] = None
-        self.game_screen: Optional[GameScreen] = None
+        self.game_screen: Union[Optional[GameScreen] | Optional[GameScreenMP]] = None
         self.logger.info("GameLoop initialized")
         self.difficulty = (
             "hard"
@@ -118,6 +119,8 @@ class GameLoop:
                     self.game_state = run_menu(self.window)
                 elif self.game_state == "START_GAME":
                     self.start_new_game()
+                elif self.game_state == "MULTIPLAYER":
+                    self.start_new_game_mp()
                 elif self.game_state == "PLAYING":
                     self.play_game()
                 elif self.game_state == "GAME_OVER":
@@ -155,6 +158,31 @@ class GameLoop:
             self.logger.error(f"Error starting new game: {e}", exc_info=True)
             self.game_state = "MAIN_MENU"
 
+    def start_new_game_mp(self) -> None:
+        """
+        Start a new multiplayer game by initializing the game boards, players, and game screen.
+        """
+        try:
+            self.logger.info("Starting new multiplayer game")
+            self._refresh_config()
+            self.game_board1 = GameBoard(self.difficulty)
+            self.game_board2 = GameBoard(self.difficulty)
+            self.player1 = Player("Player 1", self.game_board1)
+            self.player2 = Player("Player 2", self.game_board2)
+            self.game_screen = GameScreenMP(
+                self.window,
+                self.game_board1,
+                self.game_board2,
+                self.player1,
+                self.player2,
+            )
+            self.game_state = "PLAYING_MP"
+        except Exception as e:
+            self.logger.error(
+                f"Error starting new multiplayer game: {e}", exc_info=True
+            )
+            self.game_state = "MAIN_MENU"
+
     def play_game(self) -> None:
         """
         Handle the main gameplay loop, including drawing the game screen and processing input.
@@ -174,6 +202,27 @@ class GameLoop:
                 self.game_state = "GAME_OVER"
         except Exception as e:
             self.logger.error(f"Error during gameplay: {e}", exc_info=True)
+            self.game_state = "MAIN_MENU"
+
+    def play_game_mp(self) -> None:
+        """
+        Handle the main multiplayer gameplay loop, including drawing the game screen and processing input.
+        """
+        try:
+            if self.game_screen is None:
+                raise ValueError("Game screen is not initialized")
+
+            self.game_screen.draw()
+            action = self.game_screen.handle_input()
+
+            if action == "QUIT":
+                self.game_state = "QUIT"
+            elif action == "MAIN_MENU":
+                self.game_state = "MAIN_MENU"
+            elif self.check_game_over_mp():
+                self.game_state = "GAME_OVER_MP"
+        except Exception as e:
+            self.logger.error(f"Error during multiplayer gameplay: {e}", exc_info=True)
             self.game_state = "MAIN_MENU"
 
     def check_game_over(self) -> bool:
@@ -196,6 +245,34 @@ class GameLoop:
             return False
         except Exception as e:
             self.logger.error(f"Error checking game over condition: {e}")
+            return True
+
+    def check_game_over_mp(self) -> bool:
+        """
+        Check if the multiplayer game is over based on the player's score and guessed atoms.
+
+        Returns:
+            bool: True if the game is over, False otherwise.
+        """
+        try:
+            if self.player1 is None or self.game_board1 is None:
+                raise ValueError("Player or game board is not initialized")
+
+            if self.player1.get_score() <= 0:
+                self.logger.info("Game over: Player 1 ran out of points")
+                return True
+            if self.game_board1.all_atoms_guessed(self.player1.get_guessed_atoms()):
+                self.logger.info("Game over: All atoms guessed correctly by Player 1")
+                return True
+            if self.player2.get_score() <= 0:
+                self.logger.info("Game over: Player 2 ran out of points")
+                return True
+            if self.game_board2.all_atoms_guessed(self.player2.get_guessed_atoms()):
+                self.logger.info("Game over: All atoms guessed correctly by Player 2")
+                return True
+            return False
+        except Exception as e:
+            self.logger.error(f"Error checking multiplayer game over condition: {e}")
             return True
 
     def show_game_over(self) -> None:
@@ -221,6 +298,33 @@ class GameLoop:
                         waiting = False
         except Exception as e:
             self.logger.error(f"Error displaying game over screen: {e}")
+            self.game_state = "MAIN_MENU"
+
+    def show_game_over_mp(self) -> None:
+        """
+        Display the multiplayer game over screen and handle input for returning to the main menu.
+        """
+        try:
+            self.window.clear()
+
+            if self.player1.get_score() <= 0 or self.player2.get_score() <= 0:
+                self.game_screen.show_game_over()
+            elif self.game_board1.all_atoms_guessed(
+                self.player1.get_guessed_atoms()
+            ) or self.game_board2.all_atoms_guessed(self.player2.get_guessed_atoms()):
+                self.game_screen.show_game_over()
+
+            waiting = True
+            while waiting:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.game_state = "QUIT"
+                        waiting = False
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                        self.game_state = "MAIN_MENU"
+                        waiting = False
+        except Exception as e:
+            self.logger.error(f"Error displaying multiplayer game over screen: {e}")
             self.game_state = "MAIN_MENU"
 
     def show_game_finished(self) -> None:
