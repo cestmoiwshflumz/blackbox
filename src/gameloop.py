@@ -3,7 +3,7 @@
 import pygame
 from typing import Optional
 import yaml
-from typing import Union
+from typing import Union, List
 
 from src.ui.window import Window
 from src.ui.menu import run_menu
@@ -48,6 +48,7 @@ class GameLoop:
             if self.config["options"]["difficulty"] == 1
             else "medium" if self.config["options"]["difficulty"] == 0 else "easy"
         )
+        self.bo5 = [0, 0]
         self.logger.info(f"Game difficulty set to: {self.difficulty}")
 
     def _load_config(self, config_path: str) -> dict:
@@ -120,7 +121,7 @@ class GameLoop:
                 elif self.game_state == "START_GAME":
                     self.start_new_game()
                 elif self.game_state == "MULTIPLAYER":
-                    self.start_new_game_mp()
+                    self.start_new_game_mp(self.bo5)
                 elif self.game_state == "PLAYING":
                     self.play_game()
                 elif self.game_state == "GAME_OVER":
@@ -158,7 +159,7 @@ class GameLoop:
             self.logger.error(f"Error starting new game: {e}", exc_info=True)
             self.game_state = "MAIN_MENU"
 
-    def start_new_game_mp(self) -> None:
+    def start_new_game_mp(self, bo5: List[int]) -> None:
         """
         Start a new multiplayer game by initializing the game boards, players, and game screen.
         """
@@ -175,6 +176,7 @@ class GameLoop:
                 self.game_board2,
                 self.player1,
                 self.player2,
+                bo5,
             )
             waiting = True
             while waiting:
@@ -264,15 +266,19 @@ class GameLoop:
                 raise ValueError("Player or game board is not initialized")
 
             if self.player1.get_score() <= 0:
+                self.bo5[1] += 1
                 self.logger.info("Game over: Player 1 ran out of points")
                 return True
             if self.game_board2.all_atoms_guessed(self.player1.get_guessed_atoms()):
+                self.bo5[0] += 1
                 self.logger.info("Game over: All atoms guessed correctly by Player 1")
                 return True
             if self.player2.get_score() <= 0:
+                self.bo5[0] += 1
                 self.logger.info("Game over: Player 2 ran out of points")
                 return True
             if self.game_board1.all_atoms_guessed(self.player2.get_guessed_atoms()):
+                self.bo5[1] += 1
                 self.logger.info("Game over: All atoms guessed correctly by Player 2")
                 return True
             return False
@@ -312,22 +318,53 @@ class GameLoop:
         try:
             self.window.clear()
 
-            if self.player1.get_score() <= 0 or self.player2.get_score() <= 0:
-                self.game_screen.show_game_over()
-            elif self.game_board2.all_atoms_guessed(
-                self.player1.get_guessed_atoms()
-            ) or self.game_board1.all_atoms_guessed(self.player2.get_guessed_atoms()):
-                self.game_screen.show_game_over()
+            if self.bo5[0] == 3:
+                self.game_screen.show_game_finished("Player 1")
+                waiting = True
+                while waiting:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            self.game_state = "QUIT"
+                            waiting = False
+                        elif (
+                            event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE
+                        ):
+                            self.game_state = "MAIN_MENU"
+                            waiting = False
+            elif self.bo5[1] == 3:
+                self.game_screen.show_game_finished("Player 2")
+                waiting = True
+                while waiting:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            self.game_state = "QUIT"
+                            waiting = False
+                        elif (
+                            event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE
+                        ):
+                            self.game_state = "MAIN_MENU"
+                            waiting = False
+            else:
+                if self.player1.get_score() <= 0 or self.player2.get_score() <= 0:
+                    self.game_screen.show_game_over()
+                elif self.game_board2.all_atoms_guessed(
+                    self.player1.get_guessed_atoms()
+                ) or self.game_board1.all_atoms_guessed(
+                    self.player2.get_guessed_atoms()
+                ):
+                    self.game_screen.show_game_over()
 
-            waiting = True
-            while waiting:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.game_state = "QUIT"
-                        waiting = False
-                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                        self.game_state = "MAIN_MENU"
-                        waiting = False
+                waiting = True
+                while waiting:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            self.game_state = "QUIT"
+                            waiting = False
+                        elif (
+                            event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE
+                        ):
+                            self.game_state = "MULTIPLAYER"
+                            waiting = False
         except Exception as e:
             self.logger.error(f"Error displaying multiplayer game over screen: {e}")
             self.game_state = "MAIN_MENU"

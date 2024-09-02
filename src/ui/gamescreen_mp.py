@@ -42,6 +42,7 @@ class GameScreenMP:
         game_board2: GameBoard,
         player1: Player,
         player2: Player,
+        bo5: List[int],
     ):
         """
         Initialize the GameScreen.
@@ -73,6 +74,7 @@ class GameScreenMP:
         self.font = pygame.font.Font(None, 24)
         self.history = False
         self.early_game = True
+        self.bo5 = bo5
 
         # Load and validate the game configuration
         self.config = self._load_config("config/config.yaml")
@@ -678,6 +680,19 @@ class GameScreenMP:
         except pygame.error as e:
             logging.error(f"Error highlighting cell: {e}")
 
+    def handle_bo5(self) -> str:
+        """
+        Handle the best of 5 rounds.
+
+        Returns:
+            str: A string indicating the action to be taken ('QUIT', 'MAIN_MENU', or 'CONTINUE').
+        """
+        if self.bo5[0] == 3:
+            return "Player1 Wins!"
+        elif self.bo5[1] == 3:
+            return "Player2 Wins!"
+        return "CONTINUE"
+
     def show_game_over(self) -> None:
         """
         Display the game over screen.
@@ -693,17 +708,52 @@ class GameScreenMP:
             if score1 > score2:
                 game_over_text = self.font.render("Player1 Wins!", True, COLOR_WHITE)
                 score_text = self.font.render(
-                    f"Final Score: Player1: {score1} -- Player2 {score2}. Press Space to main menu",
+                    f"Final Score: Player1: {score1} -- Player2: {score2}. Press Space to continue or escape to quit",
                     True,
                     COLOR_WHITE,
                 )
             else:
                 game_over_text = self.font.render("Player2 Wins!", True, COLOR_WHITE)
                 score_text = self.font.render(
-                    f"Final Score: Player1: {score1} -- Player2 {score2}. Press Space to main menu",
+                    f"Final Score: Player1: {score1} -- Player2 {score2}. Press Space to continue or escape to quit",
                     True,
                     COLOR_WHITE,
                 )
+
+            self.window.get_screen().blit(
+                game_over_text,
+                (
+                    self.window.width // 2 - game_over_text.get_width() // 2,
+                    self.window.height // 2 - 50,
+                ),
+            )
+            self.window.get_screen().blit(
+                score_text,
+                (
+                    self.window.width // 2 - score_text.get_width() // 2,
+                    self.window.height // 2 + 50,
+                ),
+            )
+
+            self.window.update()
+        except pygame.error as e:
+            logging.error(f"Error showing game over screen: {e}")
+
+    def show_game_finished(self, winner: str) -> None:
+        """
+        Display the game over screen.
+
+        This method shows the final score and a message indicating the end of the game.
+        """
+        try:
+            self.window.clear()
+
+            game_over_text = self.font.render(f"{winner} Wins!", True, COLOR_WHITE)
+            score_text = self.font.render(
+                f"Press Space to continue",
+                True,
+                COLOR_WHITE,
+            )
 
             self.window.get_screen().blit(
                 game_over_text,
