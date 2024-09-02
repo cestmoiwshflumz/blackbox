@@ -129,6 +129,8 @@ class GameScreenMP:
         then updates the display.
         """
         try:
+            if self.early_game:
+                self.draw_atoms(self.current_game_board.atoms)
             if self.current_player == self.players[0]:
                 self.window.clear()
                 self.draw_grid()
@@ -483,7 +485,7 @@ class GameScreenMP:
                             pos = self.get_board_position(event.pos)
                             if self.is_valid_guess_position(pos):
                                 atom = Atom(pos[0], pos[1])
-                                self.current_game_board.place_atom(atom)
+                                self.current_game_board.set_cell(pos[0], pos[1], atom)
                                 self.draw()
 
             # Second player's turn
@@ -497,7 +499,7 @@ class GameScreenMP:
                             pos = self.get_board_position(event.pos)
                             if self.is_valid_guess_position(pos):
                                 atom = Atom(pos[0], pos[1])
-                                self.current_game_board.place_atom(atom)
+                                self.current_game_board.set_cell(pos[0], pos[1], atom)
                                 self.draw()
 
             # Switch back to the first player

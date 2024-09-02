@@ -189,23 +189,6 @@ class GameBoard:
         """
         return next((atom for atom in self.atoms if atom.x == x and atom.y == y), None)
 
-    def set_cell(self, value: Atom) -> None:
-        """
-        Set the content of a cell.
-
-        Args:
-            value (Atom): The value to set in the cell (Atom).
-
-        Raises:
-            ValueError: If the coordinates are out of bounds or the value is invalid.
-        """
-        self._validate_coordinates(value.x, value.y)
-        if value is not None and not isinstance(value, Atom):
-            raise ValueError(
-                "Invalid cell value. Use None for empty or an Atom instance."
-            )
-        self.grid[value.y][value.x] = value
-
     def all_atoms_guessed(self, guessed_atoms: List[Atom]) -> bool:
         """
         Check if all atoms have been correctly guessed.
