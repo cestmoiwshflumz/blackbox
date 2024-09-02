@@ -350,7 +350,7 @@ class GameScreenMP:
         Draw the current player's score on the game screen.
         """
         try:
-            score_text = f"Score: {self.current_player.get_score()}          {self.current_player.name}'s Turn"
+            score_text = f"Score: {self.current_player.get_score()}          {self.current_player.name}'s Turn "
             text_surface = self.font.render(score_text, True, COLOR_WHITE)
             self.window.get_screen().blit(text_surface, (10, 10))
         except pygame.error as e:
@@ -505,7 +505,9 @@ class GameScreenMP:
 
             self.early_game = False
             self.players[0].gameboard = self.game_board2
+            logging.debug(f"Player 1's gameboard: \n{self.players[0].gameboard}")
             self.players[1].gameboard = self.game_board1
+            logging.debug(f"Player 2's gameboard: \n{self.players[1].gameboard}")
             return True
 
         except Exception as e:

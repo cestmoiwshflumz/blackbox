@@ -105,7 +105,8 @@ class GameBoard:
         Args:
             atom (Atom): The Atom object to place on the grid.
         """
-        self.atoms.append(atom)
+        if self.grid[atom.x][atom.y] is None:
+            self.atoms.append(atom)
 
     def is_empty(self, x: int, y: int) -> bool:
         """
