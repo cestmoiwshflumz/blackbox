@@ -266,13 +266,13 @@ class GameLoop:
             if self.player1.get_score() <= 0:
                 self.logger.info("Game over: Player 1 ran out of points")
                 return True
-            if self.game_board1.all_atoms_guessed(self.player1.get_guessed_atoms()):
+            if self.game_board2.all_atoms_guessed(self.player1.get_guessed_atoms()):
                 self.logger.info("Game over: All atoms guessed correctly by Player 1")
                 return True
             if self.player2.get_score() <= 0:
                 self.logger.info("Game over: Player 2 ran out of points")
                 return True
-            if self.game_board2.all_atoms_guessed(self.player2.get_guessed_atoms()):
+            if self.game_board1.all_atoms_guessed(self.player2.get_guessed_atoms()):
                 self.logger.info("Game over: All atoms guessed correctly by Player 2")
                 return True
             return False
@@ -314,9 +314,9 @@ class GameLoop:
 
             if self.player1.get_score() <= 0 or self.player2.get_score() <= 0:
                 self.game_screen.show_game_over()
-            elif self.game_board1.all_atoms_guessed(
+            elif self.game_board2.all_atoms_guessed(
                 self.player1.get_guessed_atoms()
-            ) or self.game_board2.all_atoms_guessed(self.player2.get_guessed_atoms()):
+            ) or self.game_board1.all_atoms_guessed(self.player2.get_guessed_atoms()):
                 self.game_screen.show_game_over()
 
             waiting = True

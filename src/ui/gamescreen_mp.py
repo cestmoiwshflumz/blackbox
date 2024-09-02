@@ -132,7 +132,7 @@ class GameScreenMP:
             if self.current_player == self.players[0]:
                 self.window.clear()
                 self.draw_grid()
-                self.draw_atoms(self.game_board1.atoms)
+                self.draw_atoms(self.game_board2.atoms)
                 if not self.history:
                     self.draw_Active_rays_debug()
                     self.draw_current_guess()
@@ -146,7 +146,7 @@ class GameScreenMP:
             else:
                 self.window.clear()
                 self.draw_grid()
-                self.draw_atoms(self.game_board2.atoms)
+                self.draw_atoms(self.game_board1.atoms)
                 if not self.history:
                     self.draw_Active_rays_debug()
                     self.draw_current_guess()
@@ -499,6 +499,9 @@ class GameScreenMP:
                                 atom = Atom(pos[0], pos[1])
                                 self.current_game_board.place_atom(atom)
                                 self.draw()
+
+            # Switch back to the first player
+            self.current_player = self.players[0]
 
             self.early_game = False
             self.players[0].gameboard = self.game_board2
