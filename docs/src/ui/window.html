@@ -39,7 +39,8 @@ hljs.highlightAll();
 <span>class <span class="ident">Window</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Represents the game window for the Black Box game.</p></div>
+<div class="desc"><p>Represents the game window for the Black Box game.</p>
+<p>Initialize the Window.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -50,6 +51,9 @@ hljs.highlightAll();
     &#34;&#34;&#34;
 
     def __init__(self):
+        &#34;&#34;&#34;
+        Initialize the Window.
+        &#34;&#34;&#34;
         self.logger = game_logger
         self.logger.info(&#34;Initializing Window&#34;)
 
@@ -72,24 +76,38 @@ hljs.highlightAll();
             self.title = &#34;Black Box Game&#34;
 
     def initialize_pygame(self):
+        &#34;&#34;&#34;
+        Initialize Pygame.
+        &#34;&#34;&#34;
         pygame.init()
         self.logger.info(&#34;Pygame initialized&#34;)
 
     def create_window(self):
+        &#34;&#34;&#34;
+        Create the game window.
+        &#34;&#34;&#34;
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption(self.title)
         self.logger.info(f&#34;Window created: {self.width}x{self.height}&#34;)
 
     def clear(self):
+        &#34;&#34;&#34;
+        Clear the game window.
+        &#34;&#34;&#34;
         self.screen.fill(COLOR_BLACK)
 
     def update(self):
+        &#34;&#34;&#34;
+        Update the game window.
+        &#34;&#34;&#34;
         pygame.display.flip()
 
-    def draw_rect(self, color, rect):
+    def draw_rect(self, color: Tuple[int, int, int], rect: Tuple[int, int, int, int]):
         pygame.draw.rect(self.screen, color, rect)
 
-    def draw_circle(self, color, center, radius):
+    def draw_circle(
+        self, color: Tuple[int, int, int], center: Tuple[int, int], radius: float
+    ):
         pygame.draw.circle(self.screen, color, center, radius)
 
     def draw_line(self, color, start_pos, end_pos, width=1):
@@ -112,16 +130,16 @@ hljs.highlightAll();
 <span>def <span class="ident">clear</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Clear the game window.</p></div>
 </dd>
 <dt id="src.ui.window.Window.create_window"><code class="name flex">
 <span>def <span class="ident">create_window</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Create the game window.</p></div>
 </dd>
 <dt id="src.ui.window.Window.draw_circle"><code class="name flex">
-<span>def <span class="ident">draw_circle</span></span>(<span>self, color, center, radius)</span>
+<span>def <span class="ident">draw_circle</span></span>(<span>self, color: Tuple[int, int, int], center: Tuple[int, int], radius: float)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -133,7 +151,7 @@ hljs.highlightAll();
 <div class="desc"></div>
 </dd>
 <dt id="src.ui.window.Window.draw_rect"><code class="name flex">
-<span>def <span class="ident">draw_rect</span></span>(<span>self, color, rect)</span>
+<span>def <span class="ident">draw_rect</span></span>(<span>self, color: Tuple[int, int, int], rect: Tuple[int, int, int, int])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -154,7 +172,7 @@ hljs.highlightAll();
 <span>def <span class="ident">initialize_pygame</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Initialize Pygame.</p></div>
 </dd>
 <dt id="src.ui.window.Window.load_config"><code class="name flex">
 <span>def <span class="ident">load_config</span></span>(<span>self)</span>
@@ -172,7 +190,7 @@ hljs.highlightAll();
 <span>def <span class="ident">update</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Update the game window.</p></div>
 </dd>
 </dl>
 </dd>

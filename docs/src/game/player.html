@@ -37,7 +37,7 @@ hljs.highlightAll();
 <dl>
 <dt id="src.game.player.Player"><code class="flex name class">
 <span>class <span class="ident">Player</span></span>
-<span>(</span><span>name: str, gameboard: <a title="src.game.gameboard.GameBoard" href="gameboard.html#src.game.gameboard.GameBoard">GameBoard</a>, initial_score: int = 35)</span>
+<span>(</span><span>name: str, gameboard: <a title="src.game.gameboard.GameBoard" href="gameboard.html#src.game.gameboard.GameBoard">GameBoard</a>, initial_score: int = 25)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Represents a player in the Black Box game.</p>
@@ -55,6 +55,8 @@ and guessed atoms. It also provides methods for player actions and turn manageme
 <dd>A list of rays fired during the current turn.</dd>
 <dt><strong><code>guessed_atoms</code></strong> :&ensp;<code>List[Atom]</code></dt>
 <dd>A list of atoms guessed by the player.</dd>
+<dt><strong><code>placed_atoms</code></strong> :&ensp;<code>List[Atom]</code></dt>
+<dd>A list of atoms placed by the player.</dd>
 <dt><strong><code>guesses</code></strong> :&ensp;<code>List[Tuple[int, int]]</code></dt>
 <dd>A list of guesses made by the player.</dd>
 <dt><strong><code>is_turn</code></strong> :&ensp;<code>bool</code></dt>
@@ -92,11 +94,12 @@ and guessed atoms. It also provides methods for player actions and turn manageme
         fired_rays (List[Ray]): A list of rays fired by the player.
         active_turn_rays (List[Ray]): A list of rays fired during the current turn.
         guessed_atoms (List[Atom]): A list of atoms guessed by the player.
+        placed_atoms (List[Atom]): A list of atoms placed by the player.
         guesses (List[Tuple[int, int]]): A list of guesses made by the player.
         is_turn (bool): Indicates whether it&#39;s currently this player&#39;s turn.
     &#34;&#34;&#34;
 
-    def __init__(self, name: str, gameboard: GameBoard, initial_score: int = 35):
+    def __init__(self, name: str, gameboard: GameBoard, initial_score: int = 25):
         &#34;&#34;&#34;
         Initialize a Player instance.
 
@@ -119,6 +122,7 @@ and guessed atoms. It also provides methods for player actions and turn manageme
         self.fired_rays: List[Ray] = []
         self.active_turn_rays: List[Ray] = []
         self.guessed_atoms: List[Atom] = []
+        self.placed_atoms: List[Atom] = []
         self.guesses: List[Tuple[int, int]] = []
         self.active_turn_guesses: List[Tuple[int, int]] = []
         self.is_turn: bool = False

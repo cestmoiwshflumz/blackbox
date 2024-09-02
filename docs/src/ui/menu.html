@@ -182,7 +182,13 @@ allowing players to navigate between different game options and screens.</p>
         self.window = window
         self.logger = game_logger
         self.font = pygame.font.Font(None, 36)
-        self.menu_items = [&#34;Start Game&#34;, &#34;Instructions&#34;, &#34;Options&#34;, &#34;Quit&#34;]
+        self.menu_items = [
+            &#34;Start Game&#34;,
+            &#34;Multiplayer&#34;,
+            &#34;Instructions&#34;,
+            &#34;Options&#34;,
+            &#34;Quit&#34;,
+        ]
         self.selected_item = 0
 
     def draw(self):

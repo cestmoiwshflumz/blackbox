@@ -90,13 +90,14 @@ and managing the overall flow of the game.</p>
         self.clock: pygame.time.Clock = pygame.time.Clock()
         self.game_board: Optional[GameBoard] = None
         self.player: Optional[Player] = None
-        self.game_screen: Optional[GameScreen] = None
+        self.game_screen: Union[Optional[GameScreen] | Optional[GameScreenMP]] = None
         self.logger.info(&#34;GameLoop initialized&#34;)
         self.difficulty = (
             &#34;hard&#34;
             if self.config[&#34;options&#34;][&#34;difficulty&#34;] == 1
             else &#34;medium&#34; if self.config[&#34;options&#34;][&#34;difficulty&#34;] == 0 else &#34;easy&#34;
         )
+        self.bo5 = [0, 0]
         self.logger.info(f&#34;Game difficulty set to: {self.difficulty}&#34;)
 
     def _load_config(self, config_path: str) -&gt; dict:
@@ -168,10 +169,16 @@ and managing the overall flow of the game.</p>
                     self.game_state = run_menu(self.window)
                 elif self.game_state == &#34;START_GAME&#34;:
                     self.start_new_game()
+                elif self.game_state == &#34;MULTIPLAYER&#34;:
+                    self.start_new_game_mp(self.bo5)
                 elif self.game_state == &#34;PLAYING&#34;:
                     self.play_game()
                 elif self.game_state == &#34;GAME_OVER&#34;:
                     self.show_game_over()
+                elif self.game_state == &#34;PLAYING_MP&#34;:
+                    self.play_game_mp()
+                elif self.game_state == &#34;GAME_OVER_MP&#34;:
+                    self.show_game_over_mp()
                 elif self.game_state == &#34;QUIT&#34;:
                     self.quit_game()
                     break
@@ -201,6 +208,37 @@ and managing the overall flow of the game.</p>
             self.logger.error(f&#34;Error starting new game: {e}&#34;, exc_info=True)
             self.game_state = &#34;MAIN_MENU&#34;
 
+    def start_new_game_mp(self, bo5: List[int]) -&gt; None:
+        &#34;&#34;&#34;
+        Start a new multiplayer game by initializing the game boards, players, and game screen.
+        &#34;&#34;&#34;
+        try:
+            self.logger.info(&#34;Starting new multiplayer game&#34;)
+            self._refresh_config()
+            self.game_board1 = GameBoard(self.difficulty, mp=True)
+            self.game_board2 = GameBoard(self.difficulty, mp=True)
+            self.player1 = Player(&#34;Player 1&#34;, self.game_board1)
+            self.player2 = Player(&#34;Player 2&#34;, self.game_board2)
+            self.game_screen = GameScreenMP(
+                self.window,
+                self.game_board1,
+                self.game_board2,
+                self.player1,
+                self.player2,
+                bo5,
+            )
+            waiting = True
+            while waiting:
+                atoms = self.game_screen.place_atoms()
+                if atoms:
+                    waiting = False
+            self.game_state = &#34;PLAYING_MP&#34;
+        except Exception as e:
+            self.logger.error(
+                f&#34;Error starting new multiplayer game: {e}&#34;, exc_info=True
+            )
+            self.game_state = &#34;MAIN_MENU&#34;
+
     def play_game(self) -&gt; None:
         &#34;&#34;&#34;
         Handle the main gameplay loop, including drawing the game screen and processing input.
@@ -220,6 +258,27 @@ and managing the overall flow of the game.</p>
                 self.game_state = &#34;GAME_OVER&#34;
         except Exception as e:
             self.logger.error(f&#34;Error during gameplay: {e}&#34;, exc_info=True)
+            self.game_state = &#34;MAIN_MENU&#34;
+
+    def play_game_mp(self) -&gt; None:
+        &#34;&#34;&#34;
+        Handle the main multiplayer gameplay loop, including drawing the game screen and processing input.
+        &#34;&#34;&#34;
+        try:
+            if self.game_screen is None:
+                raise ValueError(&#34;Game screen is not initialized&#34;)
+
+            self.game_screen.draw()
+            action = self.game_screen.handle_input()
+
+            if action == &#34;QUIT&#34;:
+                self.game_state = &#34;QUIT&#34;
+            elif action == &#34;MAIN_MENU&#34;:
+                self.game_state = &#34;MAIN_MENU&#34;
+            elif self.check_game_over_mp():
+                self.game_state = &#34;GAME_OVER_MP&#34;
+        except Exception as e:
+            self.logger.error(f&#34;Error during multiplayer gameplay: {e}&#34;, exc_info=True)
             self.game_state = &#34;MAIN_MENU&#34;
 
     def check_game_over(self) -&gt; bool:
@@ -242,6 +301,38 @@ and managing the overall flow of the game.</p>
             return False
         except Exception as e:
             self.logger.error(f&#34;Error checking game over condition: {e}&#34;)
+            return True
+
+    def check_game_over_mp(self) -&gt; bool:
+        &#34;&#34;&#34;
+        Check if the multiplayer game is over based on the player&#39;s score and guessed atoms.
+
+        Returns:
+            bool: True if the game is over, False otherwise.
+        &#34;&#34;&#34;
+        try:
+            if self.player1 is None or self.game_board1 is None:
+                raise ValueError(&#34;Player or game board is not initialized&#34;)
+
+            if self.player1.get_score() &lt;= 0:
+                self.bo5[1] += 1
+                self.logger.info(&#34;Game over: Player 1 ran out of points&#34;)
+                return True
+            if self.game_board2.all_atoms_guessed(self.player1.get_guessed_atoms()):
+                self.bo5[0] += 1
+                self.logger.info(&#34;Game over: All atoms guessed correctly by Player 1&#34;)
+                return True
+            if self.player2.get_score() &lt;= 0:
+                self.bo5[0] += 1
+                self.logger.info(&#34;Game over: Player 2 ran out of points&#34;)
+                return True
+            if self.game_board1.all_atoms_guessed(self.player2.get_guessed_atoms()):
+                self.bo5[1] += 1
+                self.logger.info(&#34;Game over: All atoms guessed correctly by Player 2&#34;)
+                return True
+            return False
+        except Exception as e:
+            self.logger.error(f&#34;Error checking multiplayer game over condition: {e}&#34;)
             return True
 
     def show_game_over(self) -&gt; None:
@@ -267,6 +358,64 @@ and managing the overall flow of the game.</p>
                         waiting = False
         except Exception as e:
             self.logger.error(f&#34;Error displaying game over screen: {e}&#34;)
+            self.game_state = &#34;MAIN_MENU&#34;
+
+    def show_game_over_mp(self) -&gt; None:
+        &#34;&#34;&#34;
+        Display the multiplayer game over screen and handle input for returning to the main menu.
+        &#34;&#34;&#34;
+        try:
+            self.window.clear()
+
+            if self.bo5[0] == 3:
+                self.game_screen.show_game_finished(&#34;Player 1&#34;)
+                waiting = True
+                while waiting:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            self.game_state = &#34;QUIT&#34;
+                            waiting = False
+                        elif (
+                            event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE
+                        ):
+                            self.game_state = &#34;MAIN_MENU&#34;
+                            waiting = False
+            elif self.bo5[1] == 3:
+                self.game_screen.show_game_finished(&#34;Player 2&#34;)
+                waiting = True
+                while waiting:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            self.game_state = &#34;QUIT&#34;
+                            waiting = False
+                        elif (
+                            event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE
+                        ):
+                            self.game_state = &#34;MAIN_MENU&#34;
+                            waiting = False
+            else:
+                if self.player1.get_score() &lt;= 0 or self.player2.get_score() &lt;= 0:
+                    self.game_screen.show_game_over()
+                elif self.game_board2.all_atoms_guessed(
+                    self.player1.get_guessed_atoms()
+                ) or self.game_board1.all_atoms_guessed(
+                    self.player2.get_guessed_atoms()
+                ):
+                    self.game_screen.show_game_over()
+
+                waiting = True
+                while waiting:
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            self.game_state = &#34;QUIT&#34;
+                            waiting = False
+                        elif (
+                            event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE
+                        ):
+                            self.game_state = &#34;MULTIPLAYER&#34;
+                            waiting = False
+        except Exception as e:
+            self.logger.error(f&#34;Error displaying multiplayer game over screen: {e}&#34;)
             self.game_state = &#34;MAIN_MENU&#34;
 
     def show_game_finished(self) -&gt; None:
@@ -338,11 +487,28 @@ and managing the overall flow of the game.</p>
 <dd>True if the game is over, False otherwise.</dd>
 </dl></div>
 </dd>
+<dt id="src.gameloop.GameLoop.check_game_over_mp"><code class="name flex">
+<span>def <span class="ident">check_game_over_mp</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if the multiplayer game is over based on the player's score and guessed atoms.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the game is over, False otherwise.</dd>
+</dl></div>
+</dd>
 <dt id="src.gameloop.GameLoop.play_game"><code class="name flex">
 <span>def <span class="ident">play_game</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Handle the main gameplay loop, including drawing the game screen and processing input.</p></div>
+</dd>
+<dt id="src.gameloop.GameLoop.play_game_mp"><code class="name flex">
+<span>def <span class="ident">play_game_mp</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handle the main multiplayer gameplay loop, including drawing the game screen and processing input.</p></div>
 </dd>
 <dt id="src.gameloop.GameLoop.quit_game"><code class="name flex">
 <span>def <span class="ident">quit_game</span></span>(<span>self) ‑> None</span>
@@ -371,11 +537,23 @@ methods based on the current game state.</p></div>
 <dd>
 <div class="desc"><p>Display the game over screen and handle input for returning to the main menu.</p></div>
 </dd>
+<dt id="src.gameloop.GameLoop.show_game_over_mp"><code class="name flex">
+<span>def <span class="ident">show_game_over_mp</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Display the multiplayer game over screen and handle input for returning to the main menu.</p></div>
+</dd>
 <dt id="src.gameloop.GameLoop.start_new_game"><code class="name flex">
 <span>def <span class="ident">start_new_game</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Start a new game by initializing the game board, player, and game screen.</p></div>
+</dd>
+<dt id="src.gameloop.GameLoop.start_new_game_mp"><code class="name flex">
+<span>def <span class="ident">start_new_game_mp</span></span>(<span>self, bo5: List[int]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Start a new multiplayer game by initializing the game boards, players, and game screen.</p></div>
 </dd>
 </dl>
 </dd>
@@ -398,12 +576,16 @@ methods based on the current game state.</p></div>
 <h4><code><a title="src.gameloop.GameLoop" href="#src.gameloop.GameLoop">GameLoop</a></code></h4>
 <ul class="two-column">
 <li><code><a title="src.gameloop.GameLoop.check_game_over" href="#src.gameloop.GameLoop.check_game_over">check_game_over</a></code></li>
+<li><code><a title="src.gameloop.GameLoop.check_game_over_mp" href="#src.gameloop.GameLoop.check_game_over_mp">check_game_over_mp</a></code></li>
 <li><code><a title="src.gameloop.GameLoop.play_game" href="#src.gameloop.GameLoop.play_game">play_game</a></code></li>
+<li><code><a title="src.gameloop.GameLoop.play_game_mp" href="#src.gameloop.GameLoop.play_game_mp">play_game_mp</a></code></li>
 <li><code><a title="src.gameloop.GameLoop.quit_game" href="#src.gameloop.GameLoop.quit_game">quit_game</a></code></li>
 <li><code><a title="src.gameloop.GameLoop.run" href="#src.gameloop.GameLoop.run">run</a></code></li>
 <li><code><a title="src.gameloop.GameLoop.show_game_finished" href="#src.gameloop.GameLoop.show_game_finished">show_game_finished</a></code></li>
 <li><code><a title="src.gameloop.GameLoop.show_game_over" href="#src.gameloop.GameLoop.show_game_over">show_game_over</a></code></li>
+<li><code><a title="src.gameloop.GameLoop.show_game_over_mp" href="#src.gameloop.GameLoop.show_game_over_mp">show_game_over_mp</a></code></li>
 <li><code><a title="src.gameloop.GameLoop.start_new_game" href="#src.gameloop.GameLoop.start_new_game">start_new_game</a></code></li>
+<li><code><a title="src.gameloop.GameLoop.start_new_game_mp" href="#src.gameloop.GameLoop.start_new_game_mp">start_new_game_mp</a></code></li>
 </ul>
 </li>
 </ul>

@@ -37,7 +37,7 @@ hljs.highlightAll();
 <dl>
 <dt id="src.game.gameboard.GameBoard"><code class="flex name class">
 <span>class <span class="ident">GameBoard</span></span>
-<span>(</span><span>difficulty: str)</span>
+<span>(</span><span>difficulty: str, mp: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Represents the game board for the Black Box game.</p>
@@ -88,7 +88,7 @@ with the game board state.</p>
         edge_markers (List[int]): List of numbers for edge markers.
     &#34;&#34;&#34;
 
-    def __init__(self, difficulty: str):
+    def __init__(self, difficulty: str, mp: bool = False):
         &#34;&#34;&#34;
         Initialize the GameBoard.
 
@@ -119,7 +119,8 @@ with the game board state.</p>
         self.edge_markers: List[int] = list(range(1, 4 * self.size + 1))
 
         self._initialize_grid()
-        self._place_atoms()
+        if not mp:
+            self._place_atoms()
 
     def _initialize_grid(self) -&gt; None:
         &#34;&#34;&#34;Initialize the empty grid.&#34;&#34;&#34;
@@ -147,6 +148,29 @@ with the game board state.</p>
                 atom = Atom(x, y)
                 self.atoms.append(atom)
                 self.grid[y][x] = atom
+
+    def set_cell(self, x: int, y: int, value: Optional[Atom]) -&gt; None:
+        &#34;&#34;&#34;
+        Set the content of a cell on the grid.
+
+        Args:
+            x (int): The x-coordinate of the cell.
+            y (int): The y-coordinate of the cell.
+            value (Optional[Atom]): The value to set in the cell (Atom or None for empty).
+        &#34;&#34;&#34;
+        if value is not None:
+            self.grid[y][x] = value
+            self.place_atom(value)
+
+    def place_atom(self, atom: Atom) -&gt; None:
+        &#34;&#34;&#34;
+        Place an atom on the grid.
+
+        Args:
+            atom (Atom): The Atom object to place on the grid.
+        &#34;&#34;&#34;
+        if self.grid[atom.x][atom.y] is None:
+            self.atoms.append(atom)
 
     def is_empty(self, x: int, y: int) -&gt; bool:
         &#34;&#34;&#34;
@@ -228,23 +252,6 @@ with the game board state.</p>
             Optional[Atom]: The Atom object at the specified coordinates.
         &#34;&#34;&#34;
         return next((atom for atom in self.atoms if atom.x == x and atom.y == y), None)
-
-    def set_cell(self, value: Atom) -&gt; None:
-        &#34;&#34;&#34;
-        Set the content of a cell.
-
-        Args:
-            value (Atom): The value to set in the cell (Atom).
-
-        Raises:
-            ValueError: If the coordinates are out of bounds or the value is invalid.
-        &#34;&#34;&#34;
-        self._validate_coordinates(value.x, value.y)
-        if value is not None and not isinstance(value, Atom):
-            raise ValueError(
-                &#34;Invalid cell value. Use None for empty or an Atom instance.&#34;
-            )
-        self.grid[value.y][value.x] = value
 
     def all_atoms_guessed(self, guessed_atoms: List[Atom]) -&gt; bool:
         &#34;&#34;&#34;
@@ -440,20 +447,30 @@ with the game board state.</p>
 <dd>If the coordinates are out of bounds.</dd>
 </dl></div>
 </dd>
-<dt id="src.game.gameboard.GameBoard.set_cell"><code class="name flex">
-<span>def <span class="ident">set_cell</span></span>(<span>self, value: <a title="src.game.atom.Atom" href="atom.html#src.game.atom.Atom">Atom</a>) ‑> None</span>
+<dt id="src.game.gameboard.GameBoard.place_atom"><code class="name flex">
+<span>def <span class="ident">place_atom</span></span>(<span>self, atom: <a title="src.game.atom.Atom" href="atom.html#src.game.atom.Atom">Atom</a>) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Set the content of a cell.</p>
+<div class="desc"><p>Place an atom on the grid.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>value</code></strong> :&ensp;<code>Atom</code></dt>
-<dd>The value to set in the cell (Atom).</dd>
-</dl>
-<h2 id="raises">Raises</h2>
+<dt><strong><code>atom</code></strong> :&ensp;<code>Atom</code></dt>
+<dd>The Atom object to place on the grid.</dd>
+</dl></div>
+</dd>
+<dt id="src.game.gameboard.GameBoard.set_cell"><code class="name flex">
+<span>def <span class="ident">set_cell</span></span>(<span>self, x: int, y: int, value: Optional[<a title="src.game.atom.Atom" href="atom.html#src.game.atom.Atom">Atom</a>]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the content of a cell on the grid.</p>
+<h2 id="args">Args</h2>
 <dl>
-<dt><code>ValueError</code></dt>
-<dd>If the coordinates are out of bounds or the value is invalid.</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>The x-coordinate of the cell.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>The y-coordinate of the cell.</dd>
+<dt><strong><code>value</code></strong> :&ensp;<code>Optional[Atom]</code></dt>
+<dd>The value to set in the cell (Atom or None for empty).</dd>
 </dl></div>
 </dd>
 </dl>
@@ -483,6 +500,7 @@ with the game board state.</p>
 <li><code><a title="src.game.gameboard.GameBoard.has_atom" href="#src.game.gameboard.GameBoard.has_atom">has_atom</a></code></li>
 <li><code><a title="src.game.gameboard.GameBoard.is_edge" href="#src.game.gameboard.GameBoard.is_edge">is_edge</a></code></li>
 <li><code><a title="src.game.gameboard.GameBoard.is_empty" href="#src.game.gameboard.GameBoard.is_empty">is_empty</a></code></li>
+<li><code><a title="src.game.gameboard.GameBoard.place_atom" href="#src.game.gameboard.GameBoard.place_atom">place_atom</a></code></li>
 <li><code><a title="src.game.gameboard.GameBoard.set_cell" href="#src.game.gameboard.GameBoard.set_cell">set_cell</a></code></li>
 </ul>
 </li>
