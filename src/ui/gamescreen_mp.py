@@ -72,6 +72,7 @@ class GameScreenMP:
         )
         self.font = pygame.font.Font(None, 24)
         self.history = False
+        self.early_game = True
 
         # Load and validate the game configuration
         self.config = self._load_config("config/config.yaml")
@@ -169,6 +170,8 @@ class GameScreenMP:
         try:
             self.window.clear()
             self.draw_grid()
+            if self.early_game:
+                self.draw_atoms(self.current_game_board.atoms)
             if not self.history:
                 self.draw_active_rays_normal()
                 self.draw_current_guess()
@@ -333,8 +336,12 @@ class GameScreenMP:
         """
         try:
             for guess in self.current_player.get_guesses():
-                pos = self.get_screen_position(guess)
-                self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
+                if self.current_game_board.has_atom(guess[0], guess[1]):
+                    pos = self.get_screen_position(guess)
+                    self.window.draw_circle(COLOR_GREEN, pos, self.cell_size // 4)
+                else:
+                    pos = self.get_screen_position(guess)
+                    self.window.draw_circle(COLOR_BLUE, pos, self.cell_size // 4)
         except pygame.error as e:
             logging.error(f"Error drawing guesses: {e}", exc_info=True)
 
@@ -343,7 +350,7 @@ class GameScreenMP:
         Draw the current player's score on the game screen.
         """
         try:
-            score_text = f"Score: {self.current_player.get_score()}"
+            score_text = f"Score: {self.current_player.get_score()}          {self.current_player.name}'s Turn"
             text_surface = self.font.render(score_text, True, COLOR_WHITE)
             self.window.get_screen().blit(text_surface, (10, 10))
         except pygame.error as e:
@@ -493,6 +500,9 @@ class GameScreenMP:
                                 self.current_game_board.place_atom(atom)
                                 self.draw()
 
+            self.early_game = False
+            self.players[0].gameboard = self.game_board2
+            self.players[1].gameboard = self.game_board1
             return True
 
         except Exception as e:
@@ -552,6 +562,11 @@ class GameScreenMP:
                     self.players[1]
                     if self.current_player == self.players[0]
                     else self.players[0]
+                )
+                self.current_game_board = (
+                    self.game_board2
+                    if self.current_game_board == self.game_board1
+                    else self.game_board1
                 )
             elif 10 <= pos[0] <= 110 and 150 <= pos[1] <= 190:
                 self.history = not self.history
@@ -664,12 +679,24 @@ class GameScreenMP:
         """
         try:
             self.window.clear()
-            game_over_text = self.font.render("Game Over", True, COLOR_WHITE)
-            score_text = self.font.render(
-                f"Final Score: {self.current_player.get_score()}. Press Space to main menu",
-                True,
-                COLOR_WHITE,
-            )
+
+            score1 = self.players[0].get_score()
+            score2 = self.players[1].get_score()
+
+            if score1 > score2:
+                game_over_text = self.font.render("Player1 Wins!", True, COLOR_WHITE)
+                score_text = self.font.render(
+                    f"Final Score: Player1: {score1} -- Player2 {score2}. Press Space to main menu",
+                    True,
+                    COLOR_WHITE,
+                )
+            else:
+                game_over_text = self.font.render("Player2 Wins!", True, COLOR_WHITE)
+                score_text = self.font.render(
+                    f"Final Score: Player1: {score1} -- Player2 {score2}. Press Space to main menu",
+                    True,
+                    COLOR_WHITE,
+                )
 
             self.window.get_screen().blit(
                 game_over_text,
@@ -690,40 +717,6 @@ class GameScreenMP:
         except pygame.error as e:
             logging.error(f"Error showing game over screen: {e}")
 
-    def show_game_finished(self) -> None:
-        """
-        Display the game finished screen.
-
-        This method shows the final score and a message indicating the end of the game.
-        """
-        try:
-            self.window.clear()
-            game_finished_text = self.font.render("Game Finished", True, COLOR_WHITE)
-            score_text = self.font.render(
-                f"Final Score: {self.current_player.get_score()}. Press Space to main menu",
-                True,
-                COLOR_WHITE,
-            )
-
-            self.window.get_screen().blit(
-                game_finished_text,
-                (
-                    self.window.width // 2 - game_finished_text.get_width() // 2,
-                    self.window.height // 2 - 50,
-                ),
-            )
-            self.window.get_screen().blit(
-                score_text,
-                (
-                    self.window.width // 2 - score_text.get_width() // 2,
-                    self.window.height // 2 + 50,
-                ),
-            )
-
-            self.window.update()
-        except pygame.error as e:
-            logging.error(f"Error showing game finished screen: {e}")
-
     def update(self) -> None:
         """
         Update the game state and redraw the screen.
@@ -731,12 +724,13 @@ class GameScreenMP:
         This method should be called once per frame to keep the game display current.
         """
         try:
-            if self.current_game_board.all_atoms_guessed(
-                self.current_player.get_guessed_atoms()
+            if (
+                self.current_game_board.all_atoms_guessed(
+                    self.current_player.get_guessed_atoms()
+                )
+                or self.current_player.score == 0
             ):
-                self.show_game_finished()
-            elif self.current_player.get_score() <= 0:
-                self.show_game_over
+                self.show_game_over()
             else:
                 self.draw()
         except Exception as e:

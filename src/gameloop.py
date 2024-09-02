@@ -165,8 +165,8 @@ class GameLoop:
         try:
             self.logger.info("Starting new multiplayer game")
             self._refresh_config()
-            self.game_board1 = GameBoard(self.difficulty)
-            self.game_board2 = GameBoard(self.difficulty)
+            self.game_board1 = GameBoard(self.difficulty, mp=True)
+            self.game_board2 = GameBoard(self.difficulty, mp=True)
             self.player1 = Player("Player 1", self.game_board1)
             self.player2 = Player("Player 2", self.game_board2)
             self.game_screen = GameScreenMP(

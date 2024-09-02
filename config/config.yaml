@@ -8,7 +8,7 @@ logger:
   level: DEBUG
   max_bytes: 10485760
 options:
-  debug: false
+  debug: true
   difficulty: 0
   sound: true
 window:
