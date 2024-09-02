@@ -64,6 +64,7 @@ class GameScreenMP:
         self.game_board2 = game_board2
         self.players = [player1, player2]
         self.current_player = player1
+        self.current_game_board = game_board1
         self.cell_size = min(window.width, window.height) // (game_board1.size + 2)
         self.board_offset = (
             (window.width - self.cell_size * game_board1.size) // 2,
@@ -455,3 +456,288 @@ class GameScreenMP:
             logging.error(f"Error drawing detoured ray: {e}", exc_info=True)
         except Exception as e:
             logging.error(f"Error handling detoured ray: {e}", exc_info=True)
+
+    def place_atoms(self) -> bool:
+        """
+        Each player places their atoms on their board.
+
+        Returns:
+            bool: True if all atoms has been placed successfully, False otherwise.
+        """
+        # First player's turn
+        try:
+            self.current_player = self.players[0]
+            self.current_game_board = self.game_board1
+            self.draw()
+            while len(self.current_game_board.atoms) < 6:
+                for event in pygame.event.get():
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if event.button == 1:
+                            pos = self.get_board_position(event.pos)
+                            if self.is_valid_guess_position(pos):
+                                atom = Atom(pos[0], pos[1])
+                                self.current_game_board.place_atom(atom)
+                                self.draw()
+
+            # Second player's turn
+            self.current_player = self.players[1]
+            self.current_game_board = self.game_board2
+            self.draw()
+            while len(self.current_game_board.atoms) < 6:
+                for event in pygame.event.get():
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if event.button == 1:
+                            pos = self.get_board_position(event.pos)
+                            if self.is_valid_guess_position(pos):
+                                atom = Atom(pos[0], pos[1])
+                                self.current_game_board.place_atom(atom)
+                                self.draw()
+
+            return True
+
+        except Exception as e:
+            logging.error(f"Error placing atoms: {e}", exc_info=True)
+            return False
+
+    def handle_input(self) -> str:
+        """
+        Handle user input events.
+
+        Returns:
+            str: A string indicating the action to be taken ('QUIT', 'MAIN_MENU', or 'CONTINUE').
+        """
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return "QUIT"
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:  # Left click
+                    r = self.handle_left_click(event.pos)
+                    if r:
+                        return r
+                elif event.button == 3:  # Right click
+                    self.handle_right_click(event.pos)
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    return "MAIN_MENU"
+        return "CONTINUE"
+
+    def handle_left_click(self, pos: Tuple[int, int]) -> Union[str, None]:
+        """
+        Handle left mouse click events.
+
+        This method is responsible for firing rays when the player clicks on the edge of the board.
+
+        Args:
+            pos (Tuple[int, int]): The position of the mouse click on the screen.
+        """
+        # Handle clicks on the edge of the board
+        try:
+            board_pos = self.get_board_position(pos)
+            if self.is_valid_ray_start(board_pos):
+                direction = self.get_ray_direction(board_pos)
+                if direction:
+                    ray = self.current_player.fire_ray(
+                        board_pos[0], board_pos[1], direction
+                    )
+                    self.draw()
+        except ValueError as e:
+            logging.error(f"Error handling left click: {e}", exc_info=True)
+
+        # Handle clicks on the buttons
+        try:
+            if 10 <= pos[0] <= 110 and 100 <= pos[1] <= 140:
+                self.current_player.refresh_turn()
+                self.current_player.is_turn = False
+                self.current_player = (
+                    self.players[1]
+                    if self.current_player == self.players[0]
+                    else self.players[0]
+                )
+            elif 10 <= pos[0] <= 110 and 150 <= pos[1] <= 190:
+                self.history = not self.history
+            elif 10 <= pos[0] <= 110 and 200 <= pos[1] <= 240:
+                return "MAIN_MENU"
+        except ValueError as e:
+            logging.error(f"Error handling left click: {e}", exc_info=True)
+        except Exception as e:
+            logging.error(f"Error handling left click: {e}", exc_info=True)
+
+    def handle_right_click(self, pos: Tuple[int, int]) -> None:
+        """
+        Handle right mouse click events.
+
+        This method is responsible for placing or removing atom guesses when the player right-clicks on the board.
+
+        Args:
+            pos (Tuple[int, int]): The position of the mouse click on the screen.
+        """
+        try:
+            board_pos = self.get_board_position(pos)
+            if self.is_valid_guess_position(board_pos):
+                self.current_player.guess_atom_position(board_pos[0], board_pos[1])
+                self.draw()
+        except ValueError as e:
+            logging.error(f"Error handling right click: {e}")
+
+    def is_valid_ray_start(self, pos: Tuple[int, int]) -> bool:
+        """
+        Check if the given position is a valid starting point for a ray.
+
+        Args:
+            pos (Tuple[int, int]): The position to check.
+
+        Returns:
+            bool: True if the position is on the edge of the board, False otherwise.
+        """
+        x, y = pos
+        return (
+            x == -1
+            or x == self.current_game_board.size
+            or y == -1
+            or y == self.current_game_board.size
+        ) and not (
+            (x == -1 and y == -1)
+            or (x == -1 and y == self.current_game_board.size)
+            or (x == self.current_game_board.size and y == -1)
+            or (x == self.current_game_board.size and y == self.current_game_board.size)
+        )
+
+    def get_ray_direction(self, pos: Tuple[int, int]) -> Optional[Tuple[int, int]]:
+        """
+        Get the direction of a ray based on its starting position.
+
+        Args:
+            pos (Tuple[int, int]): The starting position of the ray.
+
+        Returns:
+            Optional[Tuple[int, int]]: The direction of the ray as (dx, dy), or None if invalid.
+        """
+        x, y = pos
+        if x == -1:
+            return (1, 0)
+        elif x == self.current_game_board.size:
+            return (-1, 0)
+        elif y == -1:
+            return (0, 1)
+        elif y == self.current_game_board.size:
+            return (0, -1)
+        return None
+
+    def is_valid_guess_position(self, pos: Tuple[int, int]) -> bool:
+        """
+        Check if the given position is a valid position for guessing an atom.
+
+        Args:
+            pos (Tuple[int, int]): The position to check.
+
+        Returns:
+            bool: True if the position is within the board and not on the edge, False otherwise.
+        """
+        x, y = pos
+        return (
+            0 <= x < self.current_game_board.size
+            and 0 <= y < self.current_game_board.size
+        )
+
+    def highlight_cell(self, pos: Tuple[int, int], color: Tuple[int, int, int]) -> None:
+        """
+        Highlight a cell on the game board.
+
+        Args:
+            pos (Tuple[int, int]): The position of the cell to highlight.
+            color (Tuple[int, int, int]): The color to use for highlighting.
+        """
+        try:
+            screen_pos = self.get_screen_position(pos)
+            rect = pygame.Rect(
+                screen_pos[0], screen_pos[1], self.cell_size, self.cell_size
+            )
+            self.window.draw_rect(color, rect)
+        except pygame.error as e:
+            logging.error(f"Error highlighting cell: {e}")
+
+    def show_game_over(self) -> None:
+        """
+        Display the game over screen.
+
+        This method shows the final score and a message indicating the end of the game.
+        """
+        try:
+            self.window.clear()
+            game_over_text = self.font.render("Game Over", True, COLOR_WHITE)
+            score_text = self.font.render(
+                f"Final Score: {self.current_player.get_score()}. Press Space to main menu",
+                True,
+                COLOR_WHITE,
+            )
+
+            self.window.get_screen().blit(
+                game_over_text,
+                (
+                    self.window.width // 2 - game_over_text.get_width() // 2,
+                    self.window.height // 2 - 50,
+                ),
+            )
+            self.window.get_screen().blit(
+                score_text,
+                (
+                    self.window.width // 2 - score_text.get_width() // 2,
+                    self.window.height // 2 + 50,
+                ),
+            )
+
+            self.window.update()
+        except pygame.error as e:
+            logging.error(f"Error showing game over screen: {e}")
+
+    def show_game_finished(self) -> None:
+        """
+        Display the game finished screen.
+
+        This method shows the final score and a message indicating the end of the game.
+        """
+        try:
+            self.window.clear()
+            game_finished_text = self.font.render("Game Finished", True, COLOR_WHITE)
+            score_text = self.font.render(
+                f"Final Score: {self.current_player.get_score()}. Press Space to main menu",
+                True,
+                COLOR_WHITE,
+            )
+
+            self.window.get_screen().blit(
+                game_finished_text,
+                (
+                    self.window.width // 2 - game_finished_text.get_width() // 2,
+                    self.window.height // 2 - 50,
+                ),
+            )
+            self.window.get_screen().blit(
+                score_text,
+                (
+                    self.window.width // 2 - score_text.get_width() // 2,
+                    self.window.height // 2 + 50,
+                ),
+            )
+
+            self.window.update()
+        except pygame.error as e:
+            logging.error(f"Error showing game finished screen: {e}")
+
+    def update(self) -> None:
+        """
+        Update the game state and redraw the screen.
+
+        This method should be called once per frame to keep the game display current.
+        """
+        try:
+            if self.current_game_board.all_atoms_guessed(
+                self.current_player.get_guessed_atoms()
+            ):
+                self.show_game_finished()
+            elif self.current_player.get_score() <= 0:
+                self.show_game_over
+            else:
+                self.draw()
+        except Exception as e:
+            logging.error(f"Error updating game screen: {e}")

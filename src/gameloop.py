@@ -176,6 +176,11 @@ class GameLoop:
                 self.player1,
                 self.player2,
             )
+            waiting = True
+            while waiting:
+                atoms = self.game_screen.place_atoms()
+                if atoms:
+                    waiting = False
             self.game_state = "PLAYING_MP"
         except Exception as e:
             self.logger.error(
