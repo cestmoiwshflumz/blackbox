@@ -105,7 +105,10 @@ class Instructions:
             "3. Rays can be reflected, absorbed, or pass through.",
             "4. Use deduction to determine atom positions.",
             "5. Left click to fire a ray, right click to guess an atom.",
-            "6. Press SPACE to return to the main menu.",
+            "6. In multiplayer, players take turns to guess atoms.",
+            "7. The round ends when all atoms are found.",
+            "8. The winner is determined by the best of 5 rounds.",
+            "9. Press SPACE to return to the main menu.",
         ]
 
     def draw(self):
