@@ -191,7 +191,7 @@ class Ray:
         logging.info(f"Handling multiple reflections: {reflections}")
 
         # Dans le cas d'une double déviation, marquer comme double déviation
-        self.is_double_detour = None
+        self.is_double_detour = True
 
         # On considère que le rayon s'arrête et est absorbé dans ce cas particulier
         self.exit_point = True  # Le rayon sort
