@@ -49,17 +49,27 @@ class Ray:
         self.entry_point: Tuple[int, int] = (start_x, start_y)
         self.exit_point: Optional[Tuple[int, int]] = None
         self.is_detoured: bool = False
+        self.is_double_detour: bool = False
+
+        # Initialisation de l'ensemble des positions visitées
+        self.visited_positions: set = set()  # Nouvelle ligne ajoutée
+        self.visited_positions.add((start_x, start_y))  # Ajout du point d'entrée
 
         logging.info(
             f"Ray created at ({start_x}, {start_y}) with direction {direction}"
         )
 
     def move(self) -> None:
-        """
-        Move the ray one step in its current direction.
-        """
         new_x = self.path[-1][0] + self.direction[0]
         new_y = self.path[-1][1] + self.direction[1]
+
+        # Vérifiez si la position a déjà été visitée
+        if (new_x, new_y) in self.visited_positions:
+            logging.warning(f"Loop detected at ({new_x}, {new_y}). Stopping trace.")
+            raise Exception("Infinite loop detected in ray tracing.")
+
+        # Enregistrez la position visitée
+        self.visited_positions.add((new_x, new_y))
         self.path.append((new_x, new_y))
         logging.debug(f"Ray moved to ({new_x}, {new_y})")
 
@@ -122,7 +132,11 @@ class Ray:
         x, y = self.path[-1]
         is_adjacent1, _ = atom1.is_adjacent(x, y)
         is_adjacent2, _ = atom2.is_adjacent(x, y)
-        return is_adjacent1 and is_adjacent2
+
+        if is_adjacent1 and is_adjacent2:
+            self.is_double_detour = True  # Marquer comme double déviation
+            return True
+        return False
 
     def trace(self, gameboard: GameBoard) -> None:
         """
@@ -147,27 +161,41 @@ class Ray:
                         logging.info(f"Ray hit atom at ({atom.x}, {atom.y})")
                         return
 
-                # Check for detour (diagonal interaction)
-                if not self.is_detoured:
-                    for i, atom1 in enumerate(gameboard.atoms):
-                        for atom2 in gameboard.atoms[i + 1:]:
-                            if self.check_detour(atom1, atom2):
-                                logging.info(
-                                    f"Ray detoured by atoms at ({atom1.x}, {atom1.y}) and ({atom2.x}, {atom2.y})"
-                                )
-                                self._handle_detour()
-                                continue
-
-                # Check for reflection
+                # Handle multiple reflections
+                reflections = []
                 for atom in gameboard.atoms:
                     is_adjacent, corner = self.check_reflection(atom)
                     if is_adjacent:
-                        self._handle_reflection(atom, corner)
-                        break
+                        reflections.append((atom, corner))
+
+                if len(reflections) > 1:
+                    logging.info(f"Multiple reflections detected at {reflections}")
+                    self._handle_multiple_reflections(reflections)
+                    return  # Arrêter le suivi du rayon après avoir géré la réflexion multiple
+                elif len(reflections) == 1:
+                    atom, corner = reflections[0]
+                    self._handle_reflection(atom, corner)
+                    continue
 
             except Exception as e:
                 logging.error(f"Error tracing ray: {e}", exc_info=True)
                 return
+
+    def _handle_multiple_reflections(self, reflections: List[Tuple[Atom, int]]) -> None:
+        """
+        Handle the case of multiple reflections caused by adjacent atoms.
+
+        Args:
+            reflections (List[Tuple[Atom, int]]): List of atoms and their reflection corners.
+        """
+        logging.info(f"Handling multiple reflections: {reflections}")
+
+        # Dans le cas d'une double déviation, marquer comme double déviation
+        self.is_double_detour = None
+
+        # On considère que le rayon s'arrête et est absorbé dans ce cas particulier
+        self.exit_point = True  # Le rayon sort
+        logging.info("Ray stopped due to multiple reflections (double deviation).")
 
     def _handle_reflection(self, atom: Atom, corner: int) -> None:
         """
@@ -205,6 +233,10 @@ class Ray:
         """
         Handle the detour of the ray by two atoms.
         """
+        if self.is_double_detour:
+            logging.info("Ray experienced a double detour (color: yellow)")
+            self.direction = (-self.direction[0], -self.direction[1])
+            return
         self.direction = (-self.direction[0], -self.direction[1])
         self.is_detoured = True
         logging.info("Ray detoured back to entry point")

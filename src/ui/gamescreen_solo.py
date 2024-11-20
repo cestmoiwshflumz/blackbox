@@ -14,6 +14,7 @@ from src.utils.constants import (
     COLOR_RED,
     COLOR_GREEN,
     COLOR_BLUE,
+    COLOR_YELLOW,
 )
 from src.utils.log_instances import game_logger as logging
 
@@ -227,10 +228,16 @@ class GameScreen:
         Args:
             ray (Ray): The ray to be drawn.
         """
-        if self.check_ray_detoured(ray):
-            pass
         try:
-            color = COLOR_RED if ray.exit_point is None else COLOR_GREEN
+            # Couleur basée sur l'état
+            if ray.is_double_detour:
+                color = COLOR_YELLOW  # Jaune pour une double déviation
+            elif ray.exit_point is None:
+                color = COLOR_RED  # Rouge si touché
+            else:
+                color = COLOR_GREEN  # Vert sinon
+
+            # Dessiner le chemin du rayon
             for i in range(len(ray.path) - 1):
                 start = self.get_screen_position(ray.path[i])
                 end = self.get_screen_position(ray.path[i + 1])
@@ -263,10 +270,15 @@ class GameScreen:
         Args:
             ray (Ray): The ray to be drawn.
         """
-        if self.check_ray_detoured(ray):
-            pass
         try:
-            color = COLOR_RED if ray.exit_point is None else COLOR_GREEN
+            if ray.is_double_detour:
+                color = COLOR_YELLOW  # Jaune pour une double déviation
+            elif ray.exit_point is None:
+                color = COLOR_RED  # Rouge si touché
+            else:
+                color = COLOR_GREEN  # Vert sinon
+
+            # Dessiner les points d'entrée et de sortie
             if ray.entry_point is not None:
                 start = self.get_screen_position(ray.entry_point)
                 self.window.draw_circle(color, start, self.cell_size // 4)
