@@ -139,29 +139,32 @@ class Ray:
                 self.exit_point = (x, y)
                 logging.info(f"Ray exited at ({x}, {y})")
                 break
+
             try:
-                # Check for detour
+                # Check for hit first (absorption)
+                for atom in gameboard.atoms:
+                    if self.check_hit(atom):
+                        logging.info(f"Ray hit atom at ({atom.x}, {atom.y})")
+                        return
+
+                # Check for detour (diagonal interaction)
                 if not self.is_detoured:
                     for i, atom1 in enumerate(gameboard.atoms):
-                        for atom2 in gameboard.atoms[i + 1 :]:
+                        for atom2 in gameboard.atoms[i + 1:]:
                             if self.check_detour(atom1, atom2):
                                 logging.info(
                                     f"Ray detoured by atoms at ({atom1.x}, {atom1.y}) and ({atom2.x}, {atom2.y})"
                                 )
                                 self._handle_detour()
                                 continue
-                        break
 
-                # Check for hit or reflection
+                # Check for reflection
                 for atom in gameboard.atoms:
                     is_adjacent, corner = self.check_reflection(atom)
-
-                    if self.check_hit(atom):
-                        logging.info(f"Ray hit atom at ({atom.x}, {atom.y})")
-                        return
-                    elif is_adjacent:
+                    if is_adjacent:
                         self._handle_reflection(atom, corner)
                         break
+
             except Exception as e:
                 logging.error(f"Error tracing ray: {e}", exc_info=True)
                 return
