@@ -161,7 +161,7 @@ class Options:
         self.options = [
             f"Difficulty: {'Hard' if self.config['options']['difficulty'] == 1 else 'Medium' if self.config['options']['difficulty'] == 0 else 'Easy'}",
             f"Sound: {'On' if self.config['options']['sound'] else 'Off'}",
-            f"DEBUG: {'True' if self.config['options']['debug'] else 'False'}",
+            f"TRAINING: {'True' if self.config['options']['debug'] else 'False'}",
             "Save & Back To Main Menu",
         ]
         self.selected_option = 0
@@ -173,7 +173,7 @@ class Options:
         self.options = [
             f"Difficulty: {'Hard' if self.config['options']['difficulty'] == 1 else 'Medium' if self.config['options']['difficulty'] == 0 else 'Easy'}",
             f"Sound: {'On' if self.config['options']['sound'] else 'Off'}",
-            f"DEBUG: {'True' if self.config['options']['debug'] else 'False'}",
+            f"TRAINING : {'True' if self.config['options']['debug'] else 'False'}",
             "Save & Back To Main Menu",
         ]
         self.selected_option = 0
@@ -302,7 +302,7 @@ class Options:
                     elif self.selected_option == 2:
                         new_debug = not self.config["options"]["debug"]
                         self._update_config("options.debug", new_debug)
-                        self.options[2] = f"DEBUG: {'True' if new_debug else 'False'}"
+                        self.options[2] = f"TRAINING: {'True' if new_debug else 'False'}"
         return None
 
     def run(self) -> str:

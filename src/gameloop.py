@@ -304,8 +304,11 @@ class GameLoop:
                     if event.type == pygame.QUIT:
                         self.game_state = "QUIT"
                         waiting = False
-                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                         self.game_state = "MAIN_MENU"
+                        waiting = False
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                        self.game_state = "START_GAME"
                         waiting = False
         except Exception as e:
             self.logger.error(f"Error displaying game over screen: {e}")
@@ -408,8 +411,11 @@ class GameLoop:
                     if event.type == pygame.QUIT:
                         self.game_state = "QUIT"
                         waiting = False
-                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                         self.game_state = "MAIN_MENU"
+                        waiting = False
+                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                        self.game_state = "START_GAME"
                         waiting = False
         except Exception as e:
             self.logger.error(f"Error displaying game over screen: {e}")

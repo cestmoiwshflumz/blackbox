@@ -597,7 +597,7 @@ class GameScreen:
             self.window.clear()
             game_over_text = self.font.render("Game Over", True, COLOR_WHITE)
             score_text = self.font.render(
-                f"Final Score: {self.player.get_score()}. Press Space to main menu",
+                f"Final Score: {self.player.get_score()}. Press ESCAPE to main menu or SPACE to play again",
                 True,
                 COLOR_WHITE,
             )
@@ -631,7 +631,7 @@ class GameScreen:
             self.window.clear()
             game_finished_text = self.font.render("Game Finished", True, COLOR_WHITE)
             score_text = self.font.render(
-                f"Final Score: {self.player.get_score()}. Press Space to main menu",
+                f"Final Score: {self.player.get_score()}. Press ESCAPE to main menu or SPACE to play again",
                 True,
                 COLOR_WHITE,
             )
